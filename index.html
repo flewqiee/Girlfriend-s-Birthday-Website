@@ -290,7 +290,6 @@
     .snapshot-one { top: 25px; right: 13%; transform: rotate(5deg); }
     .snapshot-two { top: 220px; left: 2%; transform: rotate(-8deg); }
     .snapshot-three { right: 0; bottom: 2px; width: min(48%, 250px); transform: rotate(9deg); }
-    .pressed-flower { position: absolute; right: 46%; bottom: 14px; width: 90px; opacity: .74; filter: sepia(.2); transform: rotate(-18deg); }
     .date-stamp {
       position: absolute;
       right: 5%;
@@ -364,6 +363,73 @@
     .activity-button:hover svg { transform: translateX(4px); }
     .lock-sketch { position: absolute; right: -21px; top: -24px; width: 150px; opacity: .12; transform: rotate(14deg); }
 
+    .birthday-trail {
+      position: relative;
+      padding: 22px 0 108px;
+    }
+    .birthday-trail::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto auto 50%;
+      width: min(920px, 100%);
+      height: 28px;
+      background:
+        linear-gradient(135deg, transparent 0 34%, rgba(167,102,103,.55) 35% 64%, transparent 65%) 0 0 / 64px 28px,
+        linear-gradient(225deg, transparent 0 34%, rgba(185,151,91,.55) 35% 64%, transparent 65%) 32px 0 / 64px 28px;
+      opacity: .62;
+      transform: translateX(-50%) rotate(-1deg);
+      pointer-events: none;
+    }
+    .trail-heading {
+      display: grid;
+      grid-template-columns: minmax(0, .9fr) minmax(260px, .55fr);
+      gap: 40px;
+      align-items: end;
+      padding-top: 70px;
+      margin-bottom: 34px;
+    }
+    .trail-heading h2, .coupon-title {
+      margin: 0;
+      font: clamp(2.8rem, 6vw, 5.8rem)/.9 var(--serif);
+      font-weight: 400;
+      letter-spacing: -.035em;
+    }
+    .trail-heading p {
+      margin: 0 0 10px;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+    .trail-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      align-items: stretch;
+    }
+    .trail-card {
+      position: relative;
+      min-height: 210px;
+      padding: 22px 20px 24px;
+      border: 1px dashed rgba(74, 58, 48, .25);
+      background: rgba(255, 250, 240, .78);
+      box-shadow: 7px 8px 0 rgba(61, 53, 47, .07);
+    }
+    .trail-card:nth-child(2) { margin-top: 28px; background: #f3dfd4; transform: rotate(1.2deg); }
+    .trail-card:nth-child(3) { background: #dfe8d8; transform: rotate(-1deg); }
+    .trail-card:nth-child(4) { margin-top: 18px; background: #efe0bd; transform: rotate(.8deg); }
+    .trail-card span {
+      display: inline-grid;
+      width: 42px;
+      aspect-ratio: 1;
+      place-items: center;
+      margin-bottom: 34px;
+      border-radius: 50%;
+      color: var(--paper);
+      background: var(--rose-dark);
+      font: 1rem var(--hand);
+    }
+    .trail-card h3 { margin: 0 0 10px; font: 1.65rem/.98 var(--serif); font-weight: 400; }
+    .trail-card p { margin: 0; color: var(--muted); line-height: 1.55; }
+
     .memory-strip {
       display: grid;
       grid-template-columns: .85fr 1.15fr;
@@ -385,6 +451,79 @@
     .little-note:nth-child(3) { background: #e4caca; transform: rotate(1deg); }
     .little-note:nth-child(4) { transform: rotate(-2deg); }
     .random-note { min-height: 30px; color: var(--rose-dark) !important; font: 1.15rem var(--hand); }
+
+    .wish-coupons {
+      display: grid;
+      grid-template-columns: minmax(0, .95fr) minmax(300px, 1.05fr);
+      gap: 42px;
+      align-items: center;
+      padding: 110px 0 70px;
+    }
+    .cake-card {
+      position: relative;
+      min-height: 420px;
+      padding: clamp(28px, 5vw, 52px);
+      overflow: hidden;
+      border: 1px solid var(--line);
+      background: #fff8e8;
+      box-shadow: var(--shadow);
+    }
+    .cake-card::before {
+      content: "";
+      position: absolute;
+      inset: 28px 28px auto auto;
+      width: 105px;
+      aspect-ratio: 1;
+      border: 2px solid rgba(119,72,75,.38);
+      border-radius: 50%;
+      transform: rotate(-11deg);
+    }
+    .cake-card::after {
+      content: "";
+      position: absolute;
+      right: 48px;
+      bottom: 42px;
+      width: 190px;
+      height: 150px;
+      background:
+        linear-gradient(var(--rose-dark), var(--rose-dark)) 47px 0 / 7px 54px no-repeat,
+        radial-gradient(circle at 50px 0, #e8bd63 0 8px, transparent 9px),
+        linear-gradient(#f6d2d2, #f0baba) 0 54px / 100% 38px no-repeat,
+        linear-gradient(#f7eddd, #ead9bf) 0 92px / 100% 58px no-repeat;
+      border-radius: 18px 18px 8px 8px;
+      opacity: .82;
+    }
+    .cake-card p { max-width: 390px; color: var(--muted); line-height: 1.75; }
+    .coupon-stack { display: grid; gap: 14px; }
+    .coupon {
+      position: relative;
+      padding: 24px 26px;
+      border: 1px solid rgba(74,58,48,.2);
+      background: var(--paper);
+      box-shadow: 0 12px 30px rgba(68,49,37,.09);
+    }
+    .coupon::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 74px;
+      border-left: 1px dashed rgba(119,72,75,.35);
+    }
+    .coupon strong {
+      display: block;
+      margin-left: 78px;
+      color: var(--rose-dark);
+      font: 1.2rem var(--hand);
+    }
+    .coupon span {
+      display: block;
+      margin: 7px 0 0 78px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .coupon:nth-child(2) { transform: rotate(-1deg); background: #f5ead9; }
+    .coupon:nth-child(3) { transform: rotate(1deg); background: #edf2e8; }
 
     .spotify-wrap { max-width: 760px; margin: 100px auto 0; text-align: center; }
     .spotify-wrap p { color: var(--muted); font: 1.1rem var(--hand); }
@@ -497,6 +636,8 @@
       .activity-grid { grid-template-columns: 1fr 1fr; }
       .activity-card:nth-child(2) { margin-top: 35px; }
       .activity-card:nth-child(3) { grid-column: 1 / -1; min-height: 350px; }
+      .trail-heading, .wish-coupons { grid-template-columns: 1fr; }
+      .trail-grid { grid-template-columns: 1fr 1fr; }
       .memory-strip { grid-template-columns: 1fr; }
       .memory-photo { width: min(520px, 100%); margin: auto; }
     }
@@ -517,6 +658,16 @@
       .activities { padding-top: 50px; }
       .activity-grid { grid-template-columns: 1fr; }
       .activity-card, .activity-card:nth-child(2), .activity-card:nth-child(3) { min-height: 340px; margin: 0; transform: none; }
+      .birthday-trail { padding-bottom: 62px; }
+      .trail-heading { padding-top: 54px; }
+      .trail-grid { grid-template-columns: 1fr; }
+      .trail-card, .trail-card:nth-child(2), .trail-card:nth-child(3), .trail-card:nth-child(4) { min-height: 175px; margin: 0; transform: none; }
+      .wish-coupons { padding-top: 70px; }
+      .cake-card { min-height: 360px; }
+      .cake-card::after { right: 20px; bottom: 24px; width: 150px; height: 120px; }
+      .coupon { padding: 22px 18px; }
+      .coupon::before { left: 48px; }
+      .coupon strong, .coupon span { margin-left: 52px; }
       .memory-strip { padding: 60px 20px; }
       .little-things { grid-template-columns: 1fr; }
       .modal-card { padding: 30px 20px; }
@@ -576,7 +727,6 @@
           <figure class="snapshot snapshot-one"><img src="assets/existing-1.jpeg" alt="Yumuşak tonlarda romantik bir hatıra karesi"><figcaption>birlikteyken zaman başka</figcaption></figure>
           <figure class="snapshot snapshot-two"><img src="assets/existing-2.jpeg" alt="Scrapbook içine yerleştirilmiş sıcak tonlu bir fotoğraf"><figcaption>en sevdiğim günlerden</figcaption></figure>
           <figure class="snapshot snapshot-three"><img src="assets/existing-3.jpeg" alt="Bantla tutturulmuş nostaljik bir hatıra fotoğrafı"><figcaption>saklamak istediğim an</figcaption></figure>
-          <img class="pressed-flower" src="assets/existing-4.jpeg" alt="" aria-hidden="true">
           <div class="date-stamp">hep hatırlanacak</div>
         </div>
       </section>
@@ -610,8 +760,40 @@
         </div>
       </section>
 
+      <section class="birthday-trail" aria-labelledby="trail-title">
+        <div class="trail-heading">
+          <div>
+            <div class="section-label">doğum günü macerası</div>
+            <h2 id="trail-title">Bugünün küçük haritası.</h2>
+          </div>
+          <p>Sayfayı aşağı indikçe küçük bir hediye kutusu gibi açılacak şekilde uzattım: önce anılar, sonra oyunlar, sonra saklamak isteyeceğiniz bölüm.</p>
+        </div>
+        <div class="trail-grid">
+          <article class="trail-card">
+            <span>01</span>
+            <h3>Kapıyı aç</h3>
+            <p>Zarfla başlayan ilk durak, sayfanın tamamının ona ait olduğunu hissettirsin.</p>
+          </article>
+          <article class="trail-card">
+            <span>02</span>
+            <h3>Fotoğraflara uğra</h3>
+            <p>İlk üç kare üstte kalsın; dördüncü kare özel bir anı gibi aşağıda saklansın.</p>
+          </article>
+          <article class="trail-card">
+            <span>03</span>
+            <h3>Oyunu çöz</h3>
+            <p>Quiz, puzzle ve gizli mektup sayfaya küçük bir keşif hissi katıyor.</p>
+          </article>
+          <article class="trail-card">
+            <span>04</span>
+            <h3>Dileği tut</h3>
+            <p>En sonda doğum günü kuponları ve minik bir dilek alanı var.</p>
+          </article>
+        </div>
+      </section>
+
       <section class="memory-strip" aria-labelledby="memory-title">
-        <div class="memory-photo"><img src="assets/existing-2.png" alt="Kağıt bir çerçeve içindeki sıcak anı fotoğrafı"><span>bunu hep saklayalım</span></div>
+        <div class="memory-photo"><img src="assets/existing-4.jpeg" alt="Kağıt bir çerçeve içindeki sıcak anı fotoğrafı"><span>bunu hep saklayalım</span></div>
         <div class="memory-copy">
           <div class="section-label">küçük şeylerin koleksiyonu</div>
           <h2 class="memory-title" id="memory-title">Sende sevdiğim şeyler.</h2>
@@ -624,6 +806,19 @@
           </div>
           <button class="text-button" id="random-note-button" type="button">Bir sebep daha çek</button>
           <p class="random-note" id="random-note" aria-live="polite"></p>
+        </div>
+      </section>
+
+      <section class="wish-coupons" aria-labelledby="coupon-title">
+        <div class="cake-card">
+          <div class="section-label">bir dilek hakkı</div>
+          <h2 class="coupon-title" id="coupon-title">Mumları beraber üfleyelim.</h2>
+          <p>Bu bölüm biraz deftere iliştirilmiş son sayfa gibi dursun istedim. Buraya kendi cümleni de yazabilirsin: bu yıl onun için dilediğin şey, birlikte yapmak istediğiniz bir plan ya da sadece tek satırlık bir söz.</p>
+        </div>
+        <div class="coupon-stack" aria-label="Doğum günü kuponları">
+          <div class="coupon"><strong>Bir kahve ve uzun yürüyüş</strong><span>Ne zaman isterse kullanılabilir; konuşulacak konular sınırsız.</span></div>
+          <div class="coupon"><strong>Seçtiği film gecesi</strong><span>Atıştırmalıklar, battaniye ve tamamen onun seçtiği film.</span></div>
+          <div class="coupon"><strong>Plansız küçük kaçamak</strong><span>Bir gün seçsin; rotayı beraber yolda bulursunuz.</span></div>
         </div>
       </section>
 
