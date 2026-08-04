@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#eee5d5">
+  <title>Sadece Senin İçin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Gochi+Hand&family=Italiana&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --oat: #eee5d5;
+      --paper: #fffaf0;
+      --paper-deep: #f7eddd;
+      --ink: #3d352f;
+      --muted: #786d64;
+      --rose: #a76667;
+      --rose-dark: #77484b;
+      --sage: #71806a;
+      --gold: #b9975b;
+      --line: rgba(74, 58, 48, .18);
+      --shadow: 0 22px 70px rgba(68, 49, 37, .14);
+      --hand: "Gochi Hand", cursive;
+      --serif: "Italiana", serif;
+      --sans: "DM Sans", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-width: 320px;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 8% 12%, rgba(167, 102, 103, .14), transparent 27rem),
+        radial-gradient(circle at 92% 45%, rgba(113, 128, 106, .13), transparent 24rem),
+        var(--oat);
+      font-family: var(--sans);
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 20;
+      opacity: .24;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 140 140' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.16'/%3E%3C/svg%3E");
+      mix-blend-mode: multiply;
+    }
+
+    button, input { font: inherit; }
+    button { color: inherit; }
+    img { display: block; max-width: 100%; }
+    [hidden] { display: none !important; }
+
+    .skip-link {
+      position: fixed;
+      top: 12px;
+      left: 12px;
+      z-index: 100;
+      padding: 10px 14px;
+      color: var(--paper);
+      background: var(--ink);
+      border-radius: 999px;
+      transform: translateY(-160%);
+    }
+    .skip-link:focus { transform: translateY(0); }
+
+    .opening {
+      position: fixed;
+      inset: 0;
+      z-index: 80;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background:
+        linear-gradient(rgba(238, 229, 213, .82), rgba(238, 229, 213, .96)),
+        url("assets/existing-1.png") center 34% / cover;
+      transition: opacity .65s ease, visibility .65s ease;
+    }
+    .opening.is-open { opacity: 0; visibility: hidden; }
+    .opening-copy { text-align: center; margin-bottom: 26px; }
+    .opening-eyebrow {
+      margin: 0 0 5px;
+      color: var(--rose-dark);
+      font: 1.2rem var(--hand);
+      transform: rotate(-2deg);
+    }
+    .opening-title {
+      max-width: 500px;
+      margin: 0;
+      font: clamp(2.5rem, 8vw, 5rem)/.95 var(--serif);
+      font-weight: 400;
+    }
+    .envelope-button {
+      position: relative;
+      display: block;
+      width: min(76vw, 390px);
+      aspect-ratio: 1.55;
+      margin: 0 auto;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      cursor: pointer;
+      perspective: 900px;
+    }
+    .envelope-back,
+    .envelope-front,
+    .envelope-flap,
+    .envelope-letter { position: absolute; inset: 0; }
+    .envelope-back {
+      border: 1px solid rgba(74, 58, 48, .16);
+      border-radius: 5px;
+      background: #e9d5c7;
+      box-shadow: var(--shadow);
+    }
+    .envelope-letter {
+      inset: 8% 7%;
+      display: grid;
+      place-items: center;
+      color: var(--rose-dark);
+      border: 1px solid var(--line);
+      background: var(--paper);
+      font: 1.45rem var(--hand);
+      transition: transform .7s .25s cubic-bezier(.2,.8,.2,1);
+    }
+    .envelope-front {
+      clip-path: polygon(0 13%, 50% 57%, 100% 13%, 100% 100%, 0 100%);
+      border-radius: 5px;
+      background: linear-gradient(150deg, #f0ded0 0 48%, #e6cfc0 49% 100%);
+    }
+    .envelope-flap {
+      z-index: 3;
+      height: 54%;
+      clip-path: polygon(0 0, 100% 0, 50% 100%);
+      background: #dfc2b3;
+      transform-origin: top;
+      transition: transform .65s cubic-bezier(.4,0,.2,1);
+      backface-visibility: hidden;
+    }
+    .wax-seal {
+      position: absolute;
+      z-index: 4;
+      top: 44%;
+      left: 50%;
+      display: grid;
+      width: 60px;
+      aspect-ratio: 1;
+      place-items: center;
+      border: 1px solid rgba(77, 34, 35, .35);
+      border-radius: 48% 52% 45% 55%;
+      color: #f5dfcd;
+      background: var(--rose-dark);
+      box-shadow: 0 5px 14px rgba(79, 41, 37, .24), inset 0 0 0 5px rgba(255,255,255,.08);
+      font: 1.8rem var(--serif);
+      transform: translate(-50%, -50%) rotate(-7deg);
+      transition: opacity .3s, transform .3s;
+    }
+    .envelope-button.is-opening .envelope-flap { transform: rotateX(180deg); }
+    .envelope-button.is-opening .envelope-letter { transform: translateY(-38%); }
+    .envelope-button.is-opening .wax-seal { opacity: 0; transform: translate(-50%, -50%) rotate(8deg) scale(.7); }
+    .opening-hint { margin: 24px 0 0; color: var(--muted); font: 1.15rem var(--hand); }
+
+    .site-shell { opacity: 0; transition: opacity .8s ease; }
+    .site-shell.is-ready { opacity: 1; }
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      width: min(1180px, calc(100% - 32px));
+      margin: 14px auto 0;
+      padding: 10px 12px 10px 18px;
+      border: 1px solid rgba(74, 58, 48, .13);
+      border-radius: 18px;
+      background: rgba(255, 250, 240, .82);
+      box-shadow: 0 8px 32px rgba(68, 49, 37, .08);
+      backdrop-filter: blur(14px);
+    }
+    .brand { font: 1.25rem var(--hand); }
+    .music-pill {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+      padding: 7px 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #f7eddf;
+    }
+    .music-bars { display: flex; align-items: end; gap: 2px; height: 15px; flex: 0 0 auto; }
+    .music-bars i { width: 2px; height: 7px; background: var(--rose); animation: sound .8s ease-in-out infinite alternate; }
+    .music-bars i:nth-child(2) { height: 14px; animation-delay: -.5s; }
+    .music-bars i:nth-child(3) { height: 10px; animation-delay: -.25s; }
+    @keyframes sound { to { transform: scaleY(.35); } }
+    .music-copy { min-width: 0; line-height: 1.1; }
+    .music-copy strong, .music-copy span { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .music-copy strong { font-size: .74rem; font-weight: 600; }
+    .music-copy span { margin-top: 3px; color: var(--muted); font-size: .67rem; }
+    .icon-button {
+      display: grid;
+      width: 34px;
+      aspect-ratio: 1;
+      flex: 0 0 auto;
+      place-items: center;
+      border: 0;
+      border-radius: 50%;
+      color: var(--paper);
+      background: var(--rose-dark);
+      cursor: pointer;
+    }
+    .icon-button svg { width: 15px; }
+
+    main { width: min(1180px, calc(100% - 32px)); margin: 0 auto; }
+    .hero {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(0, 1.03fr) minmax(350px, .97fr);
+      align-items: center;
+      min-height: 680px;
+      padding: 72px 0 60px;
+    }
+    .hero-copy { position: relative; z-index: 2; max-width: 650px; padding: 0 4vw 0 2vw; }
+    .scribble { display: inline-block; margin: 0 0 17px; color: var(--rose-dark); font: 1.35rem var(--hand); transform: rotate(-2deg); }
+    .hero h1 {
+      margin: 0;
+      max-width: 650px;
+      font: clamp(4rem, 8vw, 7.7rem)/.78 var(--serif);
+      font-weight: 400;
+      letter-spacing: -.055em;
+    }
+    .hero h1 .accent { display: block; margin-left: .42em; color: var(--rose-dark); font-family: var(--hand); font-size: .72em; transform: rotate(-3deg); }
+    .hero-intro {
+      max-width: 490px;
+      margin: 36px 0 0 12%;
+      padding-left: 22px;
+      border-left: 2px solid rgba(167, 102, 103, .38);
+      color: var(--muted);
+      font-size: clamp(1rem, 2vw, 1.15rem);
+      line-height: 1.75;
+    }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin: 30px 0 0 12%; }
+    .primary-button, .text-button, .activity-button {
+      border: 0;
+      cursor: pointer;
+      transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+    }
+    .primary-button {
+      padding: 14px 20px;
+      border-radius: 5px 13px 6px 11px;
+      color: var(--paper);
+      background: var(--rose-dark);
+      box-shadow: 4px 5px 0 rgba(61, 53, 47, .17);
+      font-weight: 600;
+    }
+    .primary-button:hover, .activity-button:hover { transform: translateY(-3px) rotate(-.4deg); }
+    .primary-button:active, .activity-button:active { transform: translate(2px, 2px); box-shadow: 1px 2px 0 rgba(61, 53, 47, .17); }
+    .text-button { padding: 14px 8px; border-bottom: 1px solid var(--ink); background: transparent; }
+    .text-button:hover { color: var(--rose-dark); }
+
+    .collage { position: relative; height: 590px; }
+    .snapshot {
+      position: absolute;
+      width: min(58%, 300px);
+      padding: 11px 11px 42px;
+      border: 1px solid rgba(74, 58, 48, .12);
+      background: var(--paper);
+      box-shadow: 0 18px 40px rgba(64, 45, 34, .16);
+    }
+    .snapshot::before {
+      content: "";
+      position: absolute;
+      z-index: 2;
+      top: -15px;
+      left: 50%;
+      width: 88px;
+      height: 28px;
+      background: rgba(205, 184, 142, .63);
+      transform: translateX(-50%) rotate(-2deg);
+      box-shadow: 0 1px 1px rgba(70, 45, 30, .08);
+    }
+    .snapshot img { width: 100%; aspect-ratio: .86; object-fit: cover; filter: sepia(.08) saturate(.82) contrast(.95); }
+    .snapshot figcaption { position: absolute; right: 18px; bottom: 10px; left: 18px; text-align: center; font: 1.05rem var(--hand); }
+    .snapshot-one { top: 25px; right: 13%; transform: rotate(5deg); }
+    .snapshot-two { top: 220px; left: 2%; transform: rotate(-8deg); }
+    .snapshot-three { right: 0; bottom: 2px; width: min(48%, 250px); transform: rotate(9deg); }
+    .pressed-flower { position: absolute; right: 46%; bottom: 14px; width: 90px; opacity: .74; filter: sepia(.2); transform: rotate(-18deg); }
+    .date-stamp {
+      position: absolute;
+      right: 5%;
+      top: 2%;
+      z-index: 3;
+      padding: 10px 14px;
+      border: 2px solid rgba(119, 72, 75, .55);
+      color: var(--rose-dark);
+      font: .77rem/1.2 var(--sans);
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      transform: rotate(8deg);
+    }
+
+    .section-label { display: flex; align-items: center; gap: 13px; margin-bottom: 24px; color: var(--rose-dark); font: 1.2rem var(--hand); }
+    .section-label::after { content: ""; width: 76px; height: 1px; background: currentColor; opacity: .4; }
+    .activities { padding: 86px 0 100px; }
+    .activities-heading {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 30px;
+      margin-bottom: 48px;
+    }
+    .activities-heading h2, .memory-title {
+      max-width: 700px;
+      margin: 0;
+      font: clamp(2.7rem, 6vw, 5.6rem)/.93 var(--serif);
+      font-weight: 400;
+      letter-spacing: -.035em;
+    }
+    .activities-heading p { max-width: 340px; margin: 0 0 8px; color: var(--muted); line-height: 1.65; }
+    .activity-grid {
+      display: grid;
+      grid-template-columns: 1.05fr .85fr 1.1fr;
+      gap: 20px;
+      align-items: start;
+    }
+    .activity-card {
+      position: relative;
+      min-height: 350px;
+      padding: 30px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 9px 18px 10px 22px;
+      background: rgba(255, 250, 240, .72);
+      box-shadow: 0 16px 45px rgba(68, 49, 37, .08);
+    }
+    .activity-card:nth-child(2) { margin-top: 62px; background: rgba(221, 216, 196, .7); transform: rotate(1deg); }
+    .activity-card:nth-child(3) { min-height: 420px; background: var(--rose-dark); color: var(--paper); transform: rotate(-1deg); }
+    .card-number { display: block; margin-bottom: 62px; color: var(--muted); font: 1rem var(--hand); }
+    .activity-card:nth-child(3) .card-number { color: #d9c0b9; }
+    .activity-card h3 { margin: 0 0 14px; font: clamp(2.2rem, 4vw, 3.8rem)/.9 var(--serif); font-weight: 400; }
+    .activity-card p { max-width: 330px; margin: 0 0 30px; color: var(--muted); line-height: 1.65; }
+    .activity-card:nth-child(3) p { color: #e7d9d1; }
+    .activity-button {
+      position: absolute;
+      right: 28px;
+      bottom: 28px;
+      left: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px;
+      border: 1px solid currentColor;
+      border-radius: 4px 12px 4px 12px;
+      background: transparent;
+      font-weight: 600;
+    }
+    .activity-button svg { width: 18px; transition: transform .2s ease; }
+    .activity-button:hover svg { transform: translateX(4px); }
+    .lock-sketch { position: absolute; right: -21px; top: -24px; width: 150px; opacity: .12; transform: rotate(14deg); }
+
+    .memory-strip {
+      display: grid;
+      grid-template-columns: .85fr 1.15fr;
+      gap: 54px;
+      align-items: center;
+      padding: 100px 7%;
+      border: 1px solid var(--line);
+      border-radius: 34px 10px 34px 10px;
+      background: var(--paper-deep);
+      box-shadow: var(--shadow);
+    }
+    .memory-photo { position: relative; padding: 14px 14px 60px; background: #fffaf2; box-shadow: 0 17px 45px rgba(61, 42, 31, .16); transform: rotate(-3deg); }
+    .memory-photo img { width: 100%; max-height: 430px; object-fit: cover; filter: sepia(.1) saturate(.8); }
+    .memory-photo span { position: absolute; right: 16px; bottom: 14px; left: 16px; text-align: center; font: 1.2rem var(--hand); }
+    .memory-copy p { color: var(--muted); line-height: 1.8; }
+    .little-things { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 30px 0; }
+    .little-note { min-height: 100px; padding: 18px; background: #ead9bf; font: 1.05rem/1.35 var(--hand); box-shadow: 2px 4px 10px rgba(61,42,31,.08); transform: rotate(-1deg); }
+    .little-note:nth-child(2) { background: #d7dfcf; transform: rotate(2deg); }
+    .little-note:nth-child(3) { background: #e4caca; transform: rotate(1deg); }
+    .little-note:nth-child(4) { transform: rotate(-2deg); }
+    .random-note { min-height: 30px; color: var(--rose-dark) !important; font: 1.15rem var(--hand); }
+
+    .spotify-wrap { max-width: 760px; margin: 100px auto 0; text-align: center; }
+    .spotify-wrap p { color: var(--muted); font: 1.1rem var(--hand); }
+    #spotify-embed { min-height: 152px; overflow: hidden; border-radius: 16px; box-shadow: 0 13px 38px rgba(68,49,37,.12); }
+    footer { padding: 70px 0 38px; text-align: center; color: var(--muted); font: 1.1rem var(--hand); }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      z-index: 70;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+      visibility: hidden;
+      opacity: 0;
+      background: rgba(50, 41, 35, .52);
+      backdrop-filter: blur(8px);
+      transition: opacity .25s, visibility .25s;
+    }
+    .modal.is-visible { visibility: visible; opacity: 1; }
+    .modal-card {
+      position: relative;
+      width: min(680px, 100%);
+      max-height: min(820px, calc(100vh - 40px));
+      overflow: auto;
+      padding: clamp(28px, 6vw, 58px);
+      border: 1px solid rgba(74,58,48,.2);
+      border-radius: 10px 24px 11px 26px;
+      background: var(--paper);
+      box-shadow: 0 30px 100px rgba(43,31,25,.3);
+      transform: translateY(18px) rotate(.3deg);
+      transition: transform .3s cubic-bezier(.2,.8,.2,1);
+    }
+    .modal.is-visible .modal-card { transform: translateY(0) rotate(0); }
+    .close-button { position: sticky; top: 0; z-index: 3; float: right; margin: -35px -35px 0 0; border: 0; background: transparent; font-size: 1.7rem; cursor: pointer; }
+    .modal-kicker { margin: 0 0 7px; color: var(--rose-dark); font: 1.15rem var(--hand); }
+    .modal h2 { margin: 0 0 24px; font: clamp(2.4rem, 7vw, 4.8rem)/.92 var(--serif); font-weight: 400; }
+    .modal-lead { margin: -10px 0 28px; color: var(--muted); line-height: 1.65; }
+    .quiz-progress { height: 5px; margin-bottom: 32px; overflow: hidden; border-radius: 99px; background: #e9dfd0; }
+    .quiz-progress span { display: block; width: 50%; height: 100%; background: var(--rose); transition: width .35s ease; }
+    .quiz-question { margin: 0 0 18px; font: 1.3rem/1.4 var(--serif); }
+    .quiz-options { display: grid; gap: 10px; }
+    .quiz-option {
+      padding: 14px 16px;
+      border: 1px solid var(--line);
+      border-radius: 5px 12px 5px 12px;
+      text-align: left;
+      background: var(--paper-deep);
+      cursor: pointer;
+      transition: transform .18s, border-color .18s, background .18s;
+    }
+    .quiz-option:hover { transform: translateX(5px); border-color: var(--rose); }
+    .quiz-option.is-wrong { background: #f1dede; animation: shake .35s; }
+    .quiz-option.is-correct { background: #dce7d8; border-color: var(--sage); }
+    @keyframes shake { 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+    .feedback { min-height: 30px; margin: 18px 0 0; color: var(--rose-dark); font: 1.05rem var(--hand); }
+    .success-state { text-align: center; }
+    .success-mark { display: grid; width: 78px; aspect-ratio: 1; place-items: center; margin: 0 auto 24px; border: 1px solid var(--rose); border-radius: 50% 45% 51% 48%; color: var(--rose-dark); font: 2.2rem var(--serif); transform: rotate(-5deg); }
+
+    .puzzle-board { display: grid; grid-template-columns: repeat(3, 1fr); width: min(390px, 100%); aspect-ratio: 1; margin: 22px auto; gap: 4px; padding: 5px; background: #d7c7b6; box-shadow: 0 12px 35px rgba(61,42,31,.16); }
+    .puzzle-tile { border: 0; background-image: url("assets/existing-4.png"); background-size: 300% 300%; cursor: pointer; transition: transform .16s ease, opacity .16s ease; }
+    .puzzle-tile:hover { transform: scale(.97); }
+    .puzzle-tile.blank { background: rgba(255,250,240,.68); cursor: default; }
+    .puzzle-meta { display: flex; justify-content: space-between; gap: 12px; color: var(--muted); font: 1rem var(--hand); }
+    .puzzle-actions { display: flex; justify-content: center; gap: 12px; margin-top: 24px; }
+
+    .vault-form { display: flex; gap: 10px; margin-top: 22px; }
+    .vault-input {
+      width: 100%;
+      min-width: 0;
+      padding: 14px 15px;
+      border: 1px solid var(--line);
+      border-radius: 6px 13px 6px 13px;
+      outline: none;
+      color: var(--ink);
+      background: #f8efdf;
+    }
+    .vault-input:focus { border-color: var(--rose); box-shadow: 0 0 0 3px rgba(167,102,103,.12); }
+    .vault-error { min-height: 25px; margin: 11px 0 0; color: var(--rose-dark); font: 1rem var(--hand); }
+    .letter-paper {
+      position: relative;
+      margin-top: 28px;
+      padding: clamp(27px, 6vw, 52px);
+      border: 1px solid rgba(74,58,48,.14);
+      background:
+        repeating-linear-gradient(transparent 0 31px, rgba(113,128,106,.12) 32px),
+        #fffdf6;
+      box-shadow: 0 18px 50px rgba(61,42,31,.12);
+      transform: rotate(-.5deg);
+    }
+    .letter-paper::before { content: ""; position: absolute; top: -13px; left: 40%; width: 100px; height: 27px; background: rgba(205,184,142,.55); transform: rotate(2deg); }
+    .letter-paper p { margin: 0 0 18px; line-height: 2; }
+    .letter-paper p:first-of-type::first-letter {
+      float: left;
+      margin: 8px 10px 0 0;
+      color: var(--rose-dark);
+      font: 5rem/.65 var(--serif);
+    }
+    .letter-sign { margin-top: 32px; text-align: right; color: var(--rose-dark); font: 1.55rem var(--hand); }
+
+    .confetti { position: fixed; z-index: 90; width: 9px; height: 13px; pointer-events: none; animation: confetti 1.7s ease-out forwards; }
+    @keyframes confetti { to { opacity: 0; transform: translate(var(--x), var(--y)) rotate(520deg); } }
+
+    :focus-visible { outline: 3px solid rgba(167,102,103,.45); outline-offset: 4px; }
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; padding-top: 86px; }
+      .hero-copy { padding: 0 4vw; }
+      .collage { margin-top: 30px; }
+      .activities-heading { align-items: start; flex-direction: column; }
+      .activity-grid { grid-template-columns: 1fr 1fr; }
+      .activity-card:nth-child(2) { margin-top: 35px; }
+      .activity-card:nth-child(3) { grid-column: 1 / -1; min-height: 350px; }
+      .memory-strip { grid-template-columns: 1fr; }
+      .memory-photo { width: min(520px, 100%); margin: auto; }
+    }
+    @media (max-width: 620px) {
+      .topbar { width: calc(100% - 20px); }
+      .brand { display: none; }
+      .music-pill { width: 100%; }
+      main { width: min(100% - 24px, 1180px); }
+      .hero { min-height: auto; padding-top: 70px; }
+      .hero h1 { font-size: clamp(3.6rem, 19vw, 5.6rem); }
+      .hero-intro, .hero-actions { margin-left: 0; }
+      .collage { height: 490px; }
+      .snapshot { width: 61%; }
+      .snapshot-one { right: 2%; }
+      .snapshot-two { top: 190px; }
+      .snapshot-three { width: 45%; }
+      .date-stamp { display: none; }
+      .activities { padding-top: 50px; }
+      .activity-grid { grid-template-columns: 1fr; }
+      .activity-card, .activity-card:nth-child(2), .activity-card:nth-child(3) { min-height: 340px; margin: 0; transform: none; }
+      .memory-strip { padding: 60px 20px; }
+      .little-things { grid-template-columns: 1fr; }
+      .modal-card { padding: 30px 20px; }
+      .close-button { margin: -15px -5px 0 0; }
+      .vault-form { flex-direction: column; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">İçeriğe geç</a>
+
+  <section class="opening" id="opening" aria-label="Açılış mektubu">
+    <div>
+      <div class="opening-copy">
+        <p class="opening-eyebrow">küçük bir şey hazırladım</p>
+        <h1 class="opening-title">Bu sayfa sana ait.</h1>
+      </div>
+      <button class="envelope-button" id="open-envelope" type="button" aria-label="Mektubu aç ve ana sayfaya geç">
+        <span class="envelope-back"></span>
+        <span class="envelope-letter">senin için, sevgiyle</span>
+        <span class="envelope-front"></span>
+        <span class="envelope-flap"></span>
+        <span class="wax-seal">S</span>
+      </button>
+      <p class="opening-hint">mührü açmak için dokun</p>
+    </div>
+  </section>
+
+  <div class="site-shell" id="site-shell" aria-hidden="true">
+    <header class="topbar">
+      <div class="brand">sadece ikimizin küçük köşesi</div>
+      <div class="music-pill">
+        <span class="music-bars" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="music-copy"><strong>My Kind of Woman</strong><span>Mac DeMarco · bizim fon müziğimiz</span></span>
+        <button class="icon-button" id="music-toggle" type="button" aria-label="Müziği oynat veya duraklat">
+          <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M6 4.5v11l9-5.5-9-5.5Z"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <main id="main" tabindex="-1">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="scribble">bir doğum gününden biraz daha fazlası</p>
+          <h1 id="hero-title">İyi ki <span class="accent">varsın.</span></h1>
+          <p class="hero-intro">Burası aceleyle geçilecek bir sayfa değil. Birkaç anı, küçük oyunlar ve yalnızca doğru kelimeyi bilen kişinin okuyabileceği bir mektup bıraktım.</p>
+          <div class="hero-actions">
+            <button class="primary-button" type="button" data-open="vault-modal">Gizli mektubu aç</button>
+            <button class="text-button" type="button" id="explore-button">Küçük sürprizlere bak</button>
+          </div>
+        </div>
+
+        <div class="collage" aria-label="Hatıra kolajı">
+          <figure class="snapshot snapshot-one"><img src="assets/existing-1.png" alt="Yumuşak tonlarda romantik bir hatıra karesi"><figcaption>birlikteyken zaman başka</figcaption></figure>
+          <figure class="snapshot snapshot-two"><img src="assets/existing-2.png" alt="Scrapbook içine yerleştirilmiş sıcak tonlu bir fotoğraf"><figcaption>en sevdiğim günlerden</figcaption></figure>
+          <figure class="snapshot snapshot-three"><img src="assets/existing-3.png" alt="Bantla tutturulmuş nostaljik bir hatıra fotoğrafı"><figcaption>saklamak istediğim an</figcaption></figure>
+          <img class="pressed-flower" src="assets/existing-4.png" alt="" aria-hidden="true">
+          <div class="date-stamp">hep hatırlanacak</div>
+        </div>
+      </section>
+
+      <section class="activities" id="activities" aria-labelledby="activities-title">
+        <div class="section-label">senin için üç küçük durak</div>
+        <div class="activities-heading">
+          <h2 id="activities-title">Nereden başlamak istersin?</h2>
+          <p>Biraz hatırla, biraz oyna. En kişisel olanı ise doğru kelimeyle aç.</p>
+        </div>
+        <div class="activity-grid">
+          <article class="activity-card">
+            <span class="card-number">not 01</span>
+            <h3>Mini Quiz</h3>
+            <p>İki küçük soru. Cevaplar yalnızca bizim anılarımızda saklı.</p>
+            <button class="activity-button" type="button" data-open="quiz-modal">Quiz’e başla <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m5 12 14 0M14 7l5 5-5 5"/></svg></button>
+          </article>
+          <article class="activity-card">
+            <span class="card-number">not 02</span>
+            <h3>Fotoğraf Puzzle</h3>
+            <p>Karışan parçaları tekrar bir araya getir. Tıpkı en güzel şeyler gibi, sabırla.</p>
+            <button class="activity-button" type="button" data-open="puzzle-modal">Puzzle’ı çöz <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m5 12 14 0M14 7l5 5-5 5"/></svg></button>
+          </article>
+          <article class="activity-card">
+            <svg class="lock-sketch" viewBox="0 0 120 150" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="22" y="58" width="76" height="68" rx="8"/><path d="M39 58V39c0-29 42-29 42 0v19M60 84v20"/><circle cx="60" cy="82" r="5"/></svg>
+            <span class="card-number">yalnızca sana özel</span>
+            <h3>Gizli Vault</h3>
+            <p>Burada sana yazılmış özel bir mektup var. Kapı sadece bizim kelimemizle açılıyor.</p>
+            <button class="activity-button" type="button" data-open="vault-modal">Kasayı aç <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m5 12 14 0M14 7l5 5-5 5"/></svg></button>
+          </article>
+        </div>
+      </section>
+
+      <section class="memory-strip" aria-labelledby="memory-title">
+        <div class="memory-photo"><img src="assets/existing-2.png" alt="Kağıt bir çerçeve içindeki sıcak anı fotoğrafı"><span>bunu hep saklayalım</span></div>
+        <div class="memory-copy">
+          <div class="section-label">küçük şeylerin koleksiyonu</div>
+          <h2 class="memory-title" id="memory-title">Sende sevdiğim şeyler.</h2>
+          <p>En büyük anlardan çok, arada kalan küçük şeyleri seviyorum. Gülüşünü, sesini, bakışını ve yanında her şeyin biraz daha kolay hissettirmesini.</p>
+          <div class="little-things">
+            <div class="little-note">gülüşün en sevdiğim ses</div>
+            <div class="little-note">yanında her yer ev gibi</div>
+            <div class="little-note">ince düşünmen kalbimi yumuşatıyor</div>
+            <div class="little-note">sen varken sıradan gün yok</div>
+          </div>
+          <button class="text-button" id="random-note-button" type="button">Bir sebep daha çek</button>
+          <p class="random-note" id="random-note" aria-live="polite"></p>
+        </div>
+      </section>
+
+      <section class="spotify-wrap" aria-label="Sayfanın şarkısı">
+        <div class="section-label">sayfanın fon müziği</div>
+        <p>Tarayıcı otomatik sesi engellerse üstteki oynat düğmesine bir kez dokun.</p>
+        <div id="spotify-embed"></div>
+      </section>
+    </main>
+
+    <footer>sevgiyle, elde yapılmış küçük bir internet köşesi</footer>
+  </div>
+
+  <div class="modal" id="quiz-modal" role="dialog" aria-modal="true" aria-labelledby="quiz-title">
+    <div class="modal-card">
+      <button class="close-button" type="button" data-close aria-label="Quiz penceresini kapat">×</button>
+      <div id="quiz-content">
+        <p class="modal-kicker">anı testi</p>
+        <h2 id="quiz-title">Bizi ne kadar iyi hatırlıyorsun?</h2>
+        <div class="quiz-progress"><span id="quiz-progress-bar"></span></div>
+        <p class="quiz-question" id="quiz-question"></p>
+        <div class="quiz-options" id="quiz-options"></div>
+        <p class="feedback" id="quiz-feedback" aria-live="polite"></p>
+      </div>
+      <div class="success-state" id="quiz-success" hidden>
+        <div class="success-mark">S</div>
+        <p class="modal-kicker">beklediğim gibi</p>
+        <h2>Kalbinden tam puan.</h2>
+        <p class="modal-lead">Bazı şeyler ezberlenmez; zaten insanın içinde kalır.</p>
+        <button class="primary-button" type="button" data-close>Hatıralara dön</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="puzzle-modal" role="dialog" aria-modal="true" aria-labelledby="puzzle-title">
+    <div class="modal-card">
+      <button class="close-button" type="button" data-close aria-label="Puzzle penceresini kapat">×</button>
+      <p class="modal-kicker">parçaları birleştir</p>
+      <h2 id="puzzle-title">Küçük fotoğraf puzzle’ı</h2>
+      <p class="modal-lead">Boşluğun yanındaki parçaya dokun. Her parça yerine geldiğinde fotoğraf tamamlanır.</p>
+      <div class="puzzle-meta"><span id="move-count">0 hamle</span><span id="puzzle-status">devam ediyor</span></div>
+      <div class="puzzle-board" id="puzzle-board" aria-label="Dokuz parçalı kaydırmalı fotoğraf puzzle'ı"></div>
+      <div class="puzzle-actions"><button class="text-button" id="shuffle-puzzle" type="button">Yeniden karıştır</button></div>
+    </div>
+  </div>
+
+  <div class="modal" id="vault-modal" role="dialog" aria-modal="true" aria-labelledby="vault-title">
+    <div class="modal-card">
+      <button class="close-button" type="button" data-close aria-label="Kasa penceresini kapat">×</button>
+      <div id="vault-lock">
+        <p class="modal-kicker">gizli kasa</p>
+        <h2 id="vault-title">Mektup kilitli.</h2>
+        <p class="modal-lead">İpucu: Geceleri gökyüzünde bulduğumuz, ama burada yalnızca ikimizin bildiği kelime.</p>
+        <form class="vault-form" id="vault-form">
+          <input class="vault-input" id="vault-code" type="password" autocomplete="off" aria-describedby="vault-error" placeholder="Kodu buraya yaz" required>
+          <button class="primary-button" type="submit">Kilidi aç</button>
+        </form>
+        <p class="vault-error" id="vault-error" aria-live="polite"></p>
+      </div>
+      <div id="vault-letter" hidden>
+        <p class="modal-kicker">yalnızca senin için</p>
+        <h2>İyi ki doğdun, aşkım.</h2>
+        <article class="letter-paper">
+          <p>Bugünün diğer günlerden farklı hissettirmesini istedim, çünkü sen benim için sıradan biri değilsin — en sevdiğim insansın, en sevdiğin günde.</p>
+          <p>Ne kadar sevildiğini bilmeni istiyorum; sadece bugün değil, her gün. Gülüşün, herkese gösterdiğin o özen, fark etmeden yaptığın küçük şeyler… Hepsini görüyorum ve seni her seferinde biraz daha çok seviyorum.</p>
+          <p>O yüzden bugün sana. Güzel kalbine, hayallerine ve seni sen yapan her şeye bir yaş daha. Seni sevebilmek büyük bir şans.</p>
+          <p>Bazen kelimeler yetersiz kalıyor. Yine de bilmeni istediğim tek bir şey var: Her halinle, her gün, hep sen.</p>
+          <div class="letter-sign">hep senin</div>
+        </article>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://open.spotify.com/embed/iframe-api/v1" async></script>
+  <script>
+    const SONG_URI = "spotify:track:6jgkEbmQ2F2onEqsEhiliL";
+    const VAULT_CODE = "Yıldız";
+    const quizQuestions = [
+      { question: "İlk tanıştığımız mevsim hangisiydi?", options: ["İlkbahar", "Yaz", "Sonbahar", "Kış"], answer: 1, hint: "Hava sıcaktı; biraz daha düşün." },
+      { question: "En sevdiğimiz ortak anımız nerede geçti?", options: ["Sahilde", "Evde film gecesinde", "Bir gezide", "Bir kafede"], answer: 2, hint: "İpucu: Öncesinde bavul hazırlamıştık." }
+    ];
+    const extraNotes = [
+      "en yorgun günümü bile güzelleştirmen",
+      "beni tek bakışta anlaman",
+      "hayallerimi kendi hayalin gibi dinlemen",
+      "gülünce gözlerinin de gülmesi",
+      "birlikte sessiz kalmanın bile güzel olması",
+      "dünyaya daha yumuşak bakmamı sağlaman"
+    ];
+
+    const opening = document.getElementById("opening");
+    const envelope = document.getElementById("open-envelope");
+    const siteShell = document.getElementById("site-shell");
+    let spotifyController = null;
+    let musicPlaying = false;
+    let playWhenReady = false;
+
+    window.onSpotifyIframeApiReady = (IFrameAPI) => {
+      IFrameAPI.createController(document.getElementById("spotify-embed"), { uri: SONG_URI, width: "100%", height: 152 }, controller => {
+        spotifyController = controller;
+        if (playWhenReady) controller.play();
+        controller.addListener("playback_update", event => {
+          const state = event.data;
+          musicPlaying = !state.isPaused;
+          updateMusicButton();
+          if (state.duration && state.position >= state.duration - 900) {
+            controller.seek(0);
+            controller.play();
+          }
+        });
+      });
+    };
+
+    function updateMusicButton() {
+      const button = document.getElementById("music-toggle");
+      button.innerHTML = musicPlaying
+        ? '<svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M5 4h3.5v12H5V4Zm6.5 0H15v12h-3.5V4Z"/></svg>'
+        : '<svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M6 4.5v11l9-5.5-9-5.5Z"/></svg>';
+    }
+
+    envelope.addEventListener("click", () => {
+      envelope.classList.add("is-opening");
+      playWhenReady = true;
+      if (spotifyController) spotifyController.play();
+      setTimeout(() => {
+        opening.classList.add("is-open");
+        siteShell.classList.add("is-ready");
+        siteShell.setAttribute("aria-hidden", "false");
+        document.getElementById("main").focus({ preventScroll: true });
+      }, 850);
+    });
+
+    document.getElementById("music-toggle").addEventListener("click", () => {
+      if (!spotifyController) return;
+      musicPlaying ? spotifyController.pause() : spotifyController.play();
+    });
+
+    document.getElementById("explore-button").addEventListener("click", () => {
+      document.getElementById("activities").scrollIntoView({ behavior: "smooth" });
+    });
+
+    let lastFocusedElement = null;
+    function openModal(modal) {
+      lastFocusedElement = document.activeElement;
+      modal.classList.add("is-visible");
+      document.body.style.overflow = "hidden";
+      const focusTarget = modal.querySelector("input, button");
+      setTimeout(() => focusTarget?.focus(), 80);
+    }
+    function closeModal(modal) {
+      modal.classList.remove("is-visible");
+      document.body.style.overflow = "";
+      lastFocusedElement?.focus();
+    }
+    document.querySelectorAll("[data-open]").forEach(button => {
+      button.addEventListener("click", () => openModal(document.getElementById(button.dataset.open)));
+    });
+    document.querySelectorAll("[data-close]").forEach(button => {
+      button.addEventListener("click", () => closeModal(button.closest(".modal")));
+    });
+    document.querySelectorAll(".modal").forEach(modal => {
+      modal.addEventListener("click", event => { if (event.target === modal) closeModal(modal); });
+    });
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape") {
+        const modal = document.querySelector(".modal.is-visible");
+        if (modal) closeModal(modal);
+      }
+    });
+
+    let quizIndex = 0;
+    function renderQuiz() {
+      const data = quizQuestions[quizIndex];
+      document.getElementById("quiz-progress-bar").style.width = `${((quizIndex + 1) / quizQuestions.length) * 100}%`;
+      document.getElementById("quiz-question").textContent = data.question;
+      document.getElementById("quiz-feedback").textContent = "";
+      const options = document.getElementById("quiz-options");
+      options.innerHTML = "";
+      data.options.forEach((option, index) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "quiz-option";
+        button.textContent = option;
+        button.addEventListener("click", () => checkQuizAnswer(button, index));
+        options.appendChild(button);
+      });
+    }
+    function checkQuizAnswer(button, index) {
+      const data = quizQuestions[quizIndex];
+      if (index !== data.answer) {
+        button.classList.add("is-wrong");
+        document.getElementById("quiz-feedback").textContent = data.hint;
+        setTimeout(() => button.classList.remove("is-wrong"), 500);
+        return;
+      }
+      button.classList.add("is-correct");
+      document.querySelectorAll(".quiz-option").forEach(option => option.disabled = true);
+      setTimeout(() => {
+        quizIndex += 1;
+        if (quizIndex < quizQuestions.length) renderQuiz();
+        else {
+          document.getElementById("quiz-content").hidden = true;
+          document.getElementById("quiz-success").hidden = false;
+          celebrate();
+        }
+      }, 650);
+    }
+    renderQuiz();
+
+    const puzzleBoard = document.getElementById("puzzle-board");
+    let puzzle = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+    let moves = 0;
+    function shufflePuzzle() {
+      puzzle = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+      let blank = 8;
+      for (let count = 0; count < 140; count += 1) {
+        const row = Math.floor(blank / 3);
+        const col = blank % 3;
+        const neighbors = [];
+        if (row > 0) neighbors.push(blank - 3);
+        if (row < 2) neighbors.push(blank + 3);
+        if (col > 0) neighbors.push(blank - 1);
+        if (col < 2) neighbors.push(blank + 1);
+        const next = neighbors[Math.floor(Math.random() * neighbors.length)];
+        [puzzle[blank], puzzle[next]] = [puzzle[next], puzzle[blank]];
+        blank = next;
+      }
+      moves = 0;
+      document.getElementById("puzzle-status").textContent = "devam ediyor";
+      renderPuzzle();
+    }
+    function renderPuzzle() {
+      puzzleBoard.innerHTML = "";
+      puzzle.forEach((tile, position) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "puzzle-tile";
+        if (tile === 8) {
+          button.classList.add("blank");
+          button.disabled = true;
+          button.setAttribute("aria-label", "Boş alan");
+        } else {
+          const row = Math.floor(tile / 3);
+          const col = tile % 3;
+          button.style.backgroundPosition = `${col * 50}% ${row * 50}%`;
+          button.setAttribute("aria-label", `${tile + 1}. puzzle parçasını kaydır`);
+          button.addEventListener("click", () => moveTile(position));
+        }
+        puzzleBoard.appendChild(button);
+      });
+      document.getElementById("move-count").textContent = `${moves} hamle`;
+    }
+    function moveTile(position) {
+      const blank = puzzle.indexOf(8);
+      const distance = Math.abs(Math.floor(position / 3) - Math.floor(blank / 3)) + Math.abs((position % 3) - (blank % 3));
+      if (distance !== 1) return;
+      [puzzle[position], puzzle[blank]] = [puzzle[blank], puzzle[position]];
+      moves += 1;
+      renderPuzzle();
+      if (puzzle.every((tile, index) => tile === index)) {
+        document.getElementById("puzzle-status").textContent = "tamamlandı";
+        celebrate();
+      }
+    }
+    document.getElementById("shuffle-puzzle").addEventListener("click", shufflePuzzle);
+    shufflePuzzle();
+
+    document.getElementById("vault-form").addEventListener("submit", event => {
+      event.preventDefault();
+      const input = document.getElementById("vault-code");
+      const guess = input.value.trim().normalize("NFC").toLocaleLowerCase("tr-TR");
+      const answer = VAULT_CODE.normalize("NFC").toLocaleLowerCase("tr-TR");
+      if (guess !== answer) {
+        document.getElementById("vault-error").textContent = "Bu anahtar dönmedi. Türkçe karakterleri de kontrol et.";
+        input.select();
+        return;
+      }
+      document.getElementById("vault-lock").hidden = true;
+      document.getElementById("vault-letter").hidden = false;
+      document.getElementById("vault-error").textContent = "";
+      celebrate();
+    });
+
+    let noteIndex = -1;
+    document.getElementById("random-note-button").addEventListener("click", () => {
+      let nextIndex;
+      do nextIndex = Math.floor(Math.random() * extraNotes.length); while (nextIndex === noteIndex);
+      noteIndex = nextIndex;
+      document.getElementById("random-note").textContent = extraNotes[noteIndex];
+    });
+
+    function celebrate() {
+      const colors = ["#a76667", "#71806a", "#b9975b", "#e4caca"];
+      for (let index = 0; index < 34; index += 1) {
+        const piece = document.createElement("span");
+        piece.className = "confetti";
+        piece.style.left = `${45 + Math.random() * 10}vw`;
+        piece.style.top = `${42 + Math.random() * 10}vh`;
+        piece.style.background = colors[index % colors.length];
+        piece.style.setProperty("--x", `${(Math.random() - .5) * 600}px`);
+        piece.style.setProperty("--y", `${(Math.random() - .45) * 520}px`);
+        document.body.appendChild(piece);
+        setTimeout(() => piece.remove(), 1800);
+      }
+    }
+  </script>
+</body>
+</html>
