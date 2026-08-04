@@ -478,20 +478,13 @@
       border-radius: 50%;
       transform: rotate(-11deg);
     }
-    .cake-card::after {
-      content: "";
+    .birthday-cake-img {
       position: absolute;
       right: 48px;
       bottom: 42px;
-      width: 190px;
-      height: 150px;
-      background:
-        linear-gradient(var(--rose-dark), var(--rose-dark)) 47px 0 / 7px 54px no-repeat,
-        radial-gradient(circle at 50px 0, #e8bd63 0 8px, transparent 9px),
-        linear-gradient(#f6d2d2, #f0baba) 0 54px / 100% 38px no-repeat,
-        linear-gradient(#f7eddd, #ead9bf) 0 92px / 100% 58px no-repeat;
-      border-radius: 18px 18px 8px 8px;
-      opacity: .82;
+      width: min(260px, 42%);
+      filter: drop-shadow(0 18px 24px rgba(61,42,31,.18));
+      transform: rotate(1.5deg);
     }
     .cake-card p { max-width: 390px; color: var(--muted); line-height: 1.75; }
     .coupon-stack { display: grid; gap: 14px; }
@@ -664,7 +657,7 @@
       .trail-card, .trail-card:nth-child(2), .trail-card:nth-child(3), .trail-card:nth-child(4) { min-height: 175px; margin: 0; transform: none; }
       .wish-coupons { padding-top: 70px; }
       .cake-card { min-height: 360px; }
-      .cake-card::after { right: 20px; bottom: 24px; width: 150px; height: 120px; }
+      .birthday-cake-img { right: 18px; bottom: 22px; width: min(190px, 48%); }
       .coupon { padding: 22px 18px; }
       .coupon::before { left: 48px; }
       .coupon strong, .coupon span { margin-left: 52px; }
@@ -814,6 +807,7 @@
           <div class="section-label">bir dilek hakkı</div>
           <h2 class="coupon-title" id="coupon-title">Mumları beraber üfleyelim.</h2>
           <p>Bu bölüm biraz deftere iliştirilmiş son sayfa gibi dursun istedim. Buraya kendi cümleni de yazabilirsin: bu yıl onun için dilediğin şey, birlikte yapmak istediğiniz bir plan ya da sadece tek satırlık bir söz.</p>
+          <img class="birthday-cake-img" src="assets/birthdaycake.png" alt="Mumlu doğum günü pastası">
         </div>
         <div class="coupon-stack" aria-label="Doğum günü kuponları">
           <div class="coupon"><strong>Bir kahve ve uzun yürüyüş</strong><span>Ne zaman isterse kullanılabilir; konuşulacak konular sınırsız.</span></div>
@@ -898,7 +892,10 @@
     const VAULT_CODE = "Yıldız";
     const quizQuestions = [
       { question: "İlk tanıştığımız mevsim hangisiydi?", options: ["İlkbahar", "Yaz", "Sonbahar", "Kış"], answer: 1, hint: "Hava sıcaktı; biraz daha düşün." },
-      { question: "En sevdiğimiz ortak anımız nerede geçti?", options: ["Sahilde", "Evde film gecesinde", "Bir gezide", "Bir kafede"], answer: 2, hint: "İpucu: Öncesinde bavul hazırlamıştık." }
+      { question: "En sevdiğimiz ortak anımız nerede geçti?", options: ["Sahilde", "Evde film gecesinde", "Bir gezide", "Bir kafede"], answer: 2, hint: "İpucu: Öncesinde bavul hazırlamıştık." },
+      { question: "Beraberken zaman en çok neye benziyor?", options: ["Uzun bir yolculuğa", "Küçük bir şarkıya", "Sıcak bir eve", "Tatlı bir telaşa"], answer: 2, hint: "Yanında her yer biraz daha güvenli hissettiriyor." },
+      { question: "Bu sayfanın gizli anahtarı neydi?", options: ["Kalp", "Yıldız", "Ay", "Gülüş"], answer: 1, hint: "Geceleri gökyüzünde aradığımız şeye yakın." },
+      { question: "Doğum günü dileğim ne?", options: ["Bol kahkaha", "Güzel anılar", "Hep beraberlik", "Hepsi"], answer: 3, hint: "Birini seçmek haksızlık olurdu." }
     ];
     const extraNotes = [
       "en yorgun günümü bile güzelleştirmen",
