@@ -365,20 +365,34 @@
 
     .birthday-trail {
       position: relative;
-      padding: 22px 0 108px;
+      padding: 0 0 108px;
     }
-    .birthday-trail::before {
+    .trail-ribbon {
+      position: relative;
+      left: 50%;
+      width: 100vw;
+      margin: 0 0 66px;
+      padding: 18px 0;
+      transform: translateX(-50%);
+      overflow: hidden;
+    }
+    .trail-ribbon::before {
       content: "";
       position: absolute;
-      inset: 0 auto auto 50%;
-      width: min(920px, 100%);
-      height: 28px;
+      inset: 50% 0 auto;
+      height: 30px;
       background:
-        linear-gradient(135deg, transparent 0 34%, rgba(167,102,103,.55) 35% 64%, transparent 65%) 0 0 / 64px 28px,
-        linear-gradient(225deg, transparent 0 34%, rgba(185,151,91,.55) 35% 64%, transparent 65%) 32px 0 / 64px 28px;
-      opacity: .62;
-      transform: translateX(-50%) rotate(-1deg);
-      pointer-events: none;
+        linear-gradient(135deg, transparent 0 34%, rgba(167,102,103,.48) 35% 64%, transparent 65%) 0 0 / 64px 30px,
+        linear-gradient(225deg, transparent 0 34%, rgba(185,151,91,.52) 35% 64%, transparent 65%) 32px 0 / 64px 30px;
+      opacity: .48;
+      transform: translateY(-50%);
+    }
+    .trail-ribbon img {
+      position: relative;
+      width: min(170px, 38vw);
+      margin: 0 auto;
+      filter: drop-shadow(0 12px 18px rgba(61,42,31,.14));
+      transform: rotate(-2deg);
     }
     .trail-heading {
       display: grid;
@@ -388,7 +402,7 @@
       padding-top: 70px;
       margin-bottom: 34px;
     }
-    .trail-heading h2, .coupon-title {
+    .trail-heading h2, .coupon-title, .love-title {
       margin: 0;
       font: clamp(2.8rem, 6vw, 5.8rem)/.9 var(--serif);
       font-weight: 400;
@@ -429,6 +443,75 @@
     }
     .trail-card h3 { margin: 0 0 10px; font: 1.65rem/.98 var(--serif); font-weight: 400; }
     .trail-card p { margin: 0; color: var(--muted); line-height: 1.55; }
+
+    .love-meter {
+      display: grid;
+      grid-template-columns: minmax(0, .9fr) minmax(320px, 1fr);
+      gap: 42px;
+      align-items: center;
+      padding: 10px 0 100px;
+    }
+    .love-copy p {
+      max-width: 430px;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+    .meter-card {
+      position: relative;
+      padding: clamp(28px, 5vw, 46px);
+      overflow: hidden;
+      border: 1px solid rgba(74,58,48,.18);
+      border-radius: 10px 26px 11px 24px;
+      background: linear-gradient(135deg, rgba(255,250,240,.96), rgba(243,223,212,.74));
+      box-shadow: var(--shadow);
+    }
+    .meter-card.is-glitching {
+      animation: softGlitch .38s steps(2, end) 3;
+    }
+    @keyframes softGlitch {
+      25% { transform: translateX(-3px) rotate(-.4deg); }
+      50% { transform: translateX(3px) rotate(.4deg); }
+      75% { transform: translateY(2px); }
+    }
+    .meter-readout {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 18px;
+    }
+    .meter-readout strong {
+      color: var(--rose-dark);
+      font: clamp(3.8rem, 10vw, 7rem)/.8 var(--serif);
+      font-weight: 400;
+    }
+    .meter-readout span {
+      color: var(--muted);
+      font: 1.1rem var(--hand);
+      text-align: right;
+    }
+    .meter-track {
+      height: 20px;
+      padding: 4px;
+      overflow: hidden;
+      border: 1px solid rgba(119,72,75,.22);
+      border-radius: 999px;
+      background: #efe4d4;
+    }
+    .meter-fill {
+      width: 0%;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #a76667, #e4b0ad, #b9975b);
+      transition: width .08s linear;
+    }
+    .meter-status {
+      min-height: 56px;
+      margin: 18px 0 26px;
+      color: var(--rose-dark);
+      font: 1.25rem/1.35 var(--hand);
+    }
+    .meter-card .primary-button { width: 100%; }
 
     .memory-strip {
       display: grid;
@@ -661,7 +744,7 @@
       .activity-grid { grid-template-columns: 1fr 1fr; }
       .activity-card:nth-child(2) { margin-top: 35px; }
       .activity-card:nth-child(3) { grid-column: 1 / -1; min-height: 350px; }
-      .trail-heading, .wish-coupons { grid-template-columns: 1fr; }
+      .trail-heading, .love-meter, .wish-coupons { grid-template-columns: 1fr; }
       .trail-grid { grid-template-columns: 1fr 1fr; }
       .memory-strip { grid-template-columns: 1fr; }
       .memory-photo { width: min(520px, 100%); margin: auto; }
@@ -684,9 +767,14 @@
       .activity-grid { grid-template-columns: 1fr; }
       .activity-card, .activity-card:nth-child(2), .activity-card:nth-child(3) { min-height: 340px; margin: 0; transform: none; }
       .birthday-trail { padding-bottom: 62px; }
+      .trail-ribbon { margin-bottom: 38px; padding: 12px 0; }
+      .trail-ribbon img { width: min(135px, 42vw); }
       .trail-heading { padding-top: 54px; }
       .trail-grid { grid-template-columns: 1fr; }
       .trail-card, .trail-card:nth-child(2), .trail-card:nth-child(3), .trail-card:nth-child(4) { min-height: 175px; margin: 0; transform: none; }
+      .love-meter { padding-bottom: 70px; }
+      .meter-readout { align-items: start; flex-direction: column; }
+      .meter-readout span { text-align: left; }
       .wish-coupons { padding-top: 70px; }
       .cake-card { min-height: 0; }
       .birthday-cake-img { width: min(190px, 62%); }
@@ -768,7 +856,7 @@
           <article class="activity-card">
             <span class="card-number">not 01</span>
             <h3>Mini Quiz</h3>
-            <p>İki küçük soru. Cevaplar yalnızca bizim anılarımızda saklı.</p>
+            <p>Beş küçük soru. Cevaplar yalnızca bizim anılarımızda saklı.</p>
             <button class="activity-button" type="button" data-open="quiz-modal">Quiz’e başla <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m5 12 14 0M14 7l5 5-5 5"/></svg></button>
           </article>
           <article class="activity-card">
@@ -788,6 +876,9 @@
       </section>
 
       <section class="birthday-trail" aria-labelledby="trail-title">
+        <div class="trail-ribbon" aria-hidden="true">
+          <img src="assets/ribbon.png" alt="">
+        </div>
         <div class="trail-heading">
           <div>
             <div class="section-label">doğum günü macerası</div>
@@ -816,6 +907,25 @@
             <h3>Dileği tut</h3>
             <p>En sonda doğum günü kuponları ve minik bir dilek alanı var.</p>
           </article>
+        </div>
+      </section>
+
+      <section class="love-meter" aria-labelledby="love-meter-title">
+        <div class="love-copy">
+          <div class="section-label">bilimsel olmayan test</div>
+          <h2 class="love-title" id="love-meter-title">Aşkını ölçelim mi?</h2>
+          <p>Bu küçük makine çok ciddi görünmeye çalışıyor ama sonuç belli: bazı şeyler yüzdeyle anlatılamaz. Yine de düğmeye basınca elinden geleni yapacak.</p>
+        </div>
+        <div class="meter-card" id="meter-card">
+          <div class="meter-readout">
+            <strong id="love-percent">0%</strong>
+            <span id="meter-label">ölçüm bekleniyor</span>
+          </div>
+          <div class="meter-track" aria-hidden="true">
+            <div class="meter-fill" id="love-fill"></div>
+          </div>
+          <p class="meter-status" id="love-status" aria-live="polite">Hazır olunca ölçmeye başlayalım.</p>
+          <button class="primary-button" id="love-meter-button" type="button">Aşkını ölç</button>
         </div>
       </section>
 
@@ -1139,6 +1249,57 @@
       do nextIndex = Math.floor(Math.random() * extraNotes.length); while (nextIndex === noteIndex);
       noteIndex = nextIndex;
       document.getElementById("random-note").textContent = extraNotes[noteIndex];
+    });
+
+    const loveButton = document.getElementById("love-meter-button");
+    const lovePercent = document.getElementById("love-percent");
+    const loveFill = document.getElementById("love-fill");
+    const loveStatus = document.getElementById("love-status");
+    const meterLabel = document.getElementById("meter-label");
+    const meterCard = document.getElementById("meter-card");
+
+    loveButton.addEventListener("click", () => {
+      loveButton.disabled = true;
+      meterCard.classList.remove("is-glitching");
+      loveStatus.textContent = "Kalp sinyali aranıyor...";
+      meterLabel.textContent = "ölçüm başladı";
+      loveButton.textContent = "Ölçülüyor...";
+      let value = 0;
+      let step = 1;
+
+      function tick() {
+        value = Math.min(100, value + step);
+        lovePercent.textContent = `${value}%`;
+        loveFill.style.width = `${value}%`;
+
+        if (value > 28) {
+          step = 3;
+          loveStatus.textContent = "Beklenenden güçlü veri geliyor...";
+        }
+        if (value > 62) {
+          step = 6;
+          loveStatus.textContent = "Ölçüm sınırları zorlanıyor.";
+        }
+        if (value > 88) {
+          step = 12;
+          loveStatus.textContent = "Uyarı: sevgi kapasitesi aşılıyor.";
+        }
+        if (value < 100) {
+          setTimeout(tick, Math.max(34, 140 - value));
+          return;
+        }
+
+        meterLabel.textContent = "HATA 100+";
+        loveStatus.textContent = "Sistem çöktü. Çünkü bu kadar sevgiyi ölçebilecek bir yüzde bulunamadı.";
+        meterCard.classList.add("is-glitching");
+        celebrate();
+        setTimeout(() => {
+          loveButton.disabled = false;
+          loveButton.textContent = "Tekrar dene";
+        }, 1100);
+      }
+
+      tick();
     });
 
     function celebrate() {
