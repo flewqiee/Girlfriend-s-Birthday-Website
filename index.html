@@ -518,6 +518,7 @@
       display: grid;
       place-items: center;
       padding: 20px;
+      overflow-x: hidden;
       visibility: hidden;
       opacity: 0;
       background: rgba(50, 41, 35, .52);
@@ -528,18 +529,41 @@
     .modal-card {
       position: relative;
       width: min(680px, 100%);
-      max-height: min(820px, calc(100vh - 40px));
-      overflow: auto;
+      max-height: calc(100vh - 40px);
+      overflow-x: hidden;
+      overflow-y: auto;
       padding: clamp(28px, 6vw, 58px);
       border: 1px solid rgba(74,58,48,.2);
       border-radius: 10px 24px 11px 26px;
       background: var(--paper);
       box-shadow: 0 30px 100px rgba(43,31,25,.3);
-      transform: translateY(18px) rotate(.3deg);
-      transition: transform .3s cubic-bezier(.2,.8,.2,1);
+      scrollbar-width: thin;
+      scrollbar-color: rgba(119,72,75,.32) transparent;
+      transform: translateY(18px) scale(.97) rotate(.3deg);
+      transition: transform .35s cubic-bezier(.2,.8,.2,1);
     }
-    .modal.is-visible .modal-card { transform: translateY(0) rotate(0); }
-    .close-button { position: sticky; top: 0; z-index: 3; float: right; margin: -35px -35px 0 0; border: 0; background: transparent; font-size: 1.7rem; cursor: pointer; }
+    .modal-card::-webkit-scrollbar { width: 8px; }
+    .modal-card::-webkit-scrollbar-thumb { border-radius: 999px; background: rgba(119,72,75,.28); }
+    .modal.is-visible .modal-card { transform: translateY(0) scale(1) rotate(0); }
+    .close-button {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      z-index: 3;
+      display: grid;
+      width: 36px;
+      aspect-ratio: 1;
+      place-items: center;
+      border: 1px solid rgba(74,58,48,.15);
+      border-radius: 50%;
+      color: var(--rose-dark);
+      background: rgba(255,250,240,.78);
+      box-shadow: 0 8px 18px rgba(61,42,31,.08);
+      font-size: 1.45rem;
+      line-height: 1;
+      cursor: pointer;
+    }
+    .close-button:hover { transform: rotate(6deg); }
     .modal-kicker { margin: 0 0 7px; color: var(--rose-dark); font: 1.15rem var(--hand); }
     .modal h2 { margin: 0 0 24px; font: clamp(2.4rem, 7vw, 4.8rem)/.92 var(--serif); font-weight: 400; }
     .modal-lead { margin: -10px 0 28px; color: var(--muted); line-height: 1.65; }
@@ -572,6 +596,25 @@
     .puzzle-actions { display: flex; justify-content: center; gap: 12px; margin-top: 24px; }
 
     .vault-form { display: flex; gap: 10px; margin-top: 22px; }
+    #vault-lock {
+      position: relative;
+      padding: clamp(24px, 5vw, 44px);
+      border: 1px dashed rgba(119,72,75,.28);
+      border-radius: 8px 22px 9px 24px;
+      background:
+        linear-gradient(120deg, rgba(255,250,240,.92), rgba(247,237,221,.78)),
+        radial-gradient(circle at 92% 10%, rgba(185,151,91,.2), transparent 150px);
+    }
+    #vault-lock::after {
+      content: "yalnızca ikimize";
+      position: absolute;
+      right: 24px;
+      bottom: 18px;
+      color: rgba(119,72,75,.38);
+      font: 1.05rem var(--hand);
+      transform: rotate(-5deg);
+      pointer-events: none;
+    }
     .vault-input {
       width: 100%;
       min-width: 0;
@@ -584,6 +627,7 @@
     }
     .vault-input:focus { border-color: var(--rose); box-shadow: 0 0 0 3px rgba(167,102,103,.12); }
     .vault-error { min-height: 25px; margin: 11px 0 0; color: var(--rose-dark); font: 1rem var(--hand); }
+    #vault-letter h2 { padding-right: 34px; }
     .letter-paper {
       position: relative;
       margin-top: 28px;
@@ -652,8 +696,10 @@
       .memory-strip { padding: 60px 20px; }
       .little-things { grid-template-columns: 1fr; }
       .modal-card { padding: 30px 20px; }
-      .close-button { margin: -15px -5px 0 0; }
+      .close-button { top: 10px; right: 10px; width: 34px; }
       .vault-form { flex-direction: column; }
+      #vault-lock { padding: 32px 18px 46px; }
+      #vault-lock::after { right: 18px; bottom: 14px; }
     }
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
