@@ -169,7 +169,7 @@
     .decor-layer {
       position: absolute;
       inset: 0;
-      z-index: 1;
+      z-index: 0;
       pointer-events: none;
       overflow: hidden;
     }
@@ -181,13 +181,27 @@
       transform: translate3d(0, 0, 0) rotate(var(--rotate));
       user-select: none;
     }
-    .decor-1 { --size: 92px; --rotate: -10deg; --opacity: .62; top: 160px; left: max(18px, calc(50% - 640px)); }
-    .decor-2 { --size: 118px; --rotate: 12deg; --opacity: .52; top: 610px; right: max(10px, calc(50% - 650px)); }
-    .decor-3 { --size: 74px; --rotate: 8deg; --opacity: .68; top: 1050px; left: max(20px, calc(50% - 610px)); }
-    .decor-4 { --size: 104px; --rotate: -7deg; --opacity: .48; top: 1420px; right: max(22px, calc(50% - 620px)); }
-    .decor-5 { --size: 82px; --rotate: 15deg; --opacity: .56; top: 1880px; left: max(12px, calc(50% - 690px)); }
-    .decor-6 { --size: 126px; --rotate: -13deg; --opacity: .45; top: 2280px; right: max(0px, calc(50% - 700px)); }
-    .decor-7 { --size: 88px; --rotate: 9deg; --opacity: .58; top: 2740px; left: max(26px, calc(50% - 620px)); }
+    .decor-1 { --size: 92px; --rotate: -10deg; --opacity: .58; top: 145px; left: max(14px, calc(50% - 740px)); }
+    .decor-2 { --size: 126px; --rotate: 12deg; --opacity: .48; top: 310px; right: max(8px, calc(50% - 765px)); }
+    .decor-3 { --size: 68px; --rotate: 8deg; --opacity: .66; top: 560px; left: max(32px, calc(50% - 705px)); }
+    .decor-4 { --size: 108px; --rotate: -7deg; --opacity: .46; top: 730px; right: max(34px, calc(50% - 720px)); }
+    .decor-5 { --size: 78px; --rotate: 15deg; --opacity: .55; top: 960px; left: max(4px, calc(50% - 770px)); }
+    .decor-6 { --size: 132px; --rotate: -13deg; --opacity: .42; top: 1160px; right: max(0px, calc(50% - 780px)); }
+    .decor-7 { --size: 86px; --rotate: 9deg; --opacity: .58; top: 1390px; left: max(24px, calc(50% - 725px)); }
+    .decor-8 { --size: 62px; --rotate: -18deg; --opacity: .62; top: 1585px; right: max(62px, calc(50% - 700px)); }
+    .decor-9 { --size: 118px; --rotate: 7deg; --opacity: .44; top: 1765px; left: max(0px, calc(50% - 790px)); }
+    .decor-10 { --size: 76px; --rotate: -9deg; --opacity: .57; top: 1955px; right: max(20px, calc(50% - 735px)); }
+    .decor-11 { --size: 104px; --rotate: 16deg; --opacity: .46; top: 2145px; left: max(44px, calc(50% - 710px)); }
+    .decor-12 { --size: 68px; --rotate: -4deg; --opacity: .64; top: 2365px; right: max(4px, calc(50% - 775px)); }
+    .decor-13 { --size: 136px; --rotate: 11deg; --opacity: .4; top: 2575px; left: max(0px, calc(50% - 800px)); }
+    .decor-14 { --size: 90px; --rotate: -15deg; --opacity: .55; top: 2795px; right: max(42px, calc(50% - 715px)); }
+    .decor-15 { --size: 72px; --rotate: 18deg; --opacity: .58; top: 3020px; left: max(38px, calc(50% - 710px)); }
+    .decor-16 { --size: 116px; --rotate: -8deg; --opacity: .43; top: 3190px; right: max(0px, calc(50% - 785px)); }
+    .decor-17 { --size: 64px; --rotate: 6deg; --opacity: .62; top: 3370px; left: max(10px, calc(50% - 748px)); }
+    .decor-18 { --size: 98px; --rotate: 14deg; --opacity: .5; top: 3550px; right: max(30px, calc(50% - 730px)); }
+    .decor-19 { --size: 82px; --rotate: -12deg; --opacity: .56; top: 3745px; left: max(62px, calc(50% - 690px)); }
+    .decor-20 { --size: 124px; --rotate: 9deg; --opacity: .4; top: 3915px; right: max(2px, calc(50% - 795px)); }
+    .decor-21 { --size: 70px; --rotate: -17deg; --opacity: .6; top: 4095px; left: max(8px, calc(50% - 760px)); }
     .topbar {
       position: sticky;
       top: 0;
@@ -239,7 +253,8 @@
     }
     .icon-button svg { width: 15px; }
 
-    main { position: relative; z-index: 2; width: min(1180px, calc(100% - 32px)); margin: 0 auto; }
+    main, footer { position: relative; z-index: 2; }
+    main { width: min(1180px, calc(100% - 32px)); margin: 0 auto; }
     .hero {
       position: relative;
       display: grid;
@@ -758,9 +773,17 @@
     @keyframes confetti { to { opacity: 0; transform: translate(var(--x), var(--y)) rotate(520deg); } }
 
     :focus-visible { outline: 3px solid rgba(167,102,103,.45); outline-offset: 4px; }
+    @media (max-width: 1220px) {
+      .floating-decor {
+        width: min(var(--size), 64px);
+        opacity: .34;
+      }
+      .decor-1, .decor-3, .decor-5, .decor-7, .decor-9, .decor-11, .decor-13, .decor-15, .decor-17, .decor-19, .decor-21 { left: -54px; }
+      .decor-2, .decor-4, .decor-6, .decor-8, .decor-10, .decor-12, .decor-14, .decor-16, .decor-18, .decor-20 { right: -54px; }
+    }
     @media (max-width: 900px) {
-      .floating-decor { width: min(var(--size), 22vw); opacity: .44; }
-      .decor-2, .decor-5 { display: none; }
+      .floating-decor { width: min(var(--size), 56px); opacity: .32; }
+      .decor-2, .decor-5, .decor-8, .decor-9, .decor-12, .decor-13, .decor-16, .decor-17, .decor-20, .decor-21 { display: none; }
       .hero { grid-template-columns: 1fr; padding-top: 86px; }
       .hero-copy { padding: 0 4vw; }
       .collage { margin-top: 30px; }
@@ -774,11 +797,12 @@
       .memory-photo { width: min(520px, 100%); margin: auto; }
     }
     @media (max-width: 620px) {
-      .decor-1 { top: 130px; left: -22px; }
-      .decor-3 { top: 990px; left: auto; right: -14px; }
-      .decor-4 { top: 1570px; right: -26px; }
-      .decor-6 { top: 2360px; right: -34px; }
-      .decor-7 { display: none; }
+      .floating-decor { width: min(var(--size), 52px); opacity: .3; }
+      .decor-1 { top: 130px; left: -44px; }
+      .decor-3 { top: 990px; left: auto; right: -44px; }
+      .decor-4 { top: 1570px; right: -46px; }
+      .decor-6 { top: 2360px; right: -48px; }
+      .decor-7, .decor-10, .decor-11, .decor-14, .decor-15, .decor-18, .decor-19 { display: none; }
       .topbar { width: calc(100% - 20px); }
       .brand { display: none; }
       .music-pill { width: 100%; }
@@ -852,6 +876,20 @@
       <img class="floating-decor decor-5" src="assets/decoration5.png" alt="">
       <img class="floating-decor decor-6" src="assets/decoration6.png" alt="">
       <img class="floating-decor decor-7" src="assets/decoration7.png" alt="">
+      <img class="floating-decor decor-8" src="assets/decoration1.png" alt="">
+      <img class="floating-decor decor-9" src="assets/decoration2.png" alt="">
+      <img class="floating-decor decor-10" src="assets/decoration3.png" alt="">
+      <img class="floating-decor decor-11" src="assets/decoration4.png" alt="">
+      <img class="floating-decor decor-12" src="assets/decoration5.png" alt="">
+      <img class="floating-decor decor-13" src="assets/decoration6.png" alt="">
+      <img class="floating-decor decor-14" src="assets/decoration7.png" alt="">
+      <img class="floating-decor decor-15" src="assets/decoration1.png" alt="">
+      <img class="floating-decor decor-16" src="assets/decoration2.png" alt="">
+      <img class="floating-decor decor-17" src="assets/decoration3.png" alt="">
+      <img class="floating-decor decor-18" src="assets/decoration4.png" alt="">
+      <img class="floating-decor decor-19" src="assets/decoration5.png" alt="">
+      <img class="floating-decor decor-20" src="assets/decoration6.png" alt="">
+      <img class="floating-decor decor-21" src="assets/decoration7.png" alt="">
     </div>
     <header class="topbar">
       <div class="brand">sadece ikimizin küçük köşesi</div>
