@@ -164,8 +164,30 @@
     .envelope-button.is-opening .wax-seal { opacity: 0; transform: translate(-50%, -50%) rotate(8deg) scale(.7); }
     .opening-hint { margin: 24px 0 0; color: var(--muted); font: 1.15rem var(--hand); }
 
-    .site-shell { opacity: 0; transition: opacity .8s ease; }
+    .site-shell { position: relative; opacity: 0; transition: opacity .8s ease; }
     .site-shell.is-ready { opacity: 1; }
+    .decor-layer {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .floating-decor {
+      position: absolute;
+      width: var(--size);
+      opacity: var(--opacity, .58);
+      filter: drop-shadow(0 12px 18px rgba(61, 42, 31, .12));
+      transform: translate3d(0, 0, 0) rotate(var(--rotate));
+      user-select: none;
+    }
+    .decor-1 { --size: 92px; --rotate: -10deg; --opacity: .62; top: 160px; left: max(18px, calc(50% - 640px)); }
+    .decor-2 { --size: 118px; --rotate: 12deg; --opacity: .52; top: 610px; right: max(10px, calc(50% - 650px)); }
+    .decor-3 { --size: 74px; --rotate: 8deg; --opacity: .68; top: 1050px; left: max(20px, calc(50% - 610px)); }
+    .decor-4 { --size: 104px; --rotate: -7deg; --opacity: .48; top: 1420px; right: max(22px, calc(50% - 620px)); }
+    .decor-5 { --size: 82px; --rotate: 15deg; --opacity: .56; top: 1880px; left: max(12px, calc(50% - 690px)); }
+    .decor-6 { --size: 126px; --rotate: -13deg; --opacity: .45; top: 2280px; right: max(0px, calc(50% - 700px)); }
+    .decor-7 { --size: 88px; --rotate: 9deg; --opacity: .58; top: 2740px; left: max(26px, calc(50% - 620px)); }
     .topbar {
       position: sticky;
       top: 0;
@@ -217,7 +239,7 @@
     }
     .icon-button svg { width: 15px; }
 
-    main { width: min(1180px, calc(100% - 32px)); margin: 0 auto; }
+    main { position: relative; z-index: 2; width: min(1180px, calc(100% - 32px)); margin: 0 auto; }
     .hero {
       position: relative;
       display: grid;
@@ -737,6 +759,8 @@
 
     :focus-visible { outline: 3px solid rgba(167,102,103,.45); outline-offset: 4px; }
     @media (max-width: 900px) {
+      .floating-decor { width: min(var(--size), 22vw); opacity: .44; }
+      .decor-2, .decor-5 { display: none; }
       .hero { grid-template-columns: 1fr; padding-top: 86px; }
       .hero-copy { padding: 0 4vw; }
       .collage { margin-top: 30px; }
@@ -750,6 +774,11 @@
       .memory-photo { width: min(520px, 100%); margin: auto; }
     }
     @media (max-width: 620px) {
+      .decor-1 { top: 130px; left: -22px; }
+      .decor-3 { top: 990px; left: auto; right: -14px; }
+      .decor-4 { top: 1570px; right: -26px; }
+      .decor-6 { top: 2360px; right: -34px; }
+      .decor-7 { display: none; }
       .topbar { width: calc(100% - 20px); }
       .brand { display: none; }
       .music-pill { width: 100%; }
@@ -815,6 +844,15 @@
   </section>
 
   <div class="site-shell" id="site-shell" aria-hidden="true">
+    <div class="decor-layer" aria-hidden="true">
+      <img class="floating-decor decor-1" src="assets/decoration1.png" alt="">
+      <img class="floating-decor decor-2" src="assets/decoration2.png" alt="">
+      <img class="floating-decor decor-3" src="assets/decoration3.png" alt="">
+      <img class="floating-decor decor-4" src="assets/decoration4.png" alt="">
+      <img class="floating-decor decor-5" src="assets/decoration5.png" alt="">
+      <img class="floating-decor decor-6" src="assets/decoration6.png" alt="">
+      <img class="floating-decor decor-7" src="assets/decoration7.png" alt="">
+    </div>
     <header class="topbar">
       <div class="brand">sadece ikimizin küçük köşesi</div>
       <div class="music-pill">
@@ -1292,7 +1330,6 @@
         meterLabel.textContent = "HATA 100+";
         loveStatus.textContent = "Sistem çöktü. Çünkü bu kadar sevgiyi ölçebilecek bir yüzde bulunamadı.";
         meterCard.classList.add("is-glitching");
-        celebrate();
         setTimeout(() => {
           loveButton.disabled = false;
           loveButton.textContent = "Tekrar dene";
