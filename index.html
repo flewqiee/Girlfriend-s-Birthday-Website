@@ -81,8 +81,34 @@
         url("assets/existing-1.jpeg") center 34% / cover;
       transition: opacity .65s ease, visibility .65s ease;
     }
+    .opening::before,
+    .opening::after {
+      content: "";
+      position: absolute;
+      pointer-events: none;
+      opacity: .5;
+      filter: drop-shadow(0 14px 18px rgba(61, 42, 31, .12));
+      background-repeat: no-repeat;
+      background-size: contain;
+    }
+    .opening::before {
+      top: 9%;
+      left: max(18px, calc(50% - 470px));
+      width: 118px;
+      aspect-ratio: 1;
+      background-image: url("assets/decoration7.png");
+      transform: rotate(-13deg);
+    }
+    .opening::after {
+      right: max(18px, calc(50% - 500px));
+      bottom: 12%;
+      width: 96px;
+      aspect-ratio: 1;
+      background-image: url("assets/decoration3.png");
+      transform: rotate(11deg);
+    }
     .opening.is-open { opacity: 0; visibility: hidden; }
-    .opening-copy { text-align: center; margin-bottom: 26px; }
+    .opening-copy { position: relative; z-index: 2; text-align: center; margin-bottom: 30px; }
     .opening-eyebrow {
       margin: 0 0 5px;
       color: var(--rose-dark);
@@ -107,36 +133,83 @@
       cursor: pointer;
       perspective: 900px;
     }
+    .envelope-button::before {
+      content: "";
+      position: absolute;
+      inset: -18px -20px;
+      z-index: -1;
+      border: 1px dashed rgba(119, 72, 75, .24);
+      border-radius: 18px 8px 22px 10px;
+      background:
+        radial-gradient(circle at 18% 28%, rgba(185,151,91,.16), transparent 38px),
+        radial-gradient(circle at 84% 66%, rgba(167,102,103,.14), transparent 44px),
+        rgba(255, 250, 240, .34);
+      box-shadow: 0 22px 60px rgba(68, 49, 37, .1);
+      transform: rotate(-1.5deg);
+    }
     .envelope-back,
     .envelope-front,
     .envelope-flap,
     .envelope-letter { position: absolute; inset: 0; }
     .envelope-back {
-      border: 1px solid rgba(74, 58, 48, .16);
-      border-radius: 5px;
-      background: #e9d5c7;
+      overflow: hidden;
+      border: 1px solid rgba(74, 58, 48, .2);
+      border-radius: 7px 13px 8px 12px;
+      background:
+        linear-gradient(112deg, rgba(255,255,255,.22), transparent 34%),
+        repeating-linear-gradient(0deg, rgba(119,72,75,.035) 0 1px, transparent 1px 8px),
+        #ead1c0;
       box-shadow: var(--shadow);
     }
+    .envelope-back::before {
+      content: "";
+      position: absolute;
+      inset: 12px;
+      border: 1px dashed rgba(119, 72, 75, .22);
+      border-radius: 6px 11px 5px 10px;
+    }
     .envelope-letter {
-      inset: 8% 7%;
+      inset: 7% 8% 10%;
       display: grid;
       place-items: center;
       color: var(--rose-dark);
-      border: 1px solid var(--line);
-      background: var(--paper);
-      font: 1.45rem var(--hand);
+      border: 1px solid rgba(74, 58, 48, .18);
+      border-radius: 5px 10px 5px 9px;
+      background:
+        linear-gradient(rgba(255,250,240,.92), rgba(255,250,240,.92)),
+        repeating-linear-gradient(0deg, transparent 0 23px, rgba(167,102,103,.1) 23px 24px);
+      box-shadow: 0 8px 16px rgba(61, 42, 31, .08);
+      font: 1.55rem var(--hand);
       transition: transform .7s .25s cubic-bezier(.2,.8,.2,1);
+    }
+    .envelope-letter::before {
+      content: "";
+      position: absolute;
+      top: 12px;
+      right: 16px;
+      width: 42px;
+      height: 32px;
+      border: 1px solid rgba(119,72,75,.3);
+      border-radius: 5px 8px 4px 7px;
+      background:
+        linear-gradient(135deg, transparent 42%, rgba(119,72,75,.2) 43% 46%, transparent 47%),
+        rgba(228,202,202,.5);
+      transform: rotate(5deg);
     }
     .envelope-front {
       clip-path: polygon(0 13%, 50% 57%, 100% 13%, 100% 100%, 0 100%);
-      border-radius: 5px;
-      background: linear-gradient(150deg, #f0ded0 0 48%, #e6cfc0 49% 100%);
+      border-radius: 7px 13px 8px 12px;
+      background:
+        linear-gradient(150deg, #f2decd 0 47%, #e5c7b7 48% 100%),
+        repeating-linear-gradient(90deg, rgba(74,58,48,.035) 0 1px, transparent 1px 9px);
     }
     .envelope-flap {
       z-index: 3;
       height: 54%;
       clip-path: polygon(0 0, 100% 0, 50% 100%);
-      background: #dfc2b3;
+      background:
+        linear-gradient(165deg, rgba(255,255,255,.22), transparent 42%),
+        #dfbfae;
       transform-origin: top;
       transition: transform .65s cubic-bezier(.4,0,.2,1);
       backface-visibility: hidden;
@@ -147,13 +220,15 @@
       top: 44%;
       left: 50%;
       display: grid;
-      width: 60px;
+      width: 68px;
       aspect-ratio: 1;
       place-items: center;
       border: 1px solid rgba(77, 34, 35, .35);
-      border-radius: 48% 52% 45% 55%;
+      border-radius: 48% 52% 45% 55% / 53% 44% 56% 47%;
       color: #f5dfcd;
-      background: var(--rose-dark);
+      background:
+        radial-gradient(circle at 35% 28%, rgba(255,255,255,.18), transparent 18px),
+        var(--rose-dark);
       box-shadow: 0 5px 14px rgba(79, 41, 37, .24), inset 0 0 0 5px rgba(255,255,255,.08);
       font: 1.8rem var(--serif);
       transform: translate(-50%, -50%) rotate(-7deg);
@@ -187,35 +262,40 @@
     .decor-4 { --size: 108px; --rotate: -7deg; --opacity: .44; top: 805px; right: max(38px, calc(50% - 720px)); }
     .decor-5 { --size: 82px; --rotate: 15deg; --opacity: .52; top: 1045px; left: max(4px, calc(50% - 785px)); }
     .decor-6 { --size: 132px; --rotate: -13deg; --opacity: .4; top: 1290px; right: max(0px, calc(50% - 790px)); }
-    .decor-7 { --size: 138px; --rotate: 9deg; --opacity: .52; top: 1545px; left: max(24px, calc(50% - 735px)); }
+    .decor-7 { --size: 220px; --rotate: 9deg; --opacity: .48; top: 1545px; left: max(0px, calc(50% - 820px)); }
     .decor-8 { --size: 66px; --rotate: -18deg; --opacity: .58; top: 1830px; right: max(62px, calc(50% - 700px)); }
     .decor-9 { --size: 118px; --rotate: 7deg; --opacity: .42; top: 2075px; left: max(0px, calc(50% - 800px)); }
     .decor-10 { --size: 78px; --rotate: -9deg; --opacity: .54; top: 2330px; right: max(20px, calc(50% - 745px)); }
     .decor-11 { --size: 104px; --rotate: 16deg; --opacity: .44; top: 2585px; left: max(44px, calc(50% - 715px)); }
     .decor-12 { --size: 72px; --rotate: -4deg; --opacity: .58; top: 2855px; right: max(4px, calc(50% - 780px)); }
     .decor-13 { --size: 136px; --rotate: 11deg; --opacity: .38; top: 3125px; left: max(0px, calc(50% - 805px)); }
-    .decor-14 { --size: 126px; --rotate: -15deg; --opacity: .5; top: 3405px; right: max(42px, calc(50% - 715px)); }
+    .decor-14 { --size: 190px; --rotate: -15deg; --opacity: .46; top: 3405px; right: max(6px, calc(50% - 800px)); }
     .decor-15 { --size: 74px; --rotate: 18deg; --opacity: .54; top: 3690px; left: max(38px, calc(50% - 710px)); }
     .decor-16 { --size: 116px; --rotate: -8deg; --opacity: .4; top: 3965px; right: max(0px, calc(50% - 790px)); }
     .decor-17 { --size: 68px; --rotate: 6deg; --opacity: .58; top: 4235px; left: max(10px, calc(50% - 755px)); }
     .decor-18 { --size: 98px; --rotate: 14deg; --opacity: .46; top: 4500px; right: max(30px, calc(50% - 735px)); }
     .decor-19 { --size: 84px; --rotate: -12deg; --opacity: .52; top: 4770px; left: max(62px, calc(50% - 695px)); }
     .decor-20 { --size: 124px; --rotate: 9deg; --opacity: .38; top: 5025px; right: max(2px, calc(50% - 800px)); }
-    .decor-21 { --size: 118px; --rotate: -17deg; --opacity: .52; top: 5285px; left: max(8px, calc(50% - 770px)); }
-    .decor-22 { --size: 162px; --rotate: 13deg; --opacity: .44; top: 450px; left: max(6px, calc(50% - 820px)); }
+    .decor-21 { --size: 184px; --rotate: -17deg; --opacity: .48; top: 5285px; left: max(0px, calc(50% - 830px)); }
+    .decor-22 { --size: 230px; --rotate: 13deg; --opacity: .42; top: 450px; left: max(0px, calc(50% - 850px)); }
     .decor-23 { --size: 76px; --rotate: -11deg; --opacity: .56; top: 950px; right: max(70px, calc(50% - 690px)); }
-    .decor-24 { --size: 146px; --rotate: 17deg; --opacity: .46; top: 1765px; left: max(78px, calc(50% - 680px)); }
+    .decor-24 { --size: 205px; --rotate: 17deg; --opacity: .44; top: 1950px; left: max(54px, calc(50% - 730px)); }
     .decor-25 { --size: 70px; --rotate: -19deg; --opacity: .58; top: 2210px; right: max(76px, calc(50% - 690px)); }
     .decor-26 { --size: 142px; --rotate: 7deg; --opacity: .36; top: 2725px; left: max(6px, calc(50% - 820px)); }
-    .decor-27 { --size: 132px; --rotate: -6deg; --opacity: .5; top: 3270px; right: max(84px, calc(50% - 690px)); }
+    .decor-27 { --size: 198px; --rotate: -6deg; --opacity: .46; top: 3020px; right: max(4px, calc(50% - 820px)); }
     .decor-28 { --size: 112px; --rotate: 16deg; --opacity: .42; top: 3835px; left: max(0px, calc(50% - 800px)); }
-    .decor-29 { --size: 120px; --rotate: -14deg; --opacity: .5; top: 4365px; right: max(78px, calc(50% - 680px)); }
+    .decor-29 { --size: 180px; --rotate: -14deg; --opacity: .48; top: 4305px; right: max(60px, calc(50% - 720px)); }
     .decor-30 { --size: 128px; --rotate: -9deg; --opacity: .38; top: 4910px; right: max(0px, calc(50% - 810px)); }
-    .decor-31 { --size: 112px; --rotate: 12deg; --opacity: .52; top: 5485px; left: max(80px, calc(50% - 670px)); }
+    .decor-31 { --size: 174px; --rotate: 12deg; --opacity: .48; top: 5660px; left: max(78px, calc(50% - 700px)); }
     .decor-32 { --size: 104px; --rotate: -16deg; --opacity: .44; top: 5730px; left: max(6px, calc(50% - 800px)); }
-    .decor-33 { --size: 132px; --rotate: 10deg; --opacity: .5; top: 5950px; right: max(16px, calc(50% - 780px)); }
+    .decor-33 { --size: 210px; --rotate: 10deg; --opacity: .44; top: 6100px; right: max(0px, calc(50% - 835px)); }
     .decor-34 { --size: 132px; --rotate: 18deg; --opacity: .36; top: 6200px; left: max(52px, calc(50% - 710px)); }
-    .decor-35 { --size: 110px; --rotate: -10deg; --opacity: .54; top: 6450px; right: max(84px, calc(50% - 660px)); }
+    .decor-35 { --size: 168px; --rotate: -10deg; --opacity: .5; top: 6650px; right: max(84px, calc(50% - 690px)); }
+    .decor-36 { --size: 215px; --rotate: -8deg; --opacity: .42; top: 870px; right: max(0px, calc(50% - 840px)); }
+    .decor-37 { --size: 188px; --rotate: 15deg; --opacity: .46; top: 2510px; left: max(0px, calc(50% - 835px)); }
+    .decor-38 { --size: 200px; --rotate: -18deg; --opacity: .44; top: 3855px; right: max(0px, calc(50% - 835px)); }
+    .decor-39 { --size: 176px; --rotate: 7deg; --opacity: .48; top: 4760px; left: max(72px, calc(50% - 710px)); }
+    .decor-40 { --size: 230px; --rotate: -12deg; --opacity: .4; top: 7050px; left: max(0px, calc(50% - 840px)); }
     .topbar {
       position: sticky;
       top: 0;
@@ -702,7 +782,6 @@
     .modal h2 { margin: 0 0 24px; font: clamp(2.4rem, 7vw, 4.8rem)/.92 var(--serif); font-weight: 400; }
     .modal-lead { margin: -10px 0 28px; color: var(--muted); line-height: 1.65; }
     .quiz-progress {
-      --road-progress: 0%;
       --bus-left: 0%;
       position: relative;
       height: 74px;
@@ -733,15 +812,7 @@
       border-top: 2px dashed rgba(255, 250, 240, .92);
     }
     .quiz-progress-bar {
-      position: absolute;
-      bottom: 33px;
-      left: 16px;
-      width: var(--road-progress);
-      height: 0;
-      border-top: 3px solid rgba(167, 102, 103, .46);
-      border-radius: 50%;
-      transform: rotate(-1.2deg);
-      transition: width .82s steps(6, end);
+      display: none;
     }
     .quiz-stops {
       position: absolute;
@@ -767,10 +838,12 @@
     .quiz-stops i:nth-child(3) { --tilt: -3deg; }
     .quiz-stops i:nth-child(4) { --tilt: 9deg; }
     .quiz-stops i:nth-child(5) { --tilt: -6deg; }
+    .quiz-stops i:nth-child(6) { --tilt: 7deg; }
     .quiz-progress[data-step="1"] .quiz-stops i:nth-child(-n+2),
     .quiz-progress[data-step="2"] .quiz-stops i:nth-child(-n+3),
     .quiz-progress[data-step="3"] .quiz-stops i:nth-child(-n+4),
-    .quiz-progress[data-step="4"] .quiz-stops i:nth-child(-n+5) {
+    .quiz-progress[data-step="4"] .quiz-stops i:nth-child(-n+5),
+    .quiz-progress[data-step="5"] .quiz-stops i:nth-child(-n+6) {
       background: #e4caca;
       border-color: rgba(119,72,75,.52);
     }
@@ -885,19 +958,21 @@
         width: min(var(--size), 64px);
         opacity: .34;
       }
-      .decor-7, .decor-14, .decor-21, .decor-22, .decor-24, .decor-27, .decor-29, .decor-31, .decor-33, .decor-35 {
-        width: min(var(--size), 98px);
-        opacity: .4;
+      .decor-7, .decor-14, .decor-21, .decor-22, .decor-24, .decor-27, .decor-29, .decor-31, .decor-33, .decor-35, .decor-36, .decor-37, .decor-38, .decor-39, .decor-40 {
+        width: min(var(--size), 150px);
+        opacity: .36;
       }
       .decor-1, .decor-3, .decor-5, .decor-7, .decor-9, .decor-11, .decor-13, .decor-15, .decor-17, .decor-19, .decor-21 { left: -54px; }
       .decor-2, .decor-4, .decor-6, .decor-8, .decor-10, .decor-12, .decor-14, .decor-16, .decor-18, .decor-20 { right: -54px; }
       .decor-22, .decor-24, .decor-26, .decor-28, .decor-31, .decor-32, .decor-34 { left: -58px; }
       .decor-23, .decor-25, .decor-27, .decor-29, .decor-30, .decor-33, .decor-35 { right: -58px; }
+      .decor-36, .decor-38 { right: -96px; }
+      .decor-37, .decor-39, .decor-40 { left: -96px; }
     }
     @media (max-width: 900px) {
       .floating-decor { width: min(var(--size), 56px); opacity: .32; }
-      .decor-7, .decor-14, .decor-27, .decor-29, .decor-31, .decor-33, .decor-35 { width: min(var(--size), 82px); opacity: .36; }
-      .decor-2, .decor-5, .decor-8, .decor-9, .decor-12, .decor-13, .decor-16, .decor-17, .decor-20, .decor-21, .decor-22, .decor-24, .decor-26, .decor-28, .decor-30, .decor-32, .decor-34 { display: none; }
+      .decor-7, .decor-14, .decor-27, .decor-29, .decor-31, .decor-33, .decor-35, .decor-36, .decor-37, .decor-38, .decor-39, .decor-40 { width: min(var(--size), 112px); opacity: .34; }
+      .decor-2, .decor-5, .decor-8, .decor-9, .decor-12, .decor-13, .decor-16, .decor-17, .decor-20, .decor-21, .decor-22, .decor-24, .decor-26, .decor-28, .decor-30, .decor-32, .decor-34, .decor-37, .decor-40 { display: none; }
       .hero { grid-template-columns: 1fr; padding-top: 86px; }
       .hero-copy { padding: 0 4vw; }
       .collage { margin-top: 30px; }
@@ -916,7 +991,7 @@
       .decor-3 { top: 990px; left: auto; right: -44px; }
       .decor-4 { top: 1570px; right: -46px; }
       .decor-6 { top: 2360px; right: -48px; }
-      .decor-7, .decor-10, .decor-11, .decor-14, .decor-15, .decor-18, .decor-19, .decor-23, .decor-25, .decor-27, .decor-29, .decor-31, .decor-33, .decor-35 { display: none; }
+      .decor-7, .decor-10, .decor-11, .decor-14, .decor-15, .decor-18, .decor-19, .decor-23, .decor-25, .decor-27, .decor-29, .decor-31, .decor-33, .decor-35, .decor-36, .decor-38, .decor-39 { display: none; }
       .topbar { width: calc(100% - 20px); }
       .brand { display: none; }
       .music-pill { width: 100%; }
@@ -1018,6 +1093,11 @@
       <img class="floating-decor decor-33" src="assets/decoration7.png" alt="">
       <img class="floating-decor decor-34" src="assets/decoration6.png" alt="">
       <img class="floating-decor decor-35" src="assets/decoration7.png" alt="">
+      <img class="floating-decor decor-36" src="assets/decoration7.png" alt="">
+      <img class="floating-decor decor-37" src="assets/decoration7.png" alt="">
+      <img class="floating-decor decor-38" src="assets/decoration7.png" alt="">
+      <img class="floating-decor decor-39" src="assets/decoration7.png" alt="">
+      <img class="floating-decor decor-40" src="assets/decoration7.png" alt="">
     </div>
     <header class="topbar">
       <div class="brand">sadece ikimizin küçük köşesi</div>
@@ -1183,7 +1263,7 @@
         <div class="quiz-progress" id="quiz-progress" aria-hidden="true">
           <div class="quiz-road"></div>
           <span class="quiz-progress-bar" id="quiz-progress-bar"></span>
-          <div class="quiz-stops"><i></i><i></i><i></i><i></i><i></i></div>
+          <div class="quiz-stops"><i></i><i></i><i></i><i></i><i></i><i></i></div>
           <img class="quiz-bus" id="quiz-bus" src="assets/bus.png" alt="">
         </div>
         <p class="quiz-question" id="quiz-question"></p>
@@ -1193,8 +1273,8 @@
       <div class="success-state" id="quiz-success" hidden>
         <div class="success-mark">S</div>
         <p class="modal-kicker">beklediğim gibi</p>
-        <h2>Kalbinden tam puan.</h2>
-        <p class="modal-lead">Bazı şeyler ezberlenmez; zaten insanın içinde kalır.</p>
+        <h2>Tebrikler, son durağa vardık.</h2>
+        <p class="modal-lead">Bütün durakları geçtin. Bazı şeyler ezberlenmez; zaten insanın içinde kalır.</p>
         <button class="primary-button" type="button" data-close>Hatıralara dön</button>
       </div>
     </div>
@@ -1341,12 +1421,11 @@
 
     let quizIndex = 0;
     function updateQuizJourney(stepIndex, shouldDrive = false) {
-      const progress = quizQuestions.length > 1 ? (stepIndex / (quizQuestions.length - 1)) * 100 : 100;
+      const progress = quizQuestions.length ? (stepIndex / quizQuestions.length) * 100 : 100;
       const progressWrap = document.getElementById("quiz-progress");
       const clampedProgress = Math.min(progress, 100);
       const busLeft = 7 + (clampedProgress * .86);
-      progressWrap.dataset.step = String(Math.min(stepIndex, quizQuestions.length - 1));
-      progressWrap.style.setProperty("--road-progress", `${Math.max(0, clampedProgress - 2)}%`);
+      progressWrap.dataset.step = String(Math.min(stepIndex, quizQuestions.length));
       progressWrap.style.setProperty("--bus-left", `${busLeft}%`);
       if (!shouldDrive) return;
       progressWrap.classList.remove("is-driving");
@@ -1381,6 +1460,9 @@
       button.classList.add("is-correct");
       document.querySelectorAll(".quiz-option").forEach(option => option.disabled = true);
       updateQuizJourney(quizIndex + 1, true);
+      if (quizIndex === quizQuestions.length - 1) {
+        document.getElementById("quiz-feedback").textContent = "Tebrikler, son durağa vardık.";
+      }
       setTimeout(() => {
         quizIndex += 1;
         if (quizIndex < quizQuestions.length) renderQuiz();
@@ -1389,7 +1471,7 @@
           document.getElementById("quiz-success").hidden = false;
           celebrate();
         }
-      }, 650);
+      }, quizIndex === quizQuestions.length - 1 ? 1150 : 650);
     }
     renderQuiz();
 
