@@ -1142,7 +1142,7 @@
       <div class="brand">sadece ikimizin küçük köşesi</div>
       <div class="music-pill">
         <span class="music-bars" aria-hidden="true"><i></i><i></i><i></i></span>
-        <span class="music-copy"><strong>My Kind of Woman</strong><span>Mac DeMarco · bizim fon müziğimiz</span></span>
+        <span class="music-copy"><strong>My Kind of Woman</strong><span id="music-status">Mac DeMarco · bizim fon müziğimiz</span></span>
         <button class="icon-button" id="music-toggle" type="button" aria-label="Müziği oynat veya duraklat">
           <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M6 4.5v11l9-5.5-9-5.5Z"/></svg>
         </button>
@@ -1289,7 +1289,7 @@
           <span>My Kind of Woman</span>
           <button class="text-button" id="music-restart" type="button">baştan sar</button>
         </div>
-        <audio id="local-audio" src="assets/mykindofwoman.mp3" preload="auto" loop></audio>
+        <audio id="local-audio" preload="auto" loop></audio>
       </section>
     </main>
 
@@ -1383,6 +1383,13 @@
     const envelope = document.getElementById("open-envelope");
     const siteShell = document.getElementById("site-shell");
     const localAudio = document.getElementById("local-audio");
+    const musicStatus = document.getElementById("music-status");
+    const audioSources = [
+      "assets/mykindofwoman.mp3",
+      "../assets/mykindofwoman.mp3",
+      "/Girlfriend-s-Birthday-Website/assets/mykindofwoman.mp3"
+    ];
+    let audioSourceIndex = 0;
     let musicPlaying = false;
 
     function updateMusicButton() {
@@ -1394,13 +1401,28 @@
     function syncMusicState() {
       musicPlaying = !localAudio.paused;
       updateMusicButton();
+      if (musicPlaying) musicStatus.textContent = "çalıyor · bizim fon müziğimiz";
     }
-    function playLocalSong() {
+    async function playLocalSong() {
       localAudio.volume = 0.82;
-      localAudio.play().then(syncMusicState).catch(() => {
-        musicPlaying = false;
-        updateMusicButton();
-      });
+      for (let attempt = 0; attempt < audioSources.length; attempt += 1) {
+        const source = audioSources[audioSourceIndex];
+        if (localAudio.dataset.currentSource !== source) {
+          localAudio.src = source;
+          localAudio.dataset.currentSource = source;
+          localAudio.load();
+        }
+        try {
+          await localAudio.play();
+          syncMusicState();
+          return;
+        } catch (error) {
+          audioSourceIndex = (audioSourceIndex + 1) % audioSources.length;
+        }
+      }
+      musicPlaying = false;
+      musicStatus.textContent = "müzik bulunamadı · play'e tekrar dokun";
+      updateMusicButton();
     }
     localAudio.addEventListener("play", syncMusicState);
     localAudio.addEventListener("pause", syncMusicState);
