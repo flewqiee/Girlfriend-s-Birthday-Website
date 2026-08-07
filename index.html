@@ -1,11 +1,10 @@
-```
 <!DOCTYPE html>
 <html lang="tr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#eee5d5">
-  <title>Doğum Günün Kutlu Olsun</title>
+  <title>DoÄŸum GÃ¼nÃ¼n Kutlu Olsun</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Gochi+Hand&family=Italiana&display=swap" rel="stylesheet">
@@ -685,11 +684,37 @@
     .memory-photo img { width: 100%; max-height: 430px; object-fit: cover; filter: sepia(.1) saturate(.8); }
     .memory-photo span { position: absolute; right: 16px; bottom: 14px; left: 16px; text-align: center; font: 1.2rem var(--hand); }
     .memory-copy p { color: var(--muted); line-height: 1.8; }
-    .little-things { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 30px 0; }
-    .little-note { min-height: 100px; padding: 18px; background: #ead9bf; font: 1.05rem/1.35 var(--hand); box-shadow: 2px 4px 10px rgba(61,42,31,.08); transform: rotate(-1deg); }
-    .little-note:nth-child(2) { background: #d7dfcf; transform: rotate(2deg); }
-    .little-note:nth-child(3) { background: #e4caca; transform: rotate(1deg); }
-    .little-note:nth-child(4) { transform: rotate(-2deg); }
+    .little-things { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 30px 0; }
+    .little-note {
+      position: relative;
+      min-height: 104px;
+      padding: 20px 18px 18px;
+      border: 1px solid rgba(74,58,48,.12);
+      border-radius: 8px 14px 7px 12px;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,.42), transparent 44%),
+        #f0c9bf;
+      box-shadow: 0 12px 28px rgba(61,42,31,.1), 3px 5px 0 rgba(61,42,31,.07);
+      font: 1.08rem/1.34 var(--hand);
+      transform: rotate(-1.4deg);
+    }
+    .little-note::before {
+      content: "";
+      position: absolute;
+      top: -9px;
+      left: 22px;
+      width: 54px;
+      height: 18px;
+      border-radius: 2px;
+      background: rgba(255,250,240,.58);
+      box-shadow: 0 2px 8px rgba(61,42,31,.08);
+      transform: rotate(-4deg);
+    }
+    .little-note:nth-child(2) { background: linear-gradient(135deg, rgba(255,255,255,.38), transparent 46%), #cddfcd; transform: rotate(2deg); }
+    .little-note:nth-child(3) { background: linear-gradient(135deg, rgba(255,255,255,.4), transparent 46%), #efd178; transform: rotate(.8deg); }
+    .little-note:nth-child(4) { background: linear-gradient(135deg, rgba(255,255,255,.42), transparent 46%), #c7d9e8; transform: rotate(-2deg); }
+    .little-note:nth-child(5) { background: linear-gradient(135deg, rgba(255,255,255,.42), transparent 46%), #d9c4e8; transform: rotate(1.5deg); }
+    .little-note:nth-child(6) { background: linear-gradient(135deg, rgba(255,255,255,.38), transparent 46%), #f1d2a6; transform: rotate(-.8deg); }
     .random-note { min-height: 30px; color: var(--rose-dark) !important; font: 1.15rem var(--hand); }
 
     .keepsake-row {
@@ -719,6 +744,7 @@
     .time-card {
       display: grid;
       align-content: start;
+      justify-items: center;
       border-radius: 28px 10px 30px 12px;
       background:
         linear-gradient(rgba(255,250,240,.84), rgba(255,250,240,.84)),
@@ -726,11 +752,11 @@
     }
     .time-capsule-img {
       width: min(280px, 76%);
-      margin: 20px 0 0 auto;
+      margin: 24px auto 0;
+      justify-self: center;
       filter: drop-shadow(0 18px 24px rgba(61,42,31,.16));
-      transform: rotate(2deg);
-    
-      transform: translateX(-28px) rotate(-2deg);}
+      transform: rotate(-2deg);
+    }
     .picnic-card {
       display: grid;
       place-items: center;
@@ -1024,7 +1050,7 @@
     .success-mark { display: grid; width: 78px; aspect-ratio: 1; place-items: center; margin: 0 auto 24px; border: 1px solid var(--rose); border-radius: 50% 45% 51% 48%; color: var(--rose-dark); font: 2.2rem var(--serif); transform: rotate(-5deg); }
 
     .puzzle-board { display: grid; grid-template-columns: repeat(3, 1fr); width: min(390px, 100%); aspect-ratio: 1; margin: 22px auto; gap: 4px; padding: 5px; background: #d7c7b6; box-shadow: 0 12px 35px rgba(61,42,31,.16); }
-    .puzzle-tile { border: 0; background-image: url("assets/puzzlebelçim.jpeg"); background-size: 300% 300%; cursor: pointer; transition: transform .16s ease, opacity .16s ease; }
+    .puzzle-tile { border: 0; background-image: url("assets/puzzlebelÃ§im.jpeg"); background-size: 300% 300%; cursor: pointer; transition: transform .16s ease, opacity .16s ease; }
     .puzzle-tile:hover { transform: scale(.97); }
     .puzzle-tile.blank { background: rgba(255,250,240,.68); cursor: default; }
     .puzzle-meta { display: flex; justify-content: space-between; gap: 12px; color: var(--muted); font: 1rem var(--hand); }
@@ -1041,7 +1067,7 @@
         radial-gradient(circle at 92% 10%, rgba(185,151,91,.2), transparent 150px);
     }
     #vault-lock::after {
-      content: "yalnızca ikimize";
+      content: "yalnÄ±zca ikimize";
       position: absolute;
       right: 24px;
       bottom: 18px;
@@ -1228,8 +1254,10 @@
       opacity: 0;
       overflow: hidden;
       background:
-        radial-gradient(circle at 50% 42%, rgba(117,67,57,.24), transparent 30%),
-        linear-gradient(180deg, #080606 0%, #120b09 48%, #050303 100%);
+        radial-gradient(circle at 50% 42%, rgba(255,196,105,.2), transparent 24%),
+        radial-gradient(circle at 18% 18%, rgba(167,102,103,.22), transparent 31%),
+        radial-gradient(circle at 82% 78%, rgba(113,128,106,.18), transparent 30%),
+        linear-gradient(180deg, #090606 0%, #1a0f0d 48%, #050303 100%);
       transition: opacity .65s ease, visibility .65s ease;
     }
     .final-overlay.is-visible { visibility: visible; opacity: 1; }
@@ -1243,10 +1271,11 @@
         radial-gradient(circle at 15% 18%, rgba(255,220,160,.38) 0 1px, transparent 2px),
         radial-gradient(circle at 84% 24%, rgba(255,220,160,.28) 0 1px, transparent 2px),
         radial-gradient(circle at 20% 72%, rgba(255,220,160,.22) 0 1px, transparent 2px),
-        radial-gradient(circle at 78% 68%, rgba(255,220,160,.22) 0 1px, transparent 2px);
-      background-size: 180px 180px, 240px 240px, 210px 210px, 280px 280px;
-      opacity: .65;
-      animation: finalDust 8s linear infinite;
+        radial-gradient(circle at 78% 68%, rgba(255,220,160,.22) 0 1px, transparent 2px),
+        linear-gradient(120deg, transparent 0 44%, rgba(255,248,232,.1) 49%, transparent 54%);
+      background-size: 180px 180px, 240px 240px, 210px 210px, 280px 280px, 160% 160%;
+      opacity: .78;
+      animation: finalDust 8s linear infinite, finalSweep 7s ease-in-out infinite alternate;
     }
     .final-overlay::after {
       content: "";
@@ -1259,6 +1288,10 @@
       from { transform: translateY(0); }
       to { transform: translateY(-28px); }
     }
+    @keyframes finalSweep {
+      from { background-position: 0 0, 0 0, 0 0, 0 0, -38% 0; }
+      to { background-position: 0 -28px, 0 -22px, 0 -24px, 0 -18px, 42% 0; }
+    }
 
     .final-scene {
       position: relative;
@@ -1270,10 +1303,37 @@
       text-align: center;
       color: #fff8e8;
     }
+    .final-scene::before,
+    .final-scene::after {
+      content: "";
+      position: absolute;
+      pointer-events: none;
+      border-radius: 50%;
+    }
+    .final-scene::before {
+      width: min(740px, 94vw);
+      aspect-ratio: 1;
+      background: radial-gradient(circle, rgba(255,226,164,.18), transparent 62%);
+      filter: blur(3px);
+      animation: finalAura 3.8s ease-in-out infinite alternate;
+    }
+    .final-scene::after {
+      bottom: -9vh;
+      width: min(680px, 92vw);
+      height: 120px;
+      background: radial-gradient(ellipse, rgba(255,212,146,.2), transparent 70%);
+      transform: rotate(-1deg);
+    }
+    @keyframes finalAura {
+      from { opacity: .58; transform: scale(.96); }
+      to { opacity: .95; transform: scale(1.04); }
+    }
 
     .final-wish-step,
     .final-cake-step,
     .final-message-step {
+      position: relative;
+      z-index: 2;
       width: min(620px, 100%);
       max-height: calc(100vh - 36px);
       overflow: auto;
@@ -1287,9 +1347,11 @@
       padding: clamp(24px, 5vw, 52px);
       border: 1px solid rgba(255,248,232,.14);
       border-radius: 28px;
-      background: rgba(25,15,13,.72);
-      box-shadow: 0 30px 80px rgba(0,0,0,.45);
-      backdrop-filter: blur(8px);
+      background:
+        linear-gradient(145deg, rgba(255,248,232,.08), transparent 36%),
+        rgba(25,15,13,.74);
+      box-shadow: 0 30px 80px rgba(0,0,0,.45), inset 0 0 0 1px rgba(255,248,232,.05);
+      backdrop-filter: blur(12px);
       animation: finalWishEnter .7s cubic-bezier(.2,.8,.2,1) both;
     }
     .final-kicker {
@@ -1345,12 +1407,25 @@
       position: absolute;
       top: 5%;
       left: 50%;
-      width: min(520px, 86vw);
+      width: min(680px, 94vw);
       aspect-ratio: 1;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(255,214,137,.66) 0 7%, rgba(255,177,81,.28) 18%, rgba(255,177,81,.08) 42%, transparent 68%);
+      background: radial-gradient(circle, rgba(255,238,175,.74) 0 7%, rgba(255,177,81,.34) 18%, rgba(255,177,81,.1) 45%, transparent 70%);
       transform: translateX(-50%);
       animation: candleGlow 1.8s ease-in-out infinite alternate;
+      pointer-events: none;
+    }
+    .final-cake-step::after {
+      content: "";
+      position: absolute;
+      z-index: 1;
+      bottom: 13%;
+      left: 50%;
+      width: min(560px, 88vw);
+      height: 92px;
+      border-radius: 50%;
+      background: radial-gradient(ellipse, rgba(0,0,0,.38), transparent 70%);
+      transform: translateX(-50%);
       pointer-events: none;
     }
     @keyframes finalCakeStepEnter {
@@ -1360,10 +1435,10 @@
     .final-cake-step img {
       position: relative;
       z-index: 2;
-      width: min(430px, 78vw);
-      max-height: min(56vh, 480px);
+      width: min(520px, 82vw);
+      max-height: min(60vh, 540px);
       object-fit: contain;
-      filter: drop-shadow(0 28px 34px rgba(0,0,0,.55));
+      filter: drop-shadow(0 34px 42px rgba(0,0,0,.62));
       animation: finalCakeFloat 4.5s ease-in-out infinite;
     }
     @keyframes finalCakeFloat {
@@ -1374,9 +1449,9 @@
     .final-flame {
       position: absolute;
       z-index: 3;
-      top: calc(6% + 58px);
-      width: 34px;
-      height: 58px;
+      top: calc(5% + 52px);
+      width: 42px;
+      height: 72px;
       border-radius: 52% 48% 48% 52%;
       background: radial-gradient(circle at 50% 70%, #fff8c6 0 16%, #ffd36c 31%, #e4773d 58%, transparent 72%);
       filter: blur(.2px) drop-shadow(0 0 18px rgba(255,184,82,.86));
@@ -1425,7 +1500,23 @@
       white-space: pre-line;
       overflow-wrap: anywhere;
       word-break: normal;
-      text-shadow: 0 3px 24px rgba(0,0,0,.6);
+      text-shadow: 0 3px 24px rgba(0,0,0,.6), 0 0 34px rgba(255,220,160,.18);
+    }
+    .final-message-step.is-done .final-type::after {
+      content: "";
+      display: inline-block;
+      width: .46em;
+      aspect-ratio: 1;
+      margin-left: .22em;
+      border-radius: 50%;
+      background: #ffd98a;
+      box-shadow: 0 0 20px rgba(255,217,138,.9), 0 0 48px rgba(255,217,138,.55);
+      vertical-align: middle;
+      animation: finalPulse .9s ease-in-out infinite alternate;
+    }
+    @keyframes finalPulse {
+      from { transform: scale(.78); opacity: .72; }
+      to { transform: scale(1.08); opacity: 1; }
     }
     .final-restart {
       position: relative;
@@ -1433,7 +1524,7 @@
       display: inline-block;
     }
 
-    /* Mum söndüğünde önce gerçekten simsiyah bir an */
+    /* Mum sÃ¶ndÃ¼ÄŸÃ¼nde Ã¶nce gerÃ§ekten simsiyah bir an */
     .final-overlay.is-dark {
       background: #000;
       transition: background .45s ease;
@@ -1449,13 +1540,29 @@
       .final-overlay { padding: 12px; }
       .final-wish-step { padding: 24px 18px; border-radius: 22px; }
       .final-wish-step h2 { font-size: clamp(2.3rem, 13vw, 4rem); }
-      .final-cake-step img { width: min(330px, 88vw); max-height: 48vh; }
+      .final-cake-step img { width: min(370px, 90vw); max-height: 50vh; }
       .final-flame { top: calc(4% + 58px); }
       .final-type { font-size: clamp(1.25rem, 7vw, 2rem); line-height: 1.25; }
     }
 
-    .confetti { position: fixed; z-index: 90; width: 9px; height: 13px; pointer-events: none; animation: confetti 1.7s ease-out forwards; }
+    .confetti { position: fixed; z-index: 140; width: 9px; height: 13px; pointer-events: none; animation: confetti 1.7s ease-out forwards; }
     @keyframes confetti { to { opacity: 0; transform: translate(var(--x), var(--y)) rotate(520deg); } }
+    .final-spark {
+      position: fixed;
+      z-index: 141;
+      width: var(--spark-size);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      pointer-events: none;
+      background: #fff4c8;
+      box-shadow: 0 0 16px rgba(255,232,164,.86);
+      animation: finalSpark 2.4s ease-out forwards;
+    }
+    @keyframes finalSpark {
+      0% { opacity: 0; transform: translate(-50%, -50%) scale(.4); }
+      16% { opacity: 1; }
+      100% { opacity: 0; transform: translate(calc(-50% + var(--sx)), calc(-50% + var(--sy))) scale(1.3); }
+    }
 
     :focus-visible { outline: 3px solid rgba(167,102,103,.45); outline-offset: 4px; }
     @media (max-width: 1220px) {
@@ -1561,22 +1668,22 @@
 </style>
 </head>
 <body>
-  <a class="skip-link" href="#main">İçeriğe geç</a>
+  <a class="skip-link" href="#main">Ä°Ã§eriÄŸe geÃ§</a>
 
-  <section class="opening" id="opening" aria-label="Açılış mektubu">
+  <section class="opening" id="opening" aria-label="AÃ§Ä±lÄ±ÅŸ mektubu">
     <div>
       <div class="opening-copy">
-        <p class="opening-eyebrow">küçük bir şey hazırladım</p>
+        <p class="opening-eyebrow">kÃ¼Ã§Ã¼k bir ÅŸey hazÄ±rladÄ±m</p>
         <h1 class="opening-title">Bu sayfa sana ait.</h1>
       </div>
-      <button class="envelope-button" id="open-envelope" type="button" aria-label="Mektubu aç ve ana sayfaya geç">
+      <button class="envelope-button" id="open-envelope" type="button" aria-label="Mektubu aÃ§ ve ana sayfaya geÃ§">
         <span class="envelope-back"></span>
-        <span class="envelope-letter">senin için, sevgiyle</span>
+        <span class="envelope-letter">senin iÃ§in, sevgiyle</span>
         <span class="envelope-front"></span>
         <span class="envelope-flap"></span>
         <span class="wax-seal">S</span>
       </button>
-      <p class="opening-hint">mührü açmak için dokun</p>
+      <p class="opening-hint">mÃ¼hrÃ¼ aÃ§mak iÃ§in dokun</p>
     </div>
   </section>
 
@@ -1624,11 +1731,11 @@
       <img class="floating-decor decor-40" src="assets/decoration7.png" alt="">
     </div>
     <header class="topbar">
-      <div class="brand">sadece ikimizin küçük köşesi</div>
+      <div class="brand">sadece ikimizin kÃ¼Ã§Ã¼k kÃ¶ÅŸesi</div>
       <div class="music-pill">
         <span class="music-bars" aria-hidden="true"><i></i><i></i><i></i></span>
-        <span class="music-copy"><strong>My Kind of Woman</strong><span id="music-status">Mac DeMarco · bizim fon müziğimiz</span></span>
-        <button class="icon-button" id="music-toggle" type="button" aria-label="Müziği oynat veya duraklat">
+        <span class="music-copy"><strong>My Kind of Woman</strong><span id="music-status">Mac DeMarco Â· bizim fon mÃ¼ziÄŸimiz</span></span>
+        <button class="icon-button" id="music-toggle" type="button" aria-label="MÃ¼ziÄŸi oynat veya duraklat">
           <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M6 4.5v11l9-5.5-9-5.5Z"/></svg>
         </button>
       </div>
@@ -1637,48 +1744,48 @@
     <main id="main" tabindex="-1">
       <section class="hero" aria-labelledby="hero-title">
         <div class="hero-copy">
-          <p class="scribble">bir doğum gününden biraz daha fazlası</p>
-          <h1 id="hero-title">İyi ki <span class="accent">varsın.</span></h1>
-          <p class="hero-intro">Burada gördüğün her şey senin için tasarlandı. Doğum gününü az da olsa seni özel hissettirecek şekilde yapmaya çalıştım. Umarım beğenirsin.</p>
+          <p class="scribble">bir doÄŸum gÃ¼nÃ¼nden biraz daha fazlasÄ±</p>
+          <h1 id="hero-title">Ä°yi ki <span class="accent">varsÄ±n.</span></h1>
+          <p class="hero-intro">Burada gÃ¶rdÃ¼ÄŸÃ¼n her ÅŸey senin iÃ§in tasarlandÄ±. DoÄŸum gÃ¼nÃ¼nÃ¼ az da olsa seni Ã¶zel hissettirecek ÅŸekilde yapmaya Ã§alÄ±ÅŸtÄ±m. UmarÄ±m beÄŸenirsin.</p>
           <div class="hero-actions">
-            <button class="primary-button" type="button" data-open="vault-modal">Gizli kasayı aç</button>
-            <button class="text-button" type="button" id="explore-button">Küçük sürprizlere bak</button>
+            <button class="primary-button" type="button" data-open="vault-modal">Gizli kasayÄ± aÃ§</button>
+            <button class="text-button" type="button" id="explore-button">KÃ¼Ã§Ã¼k sÃ¼rprizlere bak</button>
           </div>
         </div>
 
-        <div class="collage" aria-label="Hatıra kolajı">
-          <figure class="snapshot snapshot-one"><img src="assets/existing-1.jpeg" alt="Yumuşak tonlarda romantik bir hatıra karesi"><figcaption>birlikteyken zaman başka</figcaption></figure>
-          <figure class="snapshot snapshot-two"><img src="assets/existing-2.jpeg" alt="Scrapbook içine yerleştirilmiş sıcak tonlu bir fotoğraf"><figcaption>en sevdiğim günlerden</figcaption></figure>
-          <figure class="snapshot snapshot-three"><img src="assets/existing-3.jpeg" alt="Bantla tutturulmuş nostaljik bir hatıra fotoğrafı"><figcaption>saklamak istediğim an</figcaption></figure>
-          <div class="date-stamp">hep hatırlanacak</div>
+        <div class="collage" aria-label="HatÄ±ra kolajÄ±">
+          <figure class="snapshot snapshot-one"><img src="assets/existing-1.jpeg" alt="YumuÅŸak tonlarda romantik bir hatÄ±ra karesi"><figcaption>birlikteyken zaman baÅŸka</figcaption></figure>
+          <figure class="snapshot snapshot-two"><img src="assets/existing-2.jpeg" alt="Scrapbook iÃ§ine yerleÅŸtirilmiÅŸ sÄ±cak tonlu bir fotoÄŸraf"><figcaption>en sevdiÄŸim gÃ¼nlerden</figcaption></figure>
+          <figure class="snapshot snapshot-three"><img src="assets/existing-3.jpeg" alt="Bantla tutturulmuÅŸ nostaljik bir hatÄ±ra fotoÄŸrafÄ±"><figcaption>saklamak istediÄŸim an</figcaption></figure>
+          <div class="date-stamp">hep hatÄ±rlanacak</div>
         </div>
       </section>
 
       <section class="activities" id="activities" aria-labelledby="activities-title">
-        <div class="section-label">senin için üç küçük durak</div>
+        <div class="section-label">senin iÃ§in Ã¼Ã§ kÃ¼Ã§Ã¼k durak</div>
         <div class="activities-heading">
-          <h2 id="activities-title">Nereden başlamak istersin?</h2>
-          <p>Mutlu bir güne biraz eğlence katmak istedim.</p>
+          <h2 id="activities-title">Nereden baÅŸlamak istersin?</h2>
+          <p>Mutlu bir gÃ¼ne biraz eÄŸlence katmak istedim.</p>
         </div>
         <div class="activity-grid">
           <article class="activity-card">
             <span class="card-number">not 01</span>
             <h3>Mini Quiz</h3>
-            <p>Beş küçük soru. Bilemeyene ceza yok :).</p>
-            <button class="activity-button" type="button" data-open="quiz-modal">Quiz’e başla <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m5 12 14 0M14 7l5 5-5 5"/></svg></button>
+            <p>BeÅŸ kÃ¼Ã§Ã¼k soru. Bilemeyene ceza yok :).</p>
+            <button class="activity-button" type="button" data-open="quiz-modal">Quizâ€™e baÅŸla <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m5 12 14 0M14 7l5 5-5 5"/></svg></button>
           </article>
           <article class="activity-card">
             <span class="card-number">not 02</span>
-            <h3>Fotoğraf Puzzle</h3>
-            <p>Küçük bir puzzle, dikkat et zorlanabilirsin!</p>
-            <button class="activity-button" type="button" data-open="puzzle-modal">Puzzle’ı çöz <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m5 12 14 0M14 7l5 5-5 5"/></svg></button>
+            <h3>FotoÄŸraf Puzzle</h3>
+            <p>KÃ¼Ã§Ã¼k bir puzzle, dikkat et zorlanabilirsin!</p>
+            <button class="activity-button" type="button" data-open="puzzle-modal">Puzzleâ€™Ä± Ã§Ã¶z <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m5 12 14 0M14 7l5 5-5 5"/></svg></button>
           </article>
           <article class="activity-card">
             <svg class="lock-sketch" viewBox="0 0 120 150" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="22" y="58" width="76" height="68" rx="8"/><path d="M39 58V39c0-29 42-29 42 0v19M60 84v20"/><circle cx="60" cy="82" r="5"/></svg>
-            <span class="card-number">yalnızca sana özel</span>
+            <span class="card-number">yalnÄ±zca sana Ã¶zel</span>
             <h3>Gizli Vault</h3>
-            <p>Burada sana yazılmış özel bir kasa var. Kasa sadece bizim kelimemizle açılıyor.</p>
-            <button class="activity-button" type="button" data-open="vault-modal">Kasayı aç <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m5 12 14 0M14 7l5 5-5 5"/></svg></button>
+            <p>Burada sana yazÄ±lmÄ±ÅŸ Ã¶zel bir kasa var. Kasa sadece bizim kelimemizle aÃ§Ä±lÄ±yor.</p>
+            <button class="activity-button" type="button" data-open="vault-modal">KasayÄ± aÃ§ <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m5 12 14 0M14 7l5 5-5 5"/></svg></button>
           </article>
         </div>
       </section>
@@ -1689,31 +1796,31 @@
         </div>
         <div class="trail-heading">
           <div>
-            <div class="section-label">doğum günü macerası</div>
-            <h2 id="trail-title">Bugünün küçük haritası.</h2>
+            <div class="section-label">doÄŸum gÃ¼nÃ¼ macerasÄ±</div>
+            <h2 id="trail-title">BugÃ¼nÃ¼n kÃ¼Ã§Ã¼k haritasÄ±.</h2>
           </div>
-          <p>Sayfada ilerledikçe bir macerada olduğunu hissetmeni istedim. Tüm fikirler bana ait, umarım beğenirsin.</p>
+          <p>Sayfada ilerledikÃ§e bir macerada olduÄŸunu hissetmeni istedim. TÃ¼m fikirler bana ait, umarÄ±m beÄŸenirsin.</p>
         </div>
         <div class="trail-grid">
           <article class="trail-card">
             <span>01</span>
             <h3>Mini Oyunlar</h3>
-            <p>Bir kaç tane oyun oynadın, biraz da sevgi dolalım.</p>
+            <p>Bir kaÃ§ tane oyun oynadÄ±n, biraz da sevgi dolalÄ±m.</p>
           </article>
           <article class="trail-card">
             <span>02</span>
-            <h3>Aşkını Ölç</h3>
-            <p>Bakalım beni ne kadar çok seviyorsun? İzleyip görelim.</p>
+            <h3>AÅŸkÄ±nÄ± Ã–lÃ§</h3>
+            <p>BakalÄ±m beni ne kadar Ã§ok seviyorsun? Ä°zleyip gÃ¶relim.</p>
           </article>
           <article class="trail-card">
             <span>03</span>
-            <h3>Birazcık duygusallık</h3>
-            <p>Küçük detaylar, duygusal mesajlar ve bazı anılar. Her şey senin için.</p>
+            <h3>BirazcÄ±k duygusallÄ±k</h3>
+            <p>KÃ¼Ã§Ã¼k detaylar, duygusal mesajlar ve bazÄ± anÄ±lar. Her ÅŸey senin iÃ§in.</p>
           </article>
           <article class="trail-card">
             <span>04</span>
-            <h3>Dileği tut</h3>
-            <p>Dileğini tuttuktan sonra pastanı üfle, maceranı kendin sonlandır.</p>
+            <h3>DileÄŸi tut</h3>
+            <p>DileÄŸini tuttuktan sonra pastanÄ± Ã¼fle, maceranÄ± kendin sonlandÄ±r.</p>
           </article>
         </div>
       </section>
@@ -1721,58 +1828,58 @@
       <section class="love-meter" aria-labelledby="love-meter-title">
         <div class="love-copy">
           <div class="section-label">bilimsel olmayan test</div>
-          <h2 class="love-title" id="love-meter-title">Aşkını ölçelim mi?</h2>
-          <p>Bu küçük makine çok ciddi görünmeye çalışıyor ama sonuç belli: bazı şeyler yüzdeyle anlatılamaz. Yine de düğmeye basınca elinden geleni yapacak.</p>
+          <h2 class="love-title" id="love-meter-title">AÅŸkÄ±nÄ± Ã¶lÃ§elim mi?</h2>
+          <p>Bu kÃ¼Ã§Ã¼k makine Ã§ok ciddi gÃ¶rÃ¼nmeye Ã§alÄ±ÅŸÄ±yor ama sonuÃ§ belli: bazÄ± ÅŸeyler yÃ¼zdeyle anlatÄ±lamaz. Yine de dÃ¼ÄŸmeye basÄ±nca elinden geleni yapacak.</p>
         </div>
         <div class="meter-card" id="meter-card">
           <div class="meter-readout">
             <strong id="love-percent">0%</strong>
-            <span id="meter-label">ölçüm bekleniyor</span>
+            <span id="meter-label">Ã¶lÃ§Ã¼m bekleniyor</span>
           </div>
           <div class="meter-track" aria-hidden="true">
             <div class="meter-fill" id="love-fill"></div>
           </div>
-          <p class="meter-status" id="love-status" aria-live="polite">Hazır olunca ölçmeye başlayalım.</p>
-          <button class="primary-button" id="love-meter-button" type="button">Aşkını ölç</button>
+          <p class="meter-status" id="love-status" aria-live="polite">HazÄ±r olunca Ã¶lÃ§meye baÅŸlayalÄ±m.</p>
+          <button class="primary-button" id="love-meter-button" type="button">AÅŸkÄ±nÄ± Ã¶lÃ§</button>
         </div>
       </section>
 
       <section class="memory-strip" aria-labelledby="memory-title">
-        <div class="memory-photo"><img src="assets/existing-4.jpeg" alt="Kağıt bir çerçeve içindeki sıcak anı fotoğrafı"><span>bunu hep saklayalım</span></div>
+        <div class="memory-photo"><img src="assets/existing-4.jpeg" alt="KaÄŸÄ±t bir Ã§erÃ§eve iÃ§indeki sÄ±cak anÄ± fotoÄŸrafÄ±"><span>bunu hep saklayalÄ±m</span></div>
         <div class="memory-copy">
-          <div class="section-label">küçük şeylerin koleksiyonu</div>
-          <h2 class="memory-title" id="memory-title">Sende sevdiğim şeyler.</h2>
-          <p>En büyük anlardan çok, arada kalan küçük şeyleri seviyorum. Gülüşünü, sesini, bakışını ve yanında her şeyin biraz daha kolay hissettirmesini.</p>
+          <div class="section-label">kÃ¼Ã§Ã¼k ÅŸeylerin koleksiyonu</div>
+          <h2 class="memory-title" id="memory-title">Sende sevdiÄŸim ÅŸeyler.</h2>
+          <p>En bÃ¼yÃ¼k anlardan Ã§ok, arada kalan kÃ¼Ã§Ã¼k ÅŸeyleri seviyorum. GÃ¼lÃ¼ÅŸÃ¼nÃ¼, sesini, bakÄ±ÅŸÄ±nÄ± ve yanÄ±nda her ÅŸeyin biraz daha kolay hissettirmesini.</p>
           <div class="little-things">
-            <div class="little-note">gülüşün en sevdiğim ses</div>
-            <div class="little-note">yanında her yer ev gibi</div>
-            <div class="little-note">ince düşünmen kalbimi yumuşatıyor</div>
-            <div class="little-note">sen varken her günüm güzel</div>
-            <div class="little-note">vücudun çok hoşuma gidiyor</div>
-            <div class="little-note">annelik duygun beni rahatlatıyor</div>
-            <div class="little-note">bazen şapşal oluyorsun</div>
-            <div class="little-note">yanımda olduğunu bilmek güzel</div>
+            <div class="little-note">gÃ¼lÃ¼ÅŸÃ¼n en sevdiÄŸim ses</div>
+            <div class="little-note">yanÄ±nda her yer ev gibi</div>
+            <div class="little-note">ince dÃ¼ÅŸÃ¼nmen kalbimi yumuÅŸatÄ±yor</div>
+            <div class="little-note">sen varken her gÃ¼nÃ¼m gÃ¼zel</div>
+            <div class="little-note">vÃ¼cudun Ã§ok hoÅŸuma gidiyor</div>
+            <div class="little-note">annelik duygun beni rahatlatÄ±yor</div>
+            <div class="little-note">bazen ÅŸapÅŸal oluyorsun</div>
+            <div class="little-note">yanÄ±mda olduÄŸunu bilmek gÃ¼zel</div>
           </div>
-          <button class="text-button" id="random-note-button" type="button">Bir sebep daha çek</button>
+          <button class="text-button" id="random-note-button" type="button">Bir sebep daha Ã§ek</button>
           <p class="random-note" id="random-note" aria-live="polite"></p>
         </div>
       </section>
 
       <section class="keepsake-row" aria-labelledby="keepsake-title">
         <article class="keepsake-card time-card">
-          <div class="section-label">zaman kapsülü</div>
-          <h2 id="keepsake-title">Bazı zarflar zamanı gelince açılır.</h2>
-          <p>Burada bugünün dışına taşan küçük mektuplar var. Hemen tüketilecek şeyler değil; bazıları kötü bir güne, bazıları özlenen bir ana saklandı.</p>
-          <button class="primary-button" type="button" data-open="capsule-modal">Zarflara söz ver</button>
+          <div class="section-label">zaman kapsÃ¼lÃ¼</div>
+          <h2 id="keepsake-title">BazÄ± zarflar zamanÄ± gelince aÃ§Ä±lÄ±r.</h2>
+          <p>Burada bugÃ¼nÃ¼n dÄ±ÅŸÄ±na taÅŸan kÃ¼Ã§Ã¼k mektuplar var. Hemen tÃ¼ketilecek ÅŸeyler deÄŸil; bazÄ±larÄ± kÃ¶tÃ¼ bir gÃ¼ne, bazÄ±larÄ± Ã¶zlenen bir ana saklandÄ±.</p>
+          <button class="primary-button" type="button" data-open="capsule-modal">Zarflara sÃ¶z ver</button>
           <img class="time-capsule-img" src="assets/timecapsule.png" alt="">
         </article>
         <article class="keepsake-card picnic-card">
           <div class="picnic-copy">
             <div class="section-label">piknik sepeti</div>
-            <h2>Sepette küçük anılar var.</h2>
-            <p>Sepet biraz sabırsız; sepete yardımcı ol ve daha fazla bekletme! İçerisinde bazı özel günlere gönderme var, umarım beğenirsin.</p>
+            <h2>Sepette kÃ¼Ã§Ã¼k anÄ±lar var.</h2>
+            <p>Sepet biraz sabÄ±rsÄ±z; sepete yardÄ±mcÄ± ol ve daha fazla bekletme! Ä°Ã§erisinde bazÄ± Ã¶zel gÃ¼nlere gÃ¶nderme var, umarÄ±m beÄŸenirsin.</p>
           </div>
-          <button class="basket-button" type="button" data-open="picnic-modal" aria-label="Piknik sepetini aç">
+          <button class="basket-button" type="button" data-open="picnic-modal" aria-label="Piknik sepetini aÃ§">
             <img src="assets/picnicbasket.png" alt="">
           </button>
         </article>
@@ -1782,35 +1889,35 @@
         <div class="cake-card final-cake-card">
           <div>
             <div class="section-label">final sahnesi</div>
-            <h2 class="coupon-title" id="coupon-title">Son dileği beraber tutalım.</h2>
-            <p>Maceranın sonuna geldik. İçtenlikle bir dilek tut ve mumunu üfle. Maceran burda bitiyor olabilir ama sana olan aşkım hiç bitmeyecek. İyi ki doğdun sevgilim.</p>
-            <button class="primary-button" id="final-cake-button" type="button">Pastayı ortaya getir</button>
+            <h2 class="coupon-title" id="coupon-title">Son dileÄŸi beraber tutalÄ±m.</h2>
+            <p>MaceranÄ±n sonuna geldik. Ä°Ã§tenlikle bir dilek tut ve mumunu Ã¼fle. Maceran burda bitiyor olabilir ama sana olan aÅŸkÄ±m hiÃ§ bitmeyecek. Ä°yi ki doÄŸdun sevgilim.</p>
+            <button class="primary-button" id="final-cake-button" type="button">PastayÄ± ortaya getir</button>
           </div>
           <div class="final-cake-stage">
-            <img class="birthday-cake-img final-cake-img" src="assets/birthdaycake.png" alt="Mumlu doğum günü pastası">
+            <img class="birthday-cake-img final-cake-img" src="assets/birthdaycake.png" alt="Mumlu doÄŸum gÃ¼nÃ¼ pastasÄ±">
           </div>
         </div>
       </section>
 
-      <section class="music-wrap" aria-label="Sayfanın şarkısı">
-        <div class="section-label">sayfanın fon müziği</div>
+      <section class="music-wrap" aria-label="SayfanÄ±n ÅŸarkÄ±sÄ±">
+        <div class="section-label">sayfanÄ±n fon mÃ¼ziÄŸi</div>
         <div class="local-song-card">
           <span>My Kind of Woman</span>
-          <button class="text-button" id="music-restart" type="button">baştan sar</button>
+          <button class="text-button" id="music-restart" type="button">baÅŸtan sar</button>
         </div>
         <audio id="local-audio" preload="auto" loop></audio>
       </section>
     </main>
 
-    <footer>sevgiyle, elde yapılmış küçük bir internet köşesi</footer>
+    <footer>sevgiyle, elde yapÄ±lmÄ±ÅŸ kÃ¼Ã§Ã¼k bir internet kÃ¶ÅŸesi</footer>
   </div>
 
   <div class="modal" id="quiz-modal" role="dialog" aria-modal="true" aria-labelledby="quiz-title">
     <div class="modal-card">
-      <button class="close-button" type="button" data-close aria-label="Quiz penceresini kapat">×</button>
+      <button class="close-button" type="button" data-close aria-label="Quiz penceresini kapat">Ã—</button>
       <div id="quiz-content">
-        <p class="modal-kicker">anı testi</p>
-        <h2 id="quiz-title">Bizi ne kadar iyi hatırlıyorsun?</h2>
+        <p class="modal-kicker">anÄ± testi</p>
+        <h2 id="quiz-title">Bizi ne kadar iyi hatÄ±rlÄ±yorsun?</h2>
         <div class="quiz-progress" id="quiz-progress" aria-hidden="true">
           <div class="quiz-road"></div>
           <span class="quiz-progress-bar" id="quiz-progress-bar"></span>
@@ -1823,47 +1930,47 @@
       </div>
       <div class="success-state" id="quiz-success" hidden>
         <div class="success-mark">S</div>
-        <p class="modal-kicker">beklediğim gibi</p>
-        <h2>Tebrikler, son durağa vardık.</h2>
-        <p class="modal-lead">Bütün durakları geçtin. Bazı şeyler ezberlenmez; zaten insanın içinde kalır.</p>
-        <button class="primary-button" type="button" data-close>Hatıralara dön</button>
+        <p class="modal-kicker">beklediÄŸim gibi</p>
+        <h2>Tebrikler, son duraÄŸa vardÄ±k.</h2>
+        <p class="modal-lead">BÃ¼tÃ¼n duraklarÄ± geÃ§tin. BazÄ± ÅŸeyler ezberlenmez; zaten insanÄ±n iÃ§inde kalÄ±r.</p>
+        <button class="primary-button" type="button" data-close>HatÄ±ralara dÃ¶n</button>
       </div>
     </div>
   </div>
 
   <div class="modal" id="puzzle-modal" role="dialog" aria-modal="true" aria-labelledby="puzzle-title">
     <div class="modal-card">
-      <button class="close-button" type="button" data-close aria-label="Puzzle penceresini kapat">×</button>
-      <p class="modal-kicker">parçaları birleştir</p>
-      <h2 id="puzzle-title">Küçük fotoğraf puzzle’ı</h2>
-      <p class="modal-lead">Boşluğun yanındaki parçaya dokun. Her parça yerine geldiğinde fotoğraf tamamlanır.</p>
+      <button class="close-button" type="button" data-close aria-label="Puzzle penceresini kapat">Ã—</button>
+      <p class="modal-kicker">parÃ§alarÄ± birleÅŸtir</p>
+      <h2 id="puzzle-title">KÃ¼Ã§Ã¼k fotoÄŸraf puzzleâ€™Ä±</h2>
+      <p class="modal-lead">BoÅŸluÄŸun yanÄ±ndaki parÃ§aya dokun. Her parÃ§a yerine geldiÄŸinde fotoÄŸraf tamamlanÄ±r.</p>
       <div class="puzzle-meta"><span id="move-count">0 hamle</span><span id="puzzle-status">devam ediyor</span></div>
-      <div class="puzzle-board" id="puzzle-board" aria-label="Dokuz parçalı kaydırmalı fotoğraf puzzle'ı"></div>
-      <div class="puzzle-actions"><button class="text-button" id="shuffle-puzzle" type="button">Yeniden karıştır</button></div>
+      <div class="puzzle-board" id="puzzle-board" aria-label="Dokuz parÃ§alÄ± kaydÄ±rmalÄ± fotoÄŸraf puzzle'Ä±"></div>
+      <div class="puzzle-actions"><button class="text-button" id="shuffle-puzzle" type="button">Yeniden karÄ±ÅŸtÄ±r</button></div>
     </div>
   </div>
 
   <div class="modal" id="vault-modal" role="dialog" aria-modal="true" aria-labelledby="vault-title">
     <div class="modal-card">
-      <button class="close-button" type="button" data-close aria-label="Kasa penceresini kapat">×</button>
+      <button class="close-button" type="button" data-close aria-label="Kasa penceresini kapat">Ã—</button>
       <div id="vault-lock">
         <p class="modal-kicker">gizli kasa</p>
         <h2 id="vault-title">Mektup kilitli.</h2>
-        <p class="modal-lead">İpucu: Geceleri gökyüzünde bulduğumuz, ama burada yalnızca ikimizin bildiği kelime.</p>
+        <p class="modal-lead">Ä°pucu: Geceleri gÃ¶kyÃ¼zÃ¼nde bulduÄŸumuz, ama burada yalnÄ±zca ikimizin bildiÄŸi kelime.</p>
         <form class="vault-form" id="vault-form">
           <input class="vault-input" id="vault-code" type="password" autocomplete="off" aria-describedby="vault-error" placeholder="Kodu buraya yaz" required>
-          <button class="primary-button" type="submit">Kilidi aç</button>
+          <button class="primary-button" type="submit">Kilidi aÃ§</button>
         </form>
         <p class="vault-error" id="vault-error" aria-live="polite"></p>
       </div>
       <div id="vault-letter" hidden>
-        <p class="modal-kicker">yalnızca senin için</p>
-        <h2>İyi ki doğdun, aşkım.</h2>
+        <p class="modal-kicker">yalnÄ±zca senin iÃ§in</p>
+        <h2>Ä°yi ki doÄŸdun, aÅŸkÄ±m.</h2>
         <article class="letter-paper">
-          <p>Bugünün diğer günlerden farklı hissettirmesini istedim, çünkü sen benim için sıradan biri değilsin — en sevdiğim insansın, en sevdiğin günde.</p>
-          <p>Ne kadar sevildiğini bilmeni istiyorum; sadece bugün değil, her gün. Gülüşün, herkese gösterdiğin o özen, fark etmeden yaptığın küçük şeyler… Hepsini görüyorum ve seni her seferinde biraz daha çok seviyorum.</p>
-          <p>O yüzden bugün sana. Güzel kalbine, hayallerine ve seni sen yapan her şeye bir yaş daha. Seni sevebilmek büyük bir şans.</p>
-          <p>Bazen kelimeler yetersiz kalıyor. Yine de bilmeni istediğim tek bir şey var: Her halinle, her gün, hep sen.</p>
+          <p>BugÃ¼nÃ¼n diÄŸer gÃ¼nlerden farklÄ± hissettirmesini istedim, Ã§Ã¼nkÃ¼ sen benim iÃ§in sÄ±radan biri deÄŸilsin â€” en sevdiÄŸim insansÄ±n, en sevdiÄŸin gÃ¼nde.</p>
+          <p>Ne kadar sevildiÄŸini bilmeni istiyorum; sadece bugÃ¼n deÄŸil, her gÃ¼n. GÃ¼lÃ¼ÅŸÃ¼n, herkese gÃ¶sterdiÄŸin o Ã¶zen, fark etmeden yaptÄ±ÄŸÄ±n kÃ¼Ã§Ã¼k ÅŸeylerâ€¦ Hepsini gÃ¶rÃ¼yorum ve seni her seferinde biraz daha Ã§ok seviyorum.</p>
+          <p>O yÃ¼zden bugÃ¼n sana. GÃ¼zel kalbine, hayallerine ve seni sen yapan her ÅŸeye bir yaÅŸ daha. Seni sevebilmek bÃ¼yÃ¼k bir ÅŸans.</p>
+          <p>Bazen kelimeler yetersiz kalÄ±yor. Yine de bilmeni istediÄŸim tek bir ÅŸey var: Her halinle, her gÃ¼n, hep sen.</p>
           <div class="letter-sign">hep senin</div>
         </article>
       </div>
@@ -1872,28 +1979,28 @@
 
   <div class="modal" id="capsule-modal" role="dialog" aria-modal="true" aria-labelledby="capsule-title">
     <div class="modal-card">
-      <button class="close-button" type="button" data-close aria-label="Zaman kapsülünü kapat">×</button>
+      <button class="close-button" type="button" data-close aria-label="Zaman kapsÃ¼lÃ¼nÃ¼ kapat">Ã—</button>
       <div class="capsule-question" id="capsule-promise">
-        <p class="modal-kicker">umut sözü</p>
-        <h2 id="capsule-title">Zarfları vakitleri geldiğinde açacağına umut sözü veriyor musun?</h2>
+        <p class="modal-kicker">umut sÃ¶zÃ¼</p>
+        <h2 id="capsule-title">ZarflarÄ± vakitleri geldiÄŸinde aÃ§acaÄŸÄ±na umut sÃ¶zÃ¼ veriyor musun?</h2>
         <div class="promise-actions">
           <button class="primary-button" type="button" data-promise>evet</button>
           <button class="primary-button" type="button" data-promise>evet, tabii ki evet</button>
         </div>
       </div>
       <div id="capsule-envelope-view" hidden>
-        <p class="modal-kicker">saklanmış günler</p>
-        <h2>Zaman kapsülü açıldı.</h2>
-        <p class="modal-lead">Her zarf başka bir güne saklandı. Açtığında yanında olamasam bile cümlelerim yanında olsun.</p>
+        <p class="modal-kicker">saklanmÄ±ÅŸ gÃ¼nler</p>
+        <h2>Zaman kapsÃ¼lÃ¼ aÃ§Ä±ldÄ±.</h2>
+        <p class="modal-lead">Her zarf baÅŸka bir gÃ¼ne saklandÄ±. AÃ§tÄ±ÄŸÄ±nda yanÄ±nda olamasam bile cÃ¼mlelerim yanÄ±nda olsun.</p>
         <div class="capsule-layout">
           <div class="capsule-envelopes">
-            <button class="capsule-envelope" type="button" style="--env:#f3dfd4;--tilt:-3deg" data-capsule="birthday">doğum gününde aç</button>
-            <button class="capsule-envelope" type="button" style="--env:#dfe8d8;--tilt:2deg" data-capsule="sad">kötü hissettiğinde aç</button>
-            <button class="capsule-envelope" type="button" style="--env:#efe0bd;--tilt:-1deg" data-capsule="lonely">yalnız hissettiğinde aç</button>
-            <button class="capsule-envelope" type="button" style="--env:#e4caca;--tilt:3deg" data-capsule="year">bir yıl sonra aç</button>
-            <button class="capsule-envelope" type="button" style="--env:#e8dfcf;--tilt:-2deg" data-capsule="angry">bana sinirlendiğinde aç</button>
+            <button class="capsule-envelope" type="button" style="--env:#f3dfd4;--tilt:-3deg" data-capsule="birthday">doÄŸum gÃ¼nÃ¼nde aÃ§</button>
+            <button class="capsule-envelope" type="button" style="--env:#dfe8d8;--tilt:2deg" data-capsule="sad">kÃ¶tÃ¼ hissettiÄŸinde aÃ§</button>
+            <button class="capsule-envelope" type="button" style="--env:#efe0bd;--tilt:-1deg" data-capsule="lonely">yalnÄ±z hissettiÄŸinde aÃ§</button>
+            <button class="capsule-envelope" type="button" style="--env:#e4caca;--tilt:3deg" data-capsule="year">bir yÄ±l sonra aÃ§</button>
+            <button class="capsule-envelope" type="button" style="--env:#e8dfcf;--tilt:-2deg" data-capsule="angry">bana sinirlendiÄŸinde aÃ§</button>
           </div>
-          <div class="capsule-letter is-empty" id="capsule-letter">Bir zarf seç; kağıt burada açılacak.</div>
+          <div class="capsule-letter is-empty" id="capsule-letter">Bir zarf seÃ§; kaÄŸÄ±t burada aÃ§Ä±lacak.</div>
         </div>
       </div>
     </div>
@@ -1901,30 +2008,30 @@
 
   <div class="modal" id="picnic-modal" role="dialog" aria-modal="true" aria-labelledby="picnic-title">
     <div class="modal-card picnic-modal-card">
-      <button class="close-button" type="button" data-close aria-label="Piknik masasını kapat">×</button>
-      <p class="modal-kicker">masa örtüsü açıldı</p>
-      <h2 id="picnic-title">Sepetten çıkan küçük zarflar.</h2>
-      <p class="modal-lead">Her zarfın üstündeki küçük resim içerideki anıya ipucu veriyor.</p>
+      <button class="close-button" type="button" data-close aria-label="Piknik masasÄ±nÄ± kapat">Ã—</button>
+      <p class="modal-kicker">masa Ã¶rtÃ¼sÃ¼ aÃ§Ä±ldÄ±</p>
+      <h2 id="picnic-title">Sepetten Ã§Ä±kan kÃ¼Ã§Ã¼k zarflar.</h2>
+      <p class="modal-lead">Her zarfÄ±n Ã¼stÃ¼ndeki kÃ¼Ã§Ã¼k resim iÃ§erideki anÄ±ya ipucu veriyor.</p>
       <div class="picnic-layout">
         <div class="picnic-table">
-          <button class="picnic-envelope" type="button" style="--tilt:-3deg" data-full="assets/yaglamazarf.jpeg" data-fallback="assets/yaglamazarf.jpg" data-caption="Bu zarf biraz yağlama kokuyor, biraz da beraber gülme." aria-label="Yağlama zarfını aç">
-            <img src="assets/yaglama.png" alt=""><span>yağlama</span>
+          <button class="picnic-envelope" type="button" style="--tilt:-3deg" data-full="assets/yaglamazarf.jpeg" data-fallback="assets/yaglamazarf.jpg" data-caption="Bu zarf biraz yaÄŸlama kokuyor, biraz da beraber gÃ¼lme." aria-label="YaÄŸlama zarfÄ±nÄ± aÃ§">
+            <img src="assets/yaglama.png" alt=""><span>yaÄŸlama</span>
           </button>
-          <button class="picnic-envelope" type="button" style="--tilt:2deg" data-full="assets/kisszarf.jpeg" data-fallback="assets/kisszarf.jpg" data-caption="Bazı fotoğraflar kalbin en kısa cümlesi gibi." aria-label="Kiss zarfını aç">
+          <button class="picnic-envelope" type="button" style="--tilt:2deg" data-full="assets/kisszarf.jpeg" data-fallback="assets/kisszarf.jpg" data-caption="BazÄ± fotoÄŸraflar kalbin en kÄ±sa cÃ¼mlesi gibi." aria-label="Kiss zarfÄ±nÄ± aÃ§">
             <img src="assets/kiss.png" alt=""><span>kiss</span>
           </button>
-          <button class="picnic-envelope" type="button" style="--tilt:-1deg" data-full="assets/flighttickerzarf.jpg" data-fallback="assets/flightticketzarf.jpg" data-caption="Gitmek istediğimiz her yer, yanında olduğumda biraz daha yakın." aria-label="Uçak bileti zarfını aç">
+          <button class="picnic-envelope" type="button" style="--tilt:-1deg" data-full="assets/flighttickerzarf.jpg" data-fallback="assets/flightticketzarf.jpg" data-caption="Gitmek istediÄŸimiz her yer, yanÄ±nda olduÄŸumda biraz daha yakÄ±n." aria-label="UÃ§ak bileti zarfÄ±nÄ± aÃ§">
             <img src="assets/flightticket.png" alt=""><span>flight ticket</span>
           </button>
-          <button class="picnic-envelope" type="button" style="--tilt:3deg" data-message="Bu zarf şimdilik soru işareti. Belki içine ileride en beklenmedik anımızı koyarız. Şimdilik sadece şunu saklıyor: seninle her şeyin devamı var." aria-label="Soru işaretli zarfı aç">
+          <button class="picnic-envelope" type="button" style="--tilt:3deg" data-message="Bu zarf ÅŸimdilik soru iÅŸareti. Belki iÃ§ine ileride en beklenmedik anÄ±mÄ±zÄ± koyarÄ±z. Åimdilik sadece ÅŸunu saklÄ±yor: seninle her ÅŸeyin devamÄ± var." aria-label="Soru iÅŸaretli zarfÄ± aÃ§">
             <span style="font-size:3rem;margin-top:26px;">???</span>
           </button>
-          <button class="picnic-envelope" type="button" style="--tilt:-2deg" data-full="assets/birthdaycake.png" data-caption="İyi ki doğdun sevgilim. Bu pastanın en güzel yanı mumları değil, dileği." aria-label="Doğum günü zarfını aç">
-            <img src="assets/birthdaycake.png" alt=""><span>doğum günü</span>
+          <button class="picnic-envelope" type="button" style="--tilt:-2deg" data-full="assets/birthdaycake.png" data-caption="Ä°yi ki doÄŸdun sevgilim. Bu pastanÄ±n en gÃ¼zel yanÄ± mumlarÄ± deÄŸil, dileÄŸi." aria-label="DoÄŸum gÃ¼nÃ¼ zarfÄ±nÄ± aÃ§">
+            <img src="assets/birthdaycake.png" alt=""><span>doÄŸum gÃ¼nÃ¼</span>
           </button>
         </div>
         <div class="picnic-reveal is-empty" id="picnic-reveal">
-          <span id="picnic-empty">Bir zarf seç; fotoğraf burada açılacak.</span>
+          <span id="picnic-empty">Bir zarf seÃ§; fotoÄŸraf burada aÃ§Ä±lacak.</span>
           <img id="picnic-reveal-img" src="" alt="" hidden>
           <p id="picnic-reveal-text"></p>
         </div>
@@ -1935,44 +2042,44 @@
   <div class="final-overlay" id="final-overlay" aria-hidden="true">
     <div class="final-scene">
       <div class="final-wish-step" id="final-wish-step">
-        <p class="final-kicker">son bir şey</p>
+        <p class="final-kicker">son bir ÅŸey</p>
         <h2>Bir dilek tut.</h2>
-        <p class="final-wish-hint">Dileğini buraya yaz. Sadece sen bileceksin.</p>
-        <textarea id="final-wish-input" maxlength="180" placeholder="Dileğini yaz..." aria-label="Doğum günü dileğin"></textarea>
-        <button class="primary-button" id="confirm-wish-button" type="button">Dileğimi onayla</button>
+        <p class="final-wish-hint">DileÄŸini buraya yaz. Sadece sen bileceksin.</p>
+        <textarea id="final-wish-input" maxlength="180" placeholder="DileÄŸini yaz..." aria-label="DoÄŸum gÃ¼nÃ¼ dileÄŸin"></textarea>
+        <button class="primary-button" id="confirm-wish-button" type="button">DileÄŸimi onayla</button>
       </div>
 
       <div class="final-cake-step" id="final-cake-step" hidden>
-        <p class="final-kicker">dileğin hazır</p>
+        <p class="final-kicker">dileÄŸin hazÄ±r</p>
         <span class="final-flame" aria-hidden="true"></span>
-        <img src="assets/blowcake.png" alt="Mumlu doğum günü pastası">
-        <p class="final-wish-confirmed">Dileğin saklandı. Şimdi gözlerini kapatıp mumu üfle.</p>
-        <button class="primary-button" id="blow-candle-button" type="button">Mumu üfle</button>
+        <img src="assets/blowcake.png" alt="Mumlu doÄŸum gÃ¼nÃ¼ pastasÄ±">
+        <p class="final-wish-confirmed">DileÄŸin saklandÄ±. Åimdi gÃ¶zlerini kapatÄ±p mumu Ã¼fle.</p>
+        <button class="primary-button" id="blow-candle-button" type="button">Mumu Ã¼fle</button>
       </div>
 
       <div class="final-message-step" id="final-message-step" hidden>
         <p class="final-type" id="final-type"></p>
-        <button class="primary-button final-restart" id="final-restart" type="button">Sayfayı yenile?</button>
+        <button class="primary-button final-restart" id="final-restart" type="button">SayfayÄ± yenile?</button>
       </div>
     </div>
   </div>
 
   <script>
-    const VAULT_CODE = "Yıldız";
+    const VAULT_CODE = "YÄ±ldÄ±z";
     const quizQuestions = [
-      { question: "İlk tanıştığımız mevsim hangisiydi?", options: ["İlkbahar", "Yaz", "Sonbahar", "Kış"], answer: 1, hint: "Hava sıcaktı; biraz daha düşün." },
-      { question: "En sevdiğimiz ortak anımız nerede geçti?", options: ["Sahilde", "Evde film gecesinde", "Bir gezide", "Bir kafede"], answer: 2, hint: "İpucu: Öncesinde bavul hazırlamıştık." },
-      { question: "Beraberken zaman en çok neye benziyor?", options: ["Uzun bir yolculuğa", "Küçük bir şarkıya", "Sıcak bir eve", "Tatlı bir telaşa"], answer: 2, hint: "Yanında her yer biraz daha güvenli hissettiriyor." },
-      { question: "Bu sayfanın gizli anahtarı neydi?", options: ["Kalp", "Yıldız", "Ay", "Gülüş"], answer: 1, hint: "Geceleri gökyüzünde aradığımız şeye yakın." },
-      { question: "Doğum günü dileğim ne?", options: ["Bol kahkaha", "Güzel anılar", "Hep beraberlik", "Hepsi"], answer: 3, hint: "Birini seçmek haksızlık olurdu." }
+      { question: "Ä°lk tanÄ±ÅŸtÄ±ÄŸÄ±mÄ±z mevsim hangisiydi?", options: ["Ä°lkbahar", "Yaz", "Sonbahar", "KÄ±ÅŸ"], answer: 1, hint: "Hava sÄ±caktÄ±; biraz daha dÃ¼ÅŸÃ¼n." },
+      { question: "En sevdiÄŸimiz ortak anÄ±mÄ±z nerede geÃ§ti?", options: ["Sahilde", "Evde film gecesinde", "Bir gezide", "Bir kafede"], answer: 2, hint: "Ä°pucu: Ã–ncesinde bavul hazÄ±rlamÄ±ÅŸtÄ±k." },
+      { question: "Beraberken zaman en Ã§ok neye benziyor?", options: ["Uzun bir yolculuÄŸa", "KÃ¼Ã§Ã¼k bir ÅŸarkÄ±ya", "SÄ±cak bir eve", "TatlÄ± bir telaÅŸa"], answer: 2, hint: "YanÄ±nda her yer biraz daha gÃ¼venli hissettiriyor." },
+      { question: "Bu sayfanÄ±n gizli anahtarÄ± neydi?", options: ["Kalp", "YÄ±ldÄ±z", "Ay", "GÃ¼lÃ¼ÅŸ"], answer: 1, hint: "Geceleri gÃ¶kyÃ¼zÃ¼nde aradÄ±ÄŸÄ±mÄ±z ÅŸeye yakÄ±n." },
+      { question: "DoÄŸum gÃ¼nÃ¼ dileÄŸim ne?", options: ["Bol kahkaha", "GÃ¼zel anÄ±lar", "Hep beraberlik", "Hepsi"], answer: 3, hint: "Birini seÃ§mek haksÄ±zlÄ±k olurdu." }
     ];
     const extraNotes = [
-      "en yorgun günümü bile güzelleştirmen",
-      "beni tek bakışta anlaman",
+      "en yorgun gÃ¼nÃ¼mÃ¼ bile gÃ¼zelleÅŸtirmen",
+      "beni tek bakÄ±ÅŸta anlaman",
       "hayallerimi kendi hayalin gibi dinlemen",
-      "gülünce gözlerinin de gülmesi",
-      "birlikte sessiz kalmanın bile güzel olması",
-      "dünyaya daha yumuşak bakmamı sağlaman"
+      "gÃ¼lÃ¼nce gÃ¶zlerinin de gÃ¼lmesi",
+      "birlikte sessiz kalmanÄ±n bile gÃ¼zel olmasÄ±",
+      "dÃ¼nyaya daha yumuÅŸak bakmamÄ± saÄŸlaman"
     ];
 
     const opening = document.getElementById("opening");
@@ -1997,7 +2104,7 @@
     function syncMusicState() {
       musicPlaying = !localAudio.paused;
       updateMusicButton();
-      if (musicPlaying) musicStatus.textContent = "çalıyor · bizim fon müziğimiz";
+      if (musicPlaying) musicStatus.textContent = "Ã§alÄ±yor Â· bizim fon mÃ¼ziÄŸimiz";
     }
     async function playLocalSong() {
       localAudio.volume = 0.82;
@@ -2017,7 +2124,7 @@
         }
       }
       musicPlaying = false;
-      musicStatus.textContent = "müzik bulunamadı · play'e tekrar dokun";
+      musicStatus.textContent = "mÃ¼zik bulunamadÄ± Â· play'e tekrar dokun";
       updateMusicButton();
     }
     localAudio.addEventListener("play", syncMusicState);
@@ -2118,7 +2225,7 @@
       document.querySelectorAll(".quiz-option").forEach(option => option.disabled = true);
       updateQuizJourney(quizIndex + 1, true);
       if (quizIndex === quizQuestions.length - 1) {
-        document.getElementById("quiz-feedback").textContent = "Tebrikler, son durağa vardık.";
+        document.getElementById("quiz-feedback").textContent = "Tebrikler, son duraÄŸa vardÄ±k.";
       }
       setTimeout(() => {
         quizIndex += 1;
@@ -2163,12 +2270,12 @@
         if (tile === 8) {
           button.classList.add("blank");
           button.disabled = true;
-          button.setAttribute("aria-label", "Boş alan");
+          button.setAttribute("aria-label", "BoÅŸ alan");
         } else {
           const row = Math.floor(tile / 3);
           const col = tile % 3;
           button.style.backgroundPosition = `${col * 50}% ${row * 50}%`;
-          button.setAttribute("aria-label", `${tile + 1}. puzzle parçasını kaydır`);
+          button.setAttribute("aria-label", `${tile + 1}. puzzle parÃ§asÄ±nÄ± kaydÄ±r`);
           button.addEventListener("click", () => moveTile(position));
         }
         puzzleBoard.appendChild(button);
@@ -2183,7 +2290,7 @@
       moves += 1;
       renderPuzzle();
       if (puzzle.every((tile, index) => tile === index)) {
-        document.getElementById("puzzle-status").textContent = "tamamlandı";
+        document.getElementById("puzzle-status").textContent = "tamamlandÄ±";
         celebrate();
       }
     }
@@ -2196,7 +2303,7 @@
       const guess = input.value.trim().normalize("NFC").toLocaleLowerCase("tr-TR");
       const answer = VAULT_CODE.normalize("NFC").toLocaleLowerCase("tr-TR");
       if (guess !== answer) {
-        document.getElementById("vault-error").textContent = "Bu anahtar dönmedi. Türkçe karakterleri de kontrol et.";
+        document.getElementById("vault-error").textContent = "Bu anahtar dÃ¶nmedi. TÃ¼rkÃ§e karakterleri de kontrol et.";
         input.select();
         return;
       }
@@ -2224,9 +2331,9 @@
     loveButton.addEventListener("click", () => {
       loveButton.disabled = true;
       meterCard.classList.remove("is-glitching");
-      loveStatus.textContent = "Kalp sinyali aranıyor...";
-      meterLabel.textContent = "ölçüm başladı";
-      loveButton.textContent = "Ölçülüyor...";
+      loveStatus.textContent = "Kalp sinyali aranÄ±yor...";
+      meterLabel.textContent = "Ã¶lÃ§Ã¼m baÅŸladÄ±";
+      loveButton.textContent = "Ã–lÃ§Ã¼lÃ¼yor...";
       let value = 0;
       let step = 1;
 
@@ -2237,15 +2344,15 @@
 
         if (value > 28) {
           step = 3;
-          loveStatus.textContent = "Beklenenden güçlü veri geliyor...";
+          loveStatus.textContent = "Beklenenden gÃ¼Ã§lÃ¼ veri geliyor...";
         }
         if (value > 62) {
           step = 6;
-          loveStatus.textContent = "Ölçüm sınırları zorlanıyor.";
+          loveStatus.textContent = "Ã–lÃ§Ã¼m sÄ±nÄ±rlarÄ± zorlanÄ±yor.";
         }
         if (value > 88) {
           step = 12;
-          loveStatus.textContent = "Uyarı: sevgi kapasitesi aşılıyor.";
+          loveStatus.textContent = "UyarÄ±: sevgi kapasitesi aÅŸÄ±lÄ±yor.";
         }
         if (value < 100) {
           setTimeout(tick, Math.max(34, 140 - value));
@@ -2253,7 +2360,7 @@
         }
 
         meterLabel.textContent = "HATA 100+";
-        loveStatus.textContent = "Sistem çöktü. Çünkü bu kadar sevgiyi ölçebilecek bir yüzde bulunamadı.";
+        loveStatus.textContent = "Sistem Ã§Ã¶ktÃ¼. Ã‡Ã¼nkÃ¼ bu kadar sevgiyi Ã¶lÃ§ebilecek bir yÃ¼zde bulunamadÄ±.";
         meterCard.classList.add("is-glitching");
         setTimeout(() => {
           loveButton.disabled = false;
@@ -2265,11 +2372,11 @@
     });
 
     const capsuleMessages = {
-      birthday: "Bugün senin günün.\n\nBenim için de öyle, çünkü dünyaya geldiğin gün benim hayatıma sonradan en güzel anlamlardan birini getirdi. Bugün sadece yaş aldığın bir gün değil; benim en sevdiğim insanın varlığını kutladığım gün.\n\nDilerim bu yıl kalbin daha hafif, gülüşün daha sık, hayallerin daha cesur olur. Ben de mümkün olan her yerde yanında olayım. İyi ki doğdun sevgilim.",
-      sad: "Kötü hissettiğin bir gün bunu açtıysan, önce derin bir nefes al.\n\nHer şeyi hemen çözmek zorunda değilsin. Bazen insanın sadece biraz sarılmaya, biraz susmaya, biraz da anlaşılmaya ihtiyacı olur. Ben senin kalbinin ne kadar güzel olduğunu biliyorum; en dağınık günlerinde bile.\n\nBugün zor geçiyorsa, bu zarf küçük bir hatırlatma olsun: geçecek. Ve ben seni sadece neşeliyken değil, yorulmuşken de seviyorum.",
-      lonely: "Yalnız hissettiğinde şunu hatırla:\n\nBir yerlerde seni düşünen, sesini özleyen, iyi misin diye içinden geçiren biri var. O kişi benim.\n\nYanında fiziksel olarak olamadığım anlarda bile, kalbimin bir köşesi sende kalıyor. Bu zarfı açtığın an ben yanında yokmuşum gibi görünse de, aslında sana doğru uzatılmış küçük bir el gibi düşün.",
-      year: "Bir yıl geçtiyse ve hâlâ buradaysak, bu küçük sayfa görevini yapmış demektir.\n\nBelki bazı şeyler değişti, belki bazı günler çok güzel geçti, bazıları biraz zorladı. Ama bu zarfı saklamamın sebebi şu: zaman geçse de sana söylemek istediğim en basit şey değişmiyor.\n\nSeni seviyorum. Bir yıl önce de, bugün de, umarım bundan sonra da aynı içtenlikle.",
-      angry: "Bana sinirlendiysen, önce şunu kabul edeyim: haklı olma ihtimalin yüksek.\n\nBazen beceriksizce konuşabilirim, bazen seni kırdığımı geç fark edebilirim. Ama bilmeni istediğim şey şu: senin kalbini incitmek benim için hafife alınacak bir şey değil.\n\nBu zarf küçük bir barış bayrağı olsun. Gel konuşalım. Çünkü ben haklı çıkmayı değil, seni kaybetmemeyi önemsiyorum."
+      birthday: "BugÃ¼n senin gÃ¼nÃ¼n.\n\nBenim iÃ§in de Ã¶yle, Ã§Ã¼nkÃ¼ dÃ¼nyaya geldiÄŸin gÃ¼n benim hayatÄ±ma sonradan en gÃ¼zel anlamlardan birini getirdi. BugÃ¼n sadece yaÅŸ aldÄ±ÄŸÄ±n bir gÃ¼n deÄŸil; benim en sevdiÄŸim insanÄ±n varlÄ±ÄŸÄ±nÄ± kutladÄ±ÄŸÄ±m gÃ¼n.\n\nDilerim bu yÄ±l kalbin daha hafif, gÃ¼lÃ¼ÅŸÃ¼n daha sÄ±k, hayallerin daha cesur olur. Ben de mÃ¼mkÃ¼n olan her yerde yanÄ±nda olayÄ±m. Ä°yi ki doÄŸdun sevgilim.",
+      sad: "KÃ¶tÃ¼ hissettiÄŸin bir gÃ¼n bunu aÃ§tÄ±ysan, Ã¶nce derin bir nefes al.\n\nHer ÅŸeyi hemen Ã§Ã¶zmek zorunda deÄŸilsin. Bazen insanÄ±n sadece biraz sarÄ±lmaya, biraz susmaya, biraz da anlaÅŸÄ±lmaya ihtiyacÄ± olur. Ben senin kalbinin ne kadar gÃ¼zel olduÄŸunu biliyorum; en daÄŸÄ±nÄ±k gÃ¼nlerinde bile.\n\nBugÃ¼n zor geÃ§iyorsa, bu zarf kÃ¼Ã§Ã¼k bir hatÄ±rlatma olsun: geÃ§ecek. Ve ben seni sadece neÅŸeliyken deÄŸil, yorulmuÅŸken de seviyorum.",
+      lonely: "YalnÄ±z hissettiÄŸinde ÅŸunu hatÄ±rla:\n\nBir yerlerde seni dÃ¼ÅŸÃ¼nen, sesini Ã¶zleyen, iyi misin diye iÃ§inden geÃ§iren biri var. O kiÅŸi benim.\n\nYanÄ±nda fiziksel olarak olamadÄ±ÄŸÄ±m anlarda bile, kalbimin bir kÃ¶ÅŸesi sende kalÄ±yor. Bu zarfÄ± aÃ§tÄ±ÄŸÄ±n an ben yanÄ±nda yokmuÅŸum gibi gÃ¶rÃ¼nse de, aslÄ±nda sana doÄŸru uzatÄ±lmÄ±ÅŸ kÃ¼Ã§Ã¼k bir el gibi dÃ¼ÅŸÃ¼n.",
+      year: "Bir yÄ±l geÃ§tiyse ve hÃ¢lÃ¢ buradaysak, bu kÃ¼Ã§Ã¼k sayfa gÃ¶revini yapmÄ±ÅŸ demektir.\n\nBelki bazÄ± ÅŸeyler deÄŸiÅŸti, belki bazÄ± gÃ¼nler Ã§ok gÃ¼zel geÃ§ti, bazÄ±larÄ± biraz zorladÄ±. Ama bu zarfÄ± saklamamÄ±n sebebi ÅŸu: zaman geÃ§se de sana sÃ¶ylemek istediÄŸim en basit ÅŸey deÄŸiÅŸmiyor.\n\nSeni seviyorum. Bir yÄ±l Ã¶nce de, bugÃ¼n de, umarÄ±m bundan sonra da aynÄ± iÃ§tenlikle.",
+      angry: "Bana sinirlendiysen, Ã¶nce ÅŸunu kabul edeyim: haklÄ± olma ihtimalin yÃ¼ksek.\n\nBazen beceriksizce konuÅŸabilirim, bazen seni kÄ±rdÄ±ÄŸÄ±mÄ± geÃ§ fark edebilirim. Ama bilmeni istediÄŸim ÅŸey ÅŸu: senin kalbini incitmek benim iÃ§in hafife alÄ±nacak bir ÅŸey deÄŸil.\n\nBu zarf kÃ¼Ã§Ã¼k bir barÄ±ÅŸ bayraÄŸÄ± olsun. Gel konuÅŸalÄ±m. Ã‡Ã¼nkÃ¼ ben haklÄ± Ã§Ä±kmayÄ± deÄŸil, seni kaybetmemeyi Ã¶nemsiyorum."
     };
     document.querySelectorAll("[data-promise]").forEach(button => {
       button.addEventListener("click", () => {
@@ -2319,10 +2426,10 @@
     blowSound.preload = "auto";
     blowSound.volume = 0.9;
 
-    const finalText = "Macera buraya kadardı...\nUmarım beğenmişsindir sevgilim.\nSeni çok seviyorum.\nSevgilerle, Umut...";
+    const finalText = "Macera buraya kadardÄ±...\nUmarÄ±m beÄŸenmiÅŸsindir sevgilim.\nSeni Ã§ok seviyorum.\nSevgilerle, Umut...";
 
     document.getElementById("final-cake-button").addEventListener("click", () => {
-      // Final açıldığı anda ana şarkıyı durdur.
+      // Final aÃ§Ä±ldÄ±ÄŸÄ± anda ana ÅŸarkÄ±yÄ± durdur.
       localAudio.pause();
       syncMusicState();
 
@@ -2335,6 +2442,9 @@
       finalMessageStep.hidden = true;
       finalWishInput.value = "";
       finalType.textContent = "";
+      finalMessageStep.classList.remove("is-done");
+      blowCandleButton.disabled = false;
+      document.querySelectorAll(".final-spark").forEach(spark => spark.remove());
       document.body.style.overflow = "hidden";
 
       setTimeout(() => finalWishInput.focus(), 250);
@@ -2350,7 +2460,7 @@
         return;
       }
 
-      // Dileği tarayıcı oturumunda sakla; mesajda gösterilmez.
+      // DileÄŸi tarayÄ±cÄ± oturumunda sakla; mesajda gÃ¶sterilmez.
       sessionStorage.setItem("birthdayWish", wish);
 
       finalWishStep.hidden = true;
@@ -2366,15 +2476,15 @@
     blowCandleButton.addEventListener("click", async () => {
       blowCandleButton.disabled = true;
 
-      // Tek seferlik mum üfleme sesi.
+      // Tek seferlik mum Ã¼fleme sesi.
       blowSound.currentTime = 0;
       try {
         await blowSound.play();
       } catch (error) {
-        // Tarayıcı ses oynatmayı engellerse akış yine devam eder.
+        // TarayÄ±cÄ± ses oynatmayÄ± engellerse akÄ±ÅŸ yine devam eder.
       }
 
-      // Önce alev/pasta kaybolsun, sonra ekran tamamen kararsın.
+      // Ã–nce alev/pasta kaybolsun, sonra ekran tamamen kararsÄ±n.
       finalOverlay.classList.add("is-dark");
 
       setTimeout(() => {
@@ -2394,27 +2504,42 @@
         if (index > finalText.length) {
           clearInterval(timer);
           finalMessageStep.classList.add("is-done");
+          launchFinale();
         }
       }, 58);
     }
 
     document.getElementById("final-restart").addEventListener("click", () => window.location.reload());
 
-    function celebrate() {
-      const colors = ["#a76667", "#71806a", "#b9975b", "#e4caca"];
-      for (let index = 0; index < 34; index += 1) {
+    function launchFinale() {
+      celebrate(76, true);
+      for (let index = 0; index < 46; index += 1) {
+        const spark = document.createElement("span");
+        spark.className = "final-spark";
+        spark.style.left = `${18 + Math.random() * 64}vw`;
+        spark.style.top = `${18 + Math.random() * 58}vh`;
+        spark.style.setProperty("--spark-size", `${3 + Math.random() * 5}px`);
+        spark.style.setProperty("--sx", `${(Math.random() - .5) * 220}px`);
+        spark.style.setProperty("--sy", `${-70 - Math.random() * 180}px`);
+        document.body.appendChild(spark);
+        setTimeout(() => spark.remove(), 2500);
+      }
+    }
+
+    function celebrate(amount = 34, wide = false) {
+      const colors = ["#a76667", "#71806a", "#b9975b", "#e4caca", "#f2d179", "#c7d9e8"];
+      for (let index = 0; index < amount; index += 1) {
         const piece = document.createElement("span");
         piece.className = "confetti";
-        piece.style.left = `${45 + Math.random() * 10}vw`;
-        piece.style.top = `${42 + Math.random() * 10}vh`;
+        piece.style.left = wide ? `${10 + Math.random() * 80}vw` : `${45 + Math.random() * 10}vw`;
+        piece.style.top = wide ? `${18 + Math.random() * 18}vh` : `${42 + Math.random() * 10}vh`;
         piece.style.background = colors[index % colors.length];
-        piece.style.setProperty("--x", `${(Math.random() - .5) * 600}px`);
-        piece.style.setProperty("--y", `${(Math.random() - .45) * 520}px`);
+        piece.style.setProperty("--x", `${(Math.random() - .5) * (wide ? 840 : 600)}px`);
+        piece.style.setProperty("--y", `${(Math.random() + .08) * (wide ? 620 : 520)}px`);
         document.body.appendChild(piece);
-        setTimeout(() => piece.remove(), 1800);
+        setTimeout(() => piece.remove(), wide ? 2300 : 1800);
       }
     }
   </script>
 </body>
 </html>
-```
