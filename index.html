@@ -1476,6 +1476,41 @@
       backdrop-filter: blur(12px);
       animation: finalWishEnter .7s cubic-bezier(.2,.8,.2,1) both;
     }
+    .final-wish-step.is-transforming {
+      overflow: visible;
+    }
+    .final-wish-step.is-transforming #final-wish-input {
+      animation: wishBoxToStar .78s cubic-bezier(.16,.85,.25,1) forwards;
+    }
+    .final-wish-step.is-transforming .final-kicker,
+    .final-wish-step.is-transforming h2,
+    .final-wish-step.is-transforming .final-wish-hint,
+    .final-wish-step.is-transforming #confirm-wish-button {
+      animation: wishCopyFade .38s ease forwards;
+    }
+    @keyframes wishBoxToStar {
+      0% {
+        opacity: 1;
+        transform: scale(1);
+        border-radius: 16px;
+        box-shadow: 0 0 0 4px rgba(228,202,202,.08);
+      }
+      42% {
+        opacity: 1;
+        transform: scale(.72);
+        border-radius: 28px;
+        box-shadow: 0 0 32px rgba(255,232,164,.34), inset 0 0 24px rgba(255,248,232,.14);
+      }
+      100% {
+        opacity: 0;
+        transform: scale(.05) rotate(28deg);
+        border-radius: 50%;
+        box-shadow: 0 0 80px rgba(255,232,164,.78);
+      }
+    }
+    @keyframes wishCopyFade {
+      to { opacity: 0; transform: translateY(-8px); }
+    }
     .final-kicker {
       margin: 0 0 10px;
       color: #e4caca;
@@ -1527,12 +1562,12 @@
     .final-cake-step::before {
       content: "";
       position: absolute;
-      top: 5%;
+      top: 7%;
       left: 50%;
-      width: min(680px, 94vw);
+      width: min(500px, 72vw);
       aspect-ratio: 1;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(255,238,175,.74) 0 7%, rgba(255,177,81,.34) 18%, rgba(255,177,81,.1) 45%, transparent 70%);
+      background: radial-gradient(circle, rgba(255,238,175,.64) 0 7%, rgba(255,177,81,.28) 17%, rgba(255,177,81,.08) 34%, transparent 54%);
       transform: translateX(-50%);
       animation: candleGlow 1.8s ease-in-out infinite alternate;
       pointer-events: none;
@@ -1690,33 +1725,52 @@
     }
     .wish-star {
       position: fixed;
-      left: 50%;
-      bottom: 24%;
+      left: var(--star-start-left, 50%);
+      top: var(--star-start-top, 62%);
       z-index: 142;
-      width: 18px;
+      width: 20px;
       aspect-ratio: 1;
       pointer-events: none;
       background: #fff6c9;
       clip-path: polygon(50% 0, 61% 35%, 98% 35%, 68% 56%, 80% 94%, 50% 70%, 20% 94%, 32% 56%, 2% 35%, 39% 35%);
       filter: drop-shadow(0 0 12px rgba(255,234,162,.9)) drop-shadow(0 0 32px rgba(255,207,115,.68));
-      animation: wishStarFly 1.25s cubic-bezier(.16,.85,.25,1) forwards;
+      animation: wishStarFly 1.38s cubic-bezier(.08,.74,.08,1) forwards;
     }
     .wish-star::after {
       content: "";
       position: absolute;
-      right: 48%;
+      right: 54%;
       top: 48%;
-      width: 130px;
-      height: 2px;
+      width: 0;
+      height: 3px;
       border-radius: 999px;
-      background: linear-gradient(90deg, transparent, rgba(255,246,201,.85));
-      transform: rotate(-24deg);
+      background: linear-gradient(90deg, transparent, rgba(255,246,201,.92));
+      transform: rotate(-27deg);
       transform-origin: right center;
+      animation: wishTrailGrow 1.38s cubic-bezier(.08,.74,.08,1) forwards;
+    }
+    .wish-star::before {
+      content: "";
+      position: absolute;
+      inset: -18px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,246,201,.42), transparent 62%);
+      animation: wishStarPulse .44s ease-in-out infinite alternate;
     }
     @keyframes wishStarFly {
-      0% { opacity: 0; transform: translate(-50%, 0) scale(.4) rotate(0deg); }
-      14% { opacity: 1; }
-      100% { opacity: 0; transform: translate(34vw, -78vh) scale(1.25) rotate(220deg); }
+      0% { opacity: 0; transform: translate(-50%, -50%) scale(.28) rotate(0deg); }
+      18% { opacity: 1; transform: translate(-50%, -50%) scale(1.05) rotate(40deg); }
+      42% { opacity: 1; transform: translate(calc(-50% + 8vw), calc(-50% - 16vh)) scale(1.12) rotate(130deg); }
+      100% { opacity: 0; transform: translate(calc(-50% + 46vw), calc(-50% - 82vh)) scale(.72) rotate(360deg); }
+    }
+    @keyframes wishTrailGrow {
+      0%, 14% { width: 0; opacity: 0; }
+      42% { width: 150px; opacity: .95; }
+      100% { width: 220px; opacity: 0; }
+    }
+    @keyframes wishStarPulse {
+      from { opacity: .54; transform: scale(.82); }
+      to { opacity: .95; transform: scale(1.14); }
     }
 
     :focus-visible { outline: 3px solid rgba(167,102,103,.45); outline-offset: 4px; }
@@ -2611,7 +2665,9 @@
       finalWishInput.value = "";
       finalType.textContent = "";
       finalMessageStep.classList.remove("is-done");
+      finalWishStep.classList.remove("is-transforming");
       blowCandleButton.disabled = false;
+      confirmWishButton.disabled = false;
       document.querySelectorAll(".final-spark").forEach(spark => spark.remove());
       document.querySelectorAll(".wish-star").forEach(star => star.remove());
       document.body.style.overflow = "hidden";
@@ -2631,12 +2687,19 @@
 
       // Dileği tarayıcı oturumunda sakla; mesajda gösterilmez.
       sessionStorage.setItem("birthdayWish", wish);
-      launchWishStar();
+      confirmWishButton.disabled = true;
+      finalWishStep.classList.add("is-transforming");
 
       setTimeout(() => {
+        launchWishStar();
+      }, 540);
+
+      setTimeout(() => {
+        finalWishStep.classList.remove("is-transforming");
+        confirmWishButton.disabled = false;
         finalWishStep.hidden = true;
         finalCakeStep.hidden = false;
-      }, 520);
+      }, 1500);
     });
 
     finalWishInput.addEventListener("keydown", event => {
@@ -2684,10 +2747,13 @@
     document.getElementById("final-restart").addEventListener("click", () => window.location.reload());
 
     function launchWishStar() {
+      const rect = finalWishInput.getBoundingClientRect();
       const star = document.createElement("span");
       star.className = "wish-star";
+      star.style.setProperty("--star-start-left", `${rect.left + rect.width / 2}px`);
+      star.style.setProperty("--star-start-top", `${rect.top + rect.height / 2}px`);
       document.body.appendChild(star);
-      setTimeout(() => star.remove(), 1350);
+      setTimeout(() => star.remove(), 1500);
     }
 
     function launchFinale() {
