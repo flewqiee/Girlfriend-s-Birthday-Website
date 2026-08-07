@@ -296,6 +296,31 @@
     .decor-38 { --size: 200px; --rotate: -18deg; --opacity: .44; top: 3855px; right: max(0px, calc(50% - 835px)); }
     .decor-39 { --size: 176px; --rotate: 7deg; --opacity: .48; top: 4760px; left: max(72px, calc(50% - 710px)); }
     .decor-40 { --size: 230px; --rotate: -12deg; --opacity: .4; top: 7050px; left: max(0px, calc(50% - 840px)); }
+    .decor-3, .decor-4, .decor-5, .decor-8, .decor-10, .decor-11, .decor-12, .decor-15, .decor-17, .decor-18, .decor-19, .decor-23, .decor-28, .decor-30, .decor-32, .decor-34, .decor-37, .decor-39 {
+      display: none;
+    }
+    .decor-1 { --size: 104px; top: 150px; left: max(22px, calc(50% - 730px)); }
+    .decor-2 { --size: 118px; top: 350px; right: max(34px, calc(50% - 740px)); }
+    .decor-22 { --size: 245px; top: 520px; left: max(0px, calc(50% - 875px)); }
+    .decor-36 { --size: 220px; top: 900px; right: max(0px, calc(50% - 875px)); }
+    .decor-6 { --size: 126px; top: 1280px; right: max(52px, calc(50% - 720px)); }
+    .decor-7 { --size: 250px; top: 1620px; left: max(0px, calc(50% - 880px)); }
+    .decor-9 { --size: 116px; top: 2020px; left: max(62px, calc(50% - 710px)); }
+    .decor-24 { --size: 230px; top: 2250px; right: max(0px, calc(50% - 880px)); left: auto; }
+    .decor-25 { --size: 86px; top: 2580px; right: max(90px, calc(50% - 660px)); }
+    .decor-26 { --size: 134px; top: 2910px; left: max(18px, calc(50% - 790px)); }
+    .decor-27 { --size: 230px; top: 3260px; right: max(0px, calc(50% - 880px)); }
+    .decor-13 { --size: 120px; top: 3660px; left: max(70px, calc(50% - 690px)); }
+    .decor-14 { --size: 220px; top: 3940px; right: max(32px, calc(50% - 780px)); }
+    .decor-38 { --size: 230px; top: 4400px; left: max(0px, calc(50% - 880px)); right: auto; }
+    .decor-16 { --size: 112px; top: 4830px; right: max(70px, calc(50% - 690px)); }
+    .decor-29 { --size: 210px; top: 5200px; right: max(0px, calc(50% - 850px)); }
+    .decor-20 { --size: 118px; top: 5600px; left: max(74px, calc(50% - 680px)); right: auto; }
+    .decor-21 { --size: 220px; top: 5940px; left: max(0px, calc(50% - 850px)); }
+    .decor-31 { --size: 200px; top: 6380px; right: max(48px, calc(50% - 760px)); left: auto; }
+    .decor-33 { --size: 230px; top: 6840px; left: max(0px, calc(50% - 880px)); right: auto; }
+    .decor-35 { --size: 205px; top: 7280px; right: max(0px, calc(50% - 850px)); }
+    .decor-40 { --size: 245px; top: 7720px; left: max(0px, calc(50% - 880px)); }
     .topbar {
       position: sticky;
       top: 0;
@@ -720,9 +745,23 @@
     .coupon:nth-child(2) { transform: rotate(-1deg); background: #f5ead9; }
     .coupon:nth-child(3) { transform: rotate(1deg); background: #edf2e8; }
 
-    .spotify-wrap { max-width: 760px; margin: 100px auto 0; text-align: center; }
-    .spotify-wrap p { color: var(--muted); font: 1.1rem var(--hand); }
-    #spotify-embed { min-height: 152px; overflow: hidden; border-radius: 16px; box-shadow: 0 13px 38px rgba(68,49,37,.12); }
+    .music-wrap { max-width: 760px; margin: 100px auto 0; text-align: center; }
+    .music-wrap p { color: var(--muted); font: 1.1rem var(--hand); }
+    .local-song-card {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 20px;
+      border: 1px dashed rgba(74,58,48,.22);
+      border-radius: 9px 18px 8px 16px;
+      background: rgba(255,250,240,.72);
+      box-shadow: 5px 7px 0 rgba(61,53,47,.06);
+      transform: rotate(-.7deg);
+    }
+    .local-song-card span {
+      color: var(--rose-dark);
+      font: 1.2rem var(--hand);
+    }
     footer { padding: 70px 0 38px; text-align: center; color: var(--muted); font: 1.1rem var(--hand); }
 
     .modal {
@@ -1244,10 +1283,13 @@
         </div>
       </section>
 
-      <section class="spotify-wrap" aria-label="Sayfanın şarkısı">
+      <section class="music-wrap" aria-label="Sayfanın şarkısı">
         <div class="section-label">sayfanın fon müziği</div>
-        <p>Tarayıcı otomatik sesi engellerse üstteki oynat düğmesine bir kez dokun.</p>
-        <div id="spotify-embed"></div>
+        <div class="local-song-card">
+          <span>My Kind of Woman</span>
+          <button class="text-button" id="music-restart" type="button">baştan sar</button>
+        </div>
+        <audio id="local-audio" src="assets/mykindofwoman.mp3" preload="auto" loop></audio>
       </section>
     </main>
 
@@ -1319,9 +1361,7 @@
     </div>
   </div>
 
-  <script src="https://open.spotify.com/embed/iframe-api/v1" async></script>
   <script>
-    const SONG_URI = "spotify:track:6jgkEbmQ2F2onEqsEhiliL";
     const VAULT_CODE = "Yıldız";
     const quizQuestions = [
       { question: "İlk tanıştığımız mevsim hangisiydi?", options: ["İlkbahar", "Yaz", "Sonbahar", "Kış"], answer: 1, hint: "Hava sıcaktı; biraz daha düşün." },
@@ -1342,25 +1382,8 @@
     const opening = document.getElementById("opening");
     const envelope = document.getElementById("open-envelope");
     const siteShell = document.getElementById("site-shell");
-    let spotifyController = null;
+    const localAudio = document.getElementById("local-audio");
     let musicPlaying = false;
-    let playWhenReady = false;
-
-    window.onSpotifyIframeApiReady = (IFrameAPI) => {
-      IFrameAPI.createController(document.getElementById("spotify-embed"), { uri: SONG_URI, width: "100%", height: 152 }, controller => {
-        spotifyController = controller;
-        if (playWhenReady) controller.play();
-        controller.addListener("playback_update", event => {
-          const state = event.data;
-          musicPlaying = !state.isPaused;
-          updateMusicButton();
-          if (state.duration && state.position >= state.duration - 900) {
-            controller.seek(0);
-            controller.play();
-          }
-        });
-      });
-    };
 
     function updateMusicButton() {
       const button = document.getElementById("music-toggle");
@@ -1368,11 +1391,24 @@
         ? '<svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M5 4h3.5v12H5V4Zm6.5 0H15v12h-3.5V4Z"/></svg>'
         : '<svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M6 4.5v11l9-5.5-9-5.5Z"/></svg>';
     }
+    function syncMusicState() {
+      musicPlaying = !localAudio.paused;
+      updateMusicButton();
+    }
+    function playLocalSong() {
+      localAudio.volume = 0.82;
+      localAudio.play().then(syncMusicState).catch(() => {
+        musicPlaying = false;
+        updateMusicButton();
+      });
+    }
+    localAudio.addEventListener("play", syncMusicState);
+    localAudio.addEventListener("pause", syncMusicState);
+    localAudio.addEventListener("ended", syncMusicState);
 
     envelope.addEventListener("click", () => {
       envelope.classList.add("is-opening");
-      playWhenReady = true;
-      if (spotifyController) spotifyController.play();
+      playLocalSong();
       setTimeout(() => {
         opening.classList.add("is-open");
         siteShell.classList.add("is-ready");
@@ -1382,8 +1418,11 @@
     });
 
     document.getElementById("music-toggle").addEventListener("click", () => {
-      if (!spotifyController) return;
-      musicPlaying ? spotifyController.pause() : spotifyController.play();
+      musicPlaying ? localAudio.pause() : playLocalSong();
+    });
+    document.getElementById("music-restart").addEventListener("click", () => {
+      localAudio.currentTime = 0;
+      playLocalSong();
     });
 
     document.getElementById("explore-button").addEventListener("click", () => {
