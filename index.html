@@ -712,13 +712,22 @@
       font: clamp(2.7rem, 5vw, 5.2rem)/.92 var(--serif);
       font-weight: 400;
       letter-spacing: -.035em;
+      overflow-wrap: anywhere;
     }
     .keepsake-card p { max-width: 430px; color: var(--muted); line-height: 1.75; }
     .time-card {
+      display: grid;
+      align-content: start;
       border-radius: 28px 10px 30px 12px;
       background:
         linear-gradient(rgba(255,250,240,.84), rgba(255,250,240,.84)),
         repeating-linear-gradient(0deg, transparent 0 24px, rgba(167,102,103,.08) 24px 25px);
+    }
+    .time-capsule-img {
+      width: min(280px, 76%);
+      margin: 20px 0 0 auto;
+      filter: drop-shadow(0 18px 24px rgba(61,42,31,.16));
+      transform: rotate(2deg);
     }
     .picnic-card {
       display: grid;
@@ -760,10 +769,7 @@
     }
 
     .wish-coupons {
-      display: grid;
-      grid-template-columns: minmax(0, .95fr) minmax(300px, 1.05fr);
-      gap: 42px;
-      align-items: center;
+      display: block;
       padding: 110px 0 70px;
     }
     .cake-card {
@@ -784,19 +790,20 @@
     .cake-card p { max-width: 390px; color: var(--muted); line-height: 1.75; }
     .cake-card.final-cake-card {
       display: grid;
-      grid-template-columns: minmax(0, .8fr) minmax(280px, 1fr);
-      gap: 24px;
+      grid-template-columns: minmax(0, .74fr) minmax(360px, 1.26fr);
+      gap: clamp(28px, 5vw, 70px);
       align-items: center;
       min-height: 560px;
       border-radius: 28px 10px 30px 12px;
     }
+    .final-cake-card h2 { overflow-wrap: anywhere; }
     .final-cake-stage {
       display: grid;
       justify-items: center;
       gap: 18px;
     }
     .birthday-cake-img.final-cake-img {
-      width: min(430px, 92%);
+      width: min(560px, 96%);
       margin: 0;
       filter: drop-shadow(0 28px 34px rgba(61,42,31,.2));
       transform: rotate(.8deg);
@@ -1076,6 +1083,12 @@
     .letter-sign { margin-top: 32px; text-align: right; color: var(--rose-dark); font: 1.55rem var(--hand); }
 
     .capsule-question { text-align: center; }
+    .capsule-layout {
+      display: grid;
+      grid-template-columns: minmax(220px, .78fr) minmax(300px, 1fr);
+      gap: 26px;
+      align-items: start;
+    }
     .promise-actions {
       display: flex;
       flex-wrap: wrap;
@@ -1085,13 +1098,13 @@
     }
     .capsule-envelopes {
       display: grid;
-      grid-template-columns: repeat(5, minmax(110px, 1fr));
-      gap: 14px;
+      grid-template-columns: 1fr;
+      gap: 12px;
       margin-top: 26px;
     }
     .capsule-envelope {
-      min-height: 150px;
-      padding: 20px 14px;
+      min-height: 108px;
+      padding: 18px 16px;
       border: 1px solid rgba(74,58,48,.18);
       border-radius: 8px 16px 8px 14px;
       color: var(--ink);
@@ -1099,6 +1112,7 @@
       box-shadow: 5px 7px 0 rgba(61,53,47,.08);
       cursor: pointer;
       font: 1.05rem/1.2 var(--hand);
+      overflow-wrap: anywhere;
       transform: rotate(var(--tilt));
       transition: transform .2s ease, box-shadow .2s ease;
     }
@@ -1107,26 +1121,46 @@
       box-shadow: 7px 10px 0 rgba(61,53,47,.1);
     }
     .capsule-letter {
-      margin-top: 24px;
-      padding: 24px;
-      border: 1px dashed rgba(74,58,48,.22);
-      background: #fff8e8;
-      box-shadow: inset 0 0 0 8px rgba(255,250,240,.52);
-      font: 1.15rem/1.6 var(--hand);
+      min-height: 470px;
+      padding: clamp(24px, 4vw, 42px);
+      border: 1px solid rgba(74,58,48,.14);
+      border-radius: 24px 10px 28px 12px;
+      background:
+        radial-gradient(circle at 14% 20%, rgba(185,151,91,.12), transparent 72px),
+        radial-gradient(circle at 86% 72%, rgba(167,102,103,.09), transparent 90px),
+        repeating-linear-gradient(-2deg, transparent 0 28px, rgba(119,72,75,.07) 28px 29px),
+        #fff8e8;
+      box-shadow: 0 18px 34px rgba(61,42,31,.12), inset 0 0 0 8px rgba(255,250,240,.52);
+      font: 1.28rem/1.7 var(--hand);
+      transform: rotate(.7deg);
+      white-space: pre-line;
+    }
+    .capsule-letter.is-empty {
+      display: grid;
+      place-items: center;
+      color: rgba(119,72,75,.72);
+      text-align: center;
     }
     .picnic-modal-card {
-      width: min(960px, 100%);
+      width: min(1040px, 100%);
       background:
         linear-gradient(rgba(255,250,240,.28), rgba(255,250,240,.28)),
         url("assets/tablecloth.png") center / cover,
         #fff8e8;
     }
-    .picnic-table {
+    .picnic-layout {
       display: grid;
-      grid-template-columns: repeat(5, minmax(110px, 1fr));
-      gap: 16px;
+      grid-template-columns: minmax(230px, .74fr) minmax(330px, 1fr);
+      gap: 24px;
       align-items: start;
       margin-top: 24px;
+    }
+    .picnic-table {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(110px, 1fr));
+      gap: 16px;
+      align-items: start;
+      margin-top: 0;
     }
     .picnic-envelope {
       min-height: 170px;
@@ -1150,12 +1184,21 @@
       text-align: center;
       color: var(--rose-dark);
       font: 1.05rem var(--hand);
+      overflow-wrap: anywhere;
     }
     .picnic-reveal {
-      margin-top: 26px;
+      min-height: 430px;
+      margin-top: 0;
       padding: 20px;
       border: 1px dashed rgba(74,58,48,.24);
       background: rgba(255,250,240,.86);
+    }
+    .picnic-reveal.is-empty {
+      display: grid;
+      place-items: center;
+      color: var(--rose-dark);
+      font: 1.35rem/1.35 var(--hand);
+      text-align: center;
     }
     .picnic-reveal img {
       width: min(100%, 620px);
@@ -1208,6 +1251,8 @@
       pointer-events: none;
     }
     .final-overlay.is-dark .final-scene::before { opacity: 0; animation: none; }
+    .final-overlay.is-dark .final-scene img { opacity: 0; transition: opacity .35s ease; }
+    .final-overlay.is-dark #blow-candle-button { opacity: 0; pointer-events: none; }
     @keyframes candleGlow {
       from { opacity: .72; transform: translateX(-50%) scale(.96); }
       to { opacity: 1; transform: translateX(-50%) scale(1.04); }
@@ -1283,8 +1328,9 @@
       .trail-grid { grid-template-columns: 1fr 1fr; }
       .memory-strip { grid-template-columns: 1fr; }
       .memory-photo { width: min(520px, 100%); margin: auto; }
-      .cake-card.final-cake-card { grid-template-columns: 1fr; }
+      .cake-card.final-cake-card, .capsule-layout, .picnic-layout { grid-template-columns: 1fr; }
       .capsule-envelopes, .picnic-table { grid-template-columns: repeat(2, minmax(120px, 1fr)); }
+      .capsule-letter, .picnic-reveal { min-height: 300px; }
     }
     @media (max-width: 620px) {
       .floating-decor { width: min(var(--size), 52px); opacity: .3; }
@@ -1325,6 +1371,7 @@
       .keepsake-row { padding-top: 70px; }
       .keepsake-card { min-height: 0; }
       .capsule-envelopes, .picnic-table { grid-template-columns: 1fr; }
+      .capsule-envelope, .picnic-envelope { min-height: 118px; }
       .final-flame { top: 4%; }
       .coupon { padding: 22px 18px; }
       .coupon::before { left: 48px; }
@@ -1542,6 +1589,7 @@
           <h2 id="keepsake-title">Bazı zarflar zamanı gelince açılır.</h2>
           <p>Burada bugünün dışına taşan küçük mektuplar var. Hemen tüketilecek şeyler değil; bazıları kötü bir güne, bazıları özlenen bir ana saklandı.</p>
           <button class="primary-button" type="button" data-open="capsule-modal">Zarflara söz ver</button>
+          <img class="time-capsule-img" src="assets/timecapsule.png" alt="">
         </article>
         <article class="keepsake-card picnic-card">
           <div class="picnic-copy">
@@ -1566,11 +1614,6 @@
           <div class="final-cake-stage">
             <img class="birthday-cake-img final-cake-img" src="assets/birthdaycake.png" alt="Mumlu doğum günü pastası">
           </div>
-        </div>
-        <div class="coupon-stack" aria-label="Doğum günü kuponları">
-          <div class="coupon"><strong>Bir kahve ve uzun yürüyüş</strong><span>Ne zaman isterse kullanılabilir; konuşulacak konular sınırsız.</span></div>
-          <div class="coupon"><strong>Seçtiği film gecesi</strong><span>Atıştırmalıklar, battaniye ve tamamen onun seçtiği film.</span></div>
-          <div class="coupon"><strong>Plansız küçük kaçamak</strong><span>Bir gün seçsin; rotayı beraber yolda bulursunuz.</span></div>
         </div>
       </section>
 
@@ -1667,14 +1710,16 @@
         <p class="modal-kicker">saklanmış günler</p>
         <h2>Zaman kapsülü açıldı.</h2>
         <p class="modal-lead">Her zarf başka bir güne saklandı. Açtığında yanında olamasam bile cümlelerim yanında olsun.</p>
-        <div class="capsule-envelopes">
-          <button class="capsule-envelope" type="button" style="--env:#f3dfd4;--tilt:-3deg" data-capsule="birthday">doğum gününde aç</button>
-          <button class="capsule-envelope" type="button" style="--env:#dfe8d8;--tilt:2deg" data-capsule="sad">kötü hissettiğinde aç</button>
-          <button class="capsule-envelope" type="button" style="--env:#efe0bd;--tilt:-1deg" data-capsule="lonely">yalnız hissettiğinde aç</button>
-          <button class="capsule-envelope" type="button" style="--env:#e4caca;--tilt:3deg" data-capsule="year">bir yıl sonra aç</button>
-          <button class="capsule-envelope" type="button" style="--env:#e8dfcf;--tilt:-2deg" data-capsule="angry">bana sinirlendiğinde aç</button>
+        <div class="capsule-layout">
+          <div class="capsule-envelopes">
+            <button class="capsule-envelope" type="button" style="--env:#f3dfd4;--tilt:-3deg" data-capsule="birthday">doğum gününde aç</button>
+            <button class="capsule-envelope" type="button" style="--env:#dfe8d8;--tilt:2deg" data-capsule="sad">kötü hissettiğinde aç</button>
+            <button class="capsule-envelope" type="button" style="--env:#efe0bd;--tilt:-1deg" data-capsule="lonely">yalnız hissettiğinde aç</button>
+            <button class="capsule-envelope" type="button" style="--env:#e4caca;--tilt:3deg" data-capsule="year">bir yıl sonra aç</button>
+            <button class="capsule-envelope" type="button" style="--env:#e8dfcf;--tilt:-2deg" data-capsule="angry">bana sinirlendiğinde aç</button>
+          </div>
+          <div class="capsule-letter is-empty" id="capsule-letter">Bir zarf seç; kağıt burada açılacak.</div>
         </div>
-        <div class="capsule-letter" id="capsule-letter" hidden></div>
       </div>
     </div>
   </div>
@@ -1685,26 +1730,29 @@
       <p class="modal-kicker">masa örtüsü açıldı</p>
       <h2 id="picnic-title">Sepetten çıkan küçük zarflar.</h2>
       <p class="modal-lead">Her zarfın üstündeki küçük resim içerideki anıya ipucu veriyor.</p>
-      <div class="picnic-table">
-        <button class="picnic-envelope" type="button" style="--tilt:-3deg" data-full="assets/yaglamazarf.jpeg" data-fallback="assets/yaglamazarf.jpg" data-caption="Bu zarf biraz yağlama kokuyor, biraz da beraber gülme." aria-label="Yağlama zarfını aç">
-          <img src="assets/yaglama.png" alt=""><span>yağlama</span>
-        </button>
-        <button class="picnic-envelope" type="button" style="--tilt:2deg" data-full="assets/kisszarf.jpeg" data-fallback="assets/kisszarf.jpg" data-caption="Bazı fotoğraflar kalbin en kısa cümlesi gibi." aria-label="Kiss zarfını aç">
-          <img src="assets/kiss.png" alt=""><span>kiss</span>
-        </button>
-        <button class="picnic-envelope" type="button" style="--tilt:-1deg" data-full="assets/flightticketzarf.png" data-fallback="assets/flighttickerzarf.png" data-caption="Gitmek istediğimiz her yer, yanında olduğumda biraz daha yakın." aria-label="Uçak bileti zarfını aç">
-          <img src="assets/flightticket.png" alt=""><span>flight ticket</span>
-        </button>
-        <button class="picnic-envelope" type="button" style="--tilt:3deg" data-message="Bu zarf şimdilik soru işareti. Belki içine ileride en beklenmedik anımızı koyarız. Şimdilik sadece şunu saklıyor: seninle her şeyin devamı var." aria-label="Soru işaretli zarfı aç">
-          <span style="font-size:3rem;margin-top:26px;">???</span>
-        </button>
-        <button class="picnic-envelope" type="button" style="--tilt:-2deg" data-full="assets/birthdaycake.png" data-caption="İyi ki doğdun sevgilim. Bu pastanın en güzel yanı mumları değil, dileği." aria-label="Doğum günü zarfını aç">
-          <img src="assets/birthdaycake.png" alt=""><span>doğum günü</span>
-        </button>
-      </div>
-      <div class="picnic-reveal" id="picnic-reveal" hidden>
-        <img id="picnic-reveal-img" src="" alt="">
-        <p id="picnic-reveal-text"></p>
+      <div class="picnic-layout">
+        <div class="picnic-table">
+          <button class="picnic-envelope" type="button" style="--tilt:-3deg" data-full="assets/yaglamazarf.jpeg" data-fallback="assets/yaglamazarf.jpg" data-caption="Bu zarf biraz yağlama kokuyor, biraz da beraber gülme." aria-label="Yağlama zarfını aç">
+            <img src="assets/yaglama.png" alt=""><span>yağlama</span>
+          </button>
+          <button class="picnic-envelope" type="button" style="--tilt:2deg" data-full="assets/kisszarf.jpeg" data-fallback="assets/kisszarf.jpg" data-caption="Bazı fotoğraflar kalbin en kısa cümlesi gibi." aria-label="Kiss zarfını aç">
+            <img src="assets/kiss.png" alt=""><span>kiss</span>
+          </button>
+          <button class="picnic-envelope" type="button" style="--tilt:-1deg" data-full="assets/flighttickerzarf.jpg" data-fallback="assets/flightticketzarf.jpg" data-caption="Gitmek istediğimiz her yer, yanında olduğumda biraz daha yakın." aria-label="Uçak bileti zarfını aç">
+            <img src="assets/flightticket.png" alt=""><span>flight ticket</span>
+          </button>
+          <button class="picnic-envelope" type="button" style="--tilt:3deg" data-message="Bu zarf şimdilik soru işareti. Belki içine ileride en beklenmedik anımızı koyarız. Şimdilik sadece şunu saklıyor: seninle her şeyin devamı var." aria-label="Soru işaretli zarfı aç">
+            <span style="font-size:3rem;margin-top:26px;">???</span>
+          </button>
+          <button class="picnic-envelope" type="button" style="--tilt:-2deg" data-full="assets/birthdaycake.png" data-caption="İyi ki doğdun sevgilim. Bu pastanın en güzel yanı mumları değil, dileği." aria-label="Doğum günü zarfını aç">
+            <img src="assets/birthdaycake.png" alt=""><span>doğum günü</span>
+          </button>
+        </div>
+        <div class="picnic-reveal is-empty" id="picnic-reveal">
+          <span id="picnic-empty">Bir zarf seç; fotoğraf burada açılacak.</span>
+          <img id="picnic-reveal-img" src="" alt="" hidden>
+          <p id="picnic-reveal-text"></p>
+        </div>
       </div>
     </div>
   </div>
@@ -2027,11 +2075,11 @@
     });
 
     const capsuleMessages = {
-      birthday: "Bugün senin günün. Benim için de öyle, çünkü dünyaya geldiğin gün benim hayatıma sonradan en güzel anlamlardan birini getirdi. İyi ki varsın sevgilim.",
-      sad: "Kötü hissettiğin bir gün bunu açtıysan, önce derin bir nefes al. Her şeyi hemen çözmek zorunda değilsin. Ben senin kalbinin ne kadar güzel olduğunu biliyorum.",
-      lonely: "Yalnız hissettiğinde şunu hatırla: bir yerlerde seni düşünen, sesini özleyen, iyi misin diye içinden geçiren biri var. O kişi benim.",
-      year: "Bir yıl geçtiyse ve hâlâ buradaysak, bu küçük sayfa görevini yapmış demektir. Geçen zamana rağmen aynı cümleyi tekrar bırakıyorum: seni çok seviyorum.",
-      angry: "Bana sinirlendiysen haklı olma ihtimalin yüksek. Yine de bu zarf küçük bir barış bayrağı: gel konuşalım, çünkü seni kırmaktan daha çok hiçbir şeyi istemem."
+      birthday: "Bugün senin günün.\n\nBenim için de öyle, çünkü dünyaya geldiğin gün benim hayatıma sonradan en güzel anlamlardan birini getirdi. Bugün sadece yaş aldığın bir gün değil; benim en sevdiğim insanın varlığını kutladığım gün.\n\nDilerim bu yıl kalbin daha hafif, gülüşün daha sık, hayallerin daha cesur olur. Ben de mümkün olan her yerde yanında olayım. İyi ki doğdun sevgilim.",
+      sad: "Kötü hissettiğin bir gün bunu açtıysan, önce derin bir nefes al.\n\nHer şeyi hemen çözmek zorunda değilsin. Bazen insanın sadece biraz sarılmaya, biraz susmaya, biraz da anlaşılmaya ihtiyacı olur. Ben senin kalbinin ne kadar güzel olduğunu biliyorum; en dağınık günlerinde bile.\n\nBugün zor geçiyorsa, bu zarf küçük bir hatırlatma olsun: geçecek. Ve ben seni sadece neşeliyken değil, yorulmuşken de seviyorum.",
+      lonely: "Yalnız hissettiğinde şunu hatırla:\n\nBir yerlerde seni düşünen, sesini özleyen, iyi misin diye içinden geçiren biri var. O kişi benim.\n\nYanında fiziksel olarak olamadığım anlarda bile, kalbimin bir köşesi sende kalıyor. Bu zarfı açtığın an ben yanında yokmuşum gibi görünse de, aslında sana doğru uzatılmış küçük bir el gibi düşün.",
+      year: "Bir yıl geçtiyse ve hâlâ buradaysak, bu küçük sayfa görevini yapmış demektir.\n\nBelki bazı şeyler değişti, belki bazı günler çok güzel geçti, bazıları biraz zorladı. Ama bu zarfı saklamamın sebebi şu: zaman geçse de sana söylemek istediğim en basit şey değişmiyor.\n\nSeni seviyorum. Bir yıl önce de, bugün de, umarım bundan sonra da aynı içtenlikle.",
+      angry: "Bana sinirlendiysen, önce şunu kabul edeyim: haklı olma ihtimalin yüksek.\n\nBazen beceriksizce konuşabilirim, bazen seni kırdığımı geç fark edebilirim. Ama bilmeni istediğim şey şu: senin kalbini incitmek benim için hafife alınacak bir şey değil.\n\nBu zarf küçük bir barış bayrağı olsun. Gel konuşalım. Çünkü ben haklı çıkmayı değil, seni kaybetmemeyi önemsiyorum."
     };
     document.querySelectorAll("[data-promise]").forEach(button => {
       button.addEventListener("click", () => {
@@ -2042,7 +2090,7 @@
     document.querySelectorAll("[data-capsule]").forEach(button => {
       button.addEventListener("click", () => {
         const letter = document.getElementById("capsule-letter");
-        letter.hidden = false;
+        letter.classList.remove("is-empty");
         letter.textContent = capsuleMessages[button.dataset.capsule];
       });
     });
@@ -2052,7 +2100,9 @@
         const reveal = document.getElementById("picnic-reveal");
         const image = document.getElementById("picnic-reveal-img");
         const text = document.getElementById("picnic-reveal-text");
-        reveal.hidden = false;
+        const empty = document.getElementById("picnic-empty");
+        reveal.classList.remove("is-empty");
+        empty.hidden = true;
         text.textContent = button.dataset.caption || button.dataset.message || "";
         if (button.dataset.message) {
           image.hidden = true;
