@@ -2058,8 +2058,8 @@
       position: absolute;
       inset: 0;
       background:
-        linear-gradient(180deg, rgba(10,16,30,.08), rgba(10,13,24,.32)),
-        url("lofi-room.jpg") center / cover;
+        radial-gradient(circle at 78% 58%, rgba(255,190,112,.18), transparent 14rem),
+        linear-gradient(180deg, #151c2e 0%, #1c2238 44%, #171a27 100%);
       transform: scale(1.025);
       animation: roomBreath 8s ease-in-out infinite alternate;
     }
@@ -2073,6 +2073,264 @@
         linear-gradient(180deg, rgba(12,18,34,.12), rgba(10,13,24,.4));
       pointer-events: none;
     }
+    .room-wall-line {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(90deg, transparent 0 18%, rgba(255,248,232,.05) 18.2%, transparent 18.4%),
+        linear-gradient(90deg, transparent 0 82%, rgba(255,248,232,.05) 82.2%, transparent 82.4%),
+        linear-gradient(180deg, transparent 0 68%, rgba(255,248,232,.06) 68.2%, transparent 68.4%);
+      opacity: .58;
+    }
+    .room-window {
+      position: absolute;
+      left: 18%;
+      top: 7%;
+      width: 48%;
+      height: 48%;
+      border: 8px solid rgba(29,22,28,.82);
+      border-radius: 5px 8px 6px 9px;
+      background:
+        linear-gradient(180deg, #243f66 0%, #59436b 42%, #d07778 74%, #172337 100%);
+      box-shadow: 0 18px 60px rgba(3,8,18,.28), inset 0 0 0 2px rgba(255,248,232,.08);
+      overflow: hidden;
+    }
+    .room-window::before,
+    .room-window::after {
+      content: "";
+      position: absolute;
+      background: rgba(14,18,28,.72);
+    }
+    .room-window::before { top: 0; bottom: 0; left: 50%; width: 7px; transform: translateX(-50%); }
+    .room-window::after { left: 0; right: 0; top: 58%; height: 6px; }
+    .moon {
+      position: absolute;
+      right: 13%;
+      top: 12%;
+      width: 54px;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: #f7e7b6;
+      box-shadow: 0 0 28px rgba(247,231,182,.52);
+    }
+    .moon::after {
+      content: "";
+      position: absolute;
+      left: 16px;
+      top: -2px;
+      width: 54px;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: #294368;
+    }
+    .star {
+      position: absolute;
+      width: 3px;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: rgba(255,248,232,.8);
+      box-shadow: 0 0 8px rgba(255,248,232,.55);
+      animation: roomStar 2.4s ease-in-out infinite alternate;
+    }
+    .star-1 { left: 16%; top: 15%; }
+    .star-2 { left: 38%; top: 20%; animation-delay: .4s; }
+    .star-3 { left: 73%; top: 30%; animation-delay: .8s; }
+    .star-4 { left: 58%; top: 12%; animation-delay: 1.2s; }
+    @keyframes roomStar { to { opacity: .35; transform: scale(.7); } }
+    .city {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 32%;
+      background:
+        linear-gradient(90deg, transparent 0 5%, #182239 5% 12%, transparent 12% 16%, #121a2e 16% 24%, transparent 24% 28%, #1c2742 28% 40%, transparent 40% 46%, #141d32 46% 58%, transparent 58% 63%, #1d2944 63% 72%, transparent 72% 78%, #11182a 78% 92%, transparent 92%),
+        linear-gradient(180deg, transparent, rgba(8,12,22,.88));
+    }
+    .city::after {
+      content: "";
+      position: absolute;
+      inset: 12% 5% 18%;
+      background:
+        radial-gradient(circle at 12% 34%, #f7d78b 0 2px, transparent 3px),
+        radial-gradient(circle at 24% 60%, #f7d78b 0 2px, transparent 3px),
+        radial-gradient(circle at 42% 28%, #b9d7ff 0 2px, transparent 3px),
+        radial-gradient(circle at 56% 55%, #f7d78b 0 2px, transparent 3px),
+        radial-gradient(circle at 70% 40%, #b9d7ff 0 2px, transparent 3px),
+        radial-gradient(circle at 86% 58%, #f7d78b 0 2px, transparent 3px);
+      opacity: .85;
+    }
+    .curtain {
+      position: absolute;
+      top: 5%;
+      width: 11%;
+      height: 55%;
+      border-radius: 999px 999px 12px 12px;
+      background:
+        repeating-linear-gradient(90deg, rgba(255,248,232,.08) 0 5px, transparent 5px 13px),
+        linear-gradient(180deg, rgba(91,71,101,.78), rgba(38,36,61,.9));
+      filter: drop-shadow(0 8px 16px rgba(4,8,16,.22));
+    }
+    .curtain-left { left: 13%; transform: rotate(1deg); }
+    .curtain-right { left: 62%; transform: rotate(-1deg); }
+    .room-bed {
+      position: absolute;
+      right: 8%;
+      bottom: 10%;
+      width: 54%;
+      height: 22%;
+      border-radius: 26px 10px 10px 18px;
+      background:
+        radial-gradient(ellipse at 28% 0, rgba(255,177,116,.7), transparent 30%),
+        linear-gradient(180deg, #6d7893, #233046);
+      box-shadow: 0 18px 32px rgba(4,8,16,.34);
+      transform: rotate(-1deg);
+    }
+    .room-bed::before {
+      content: "";
+      position: absolute;
+      right: 6%;
+      top: -28%;
+      width: 34%;
+      height: 42%;
+      border-radius: 60px 22px 24px 18px;
+      background: #9ca7bd;
+      box-shadow: -90px 16px 0 -10px rgba(240,177,136,.62);
+    }
+    .side-table {
+      position: absolute;
+      right: 4%;
+      bottom: 8%;
+      width: 13%;
+      height: 18%;
+      border-radius: 8px 10px 3px 3px;
+      background: linear-gradient(180deg, #5b3f44, #2f2734);
+      box-shadow: 0 12px 26px rgba(4,8,16,.35);
+    }
+    .lamp {
+      position: absolute;
+      right: 6%;
+      bottom: 25%;
+      width: 58px;
+      height: 84px;
+    }
+    .lamp::before {
+      content: "";
+      position: absolute;
+      left: 18px;
+      bottom: 0;
+      width: 7px;
+      height: 44px;
+      background: #5c4a43;
+    }
+    .lamp::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 58px;
+      height: 38px;
+      border-radius: 24px 24px 14px 14px;
+      background: #ffe2a0;
+      box-shadow: 0 0 46px rgba(255,198,120,.52);
+    }
+    .desk {
+      position: absolute;
+      left: 5%;
+      bottom: 8%;
+      width: 18%;
+      height: 28%;
+      border-radius: 5px 10px 3px 3px;
+      background: linear-gradient(180deg, #514250, #272736);
+      box-shadow: 0 14px 28px rgba(4,8,16,.34);
+    }
+    .coffee {
+      position: absolute;
+      left: 12%;
+      bottom: 36%;
+      width: 48px;
+      height: 34px;
+      border-radius: 6px 6px 18px 18px;
+      background: #d4b58f;
+      box-shadow: inset 0 8px 0 rgba(72,45,36,.72), 0 8px 18px rgba(4,8,16,.24);
+    }
+    .coffee::after {
+      content: "";
+      position: absolute;
+      right: -13px;
+      top: 9px;
+      width: 18px;
+      height: 15px;
+      border: 4px solid #d4b58f;
+      border-left: 0;
+      border-radius: 0 12px 12px 0;
+    }
+    .steam {
+      position: absolute;
+      left: 13%;
+      bottom: 43%;
+      width: 9px;
+      height: 56px;
+      border-radius: 50%;
+      border-left: 2px solid rgba(255,248,232,.48);
+      filter: blur(.2px);
+      animation: steamRise 3s ease-in-out infinite;
+    }
+    .steam-2 { left: 14.8%; height: 48px; animation-delay: .7s; }
+    .steam-3 { left: 16.2%; height: 62px; animation-delay: 1.3s; }
+    @keyframes steamRise {
+      0% { opacity: 0; transform: translateY(12px) rotate(8deg); }
+      35% { opacity: .75; }
+      100% { opacity: 0; transform: translateY(-28px) rotate(-10deg); }
+    }
+    .cat {
+      position: absolute;
+      right: 24%;
+      bottom: 31%;
+      width: 92px;
+      height: 54px;
+      border-radius: 48px 48px 28px 28px;
+      background: linear-gradient(180deg, #3a3d46, #171923);
+      box-shadow: 0 10px 20px rgba(4,8,16,.28);
+    }
+    .cat::before {
+      content: "";
+      position: absolute;
+      left: 4px;
+      top: -20px;
+      width: 42px;
+      height: 38px;
+      border-radius: 50%;
+      background: #252834;
+      box-shadow: 10px 8px 0 #171923;
+    }
+    .cat::after {
+      content: "";
+      position: absolute;
+      left: 4px;
+      top: -28px;
+      width: 34px;
+      height: 22px;
+      background:
+        linear-gradient(135deg, #252834 0 46%, transparent 47%),
+        linear-gradient(225deg, #252834 0 46%, transparent 47%);
+      background-size: 50% 100%;
+      background-repeat: no-repeat;
+      background-position: left, right;
+    }
+    .cat-tail {
+      position: absolute;
+      right: -24px;
+      top: 13px;
+      width: 42px;
+      height: 36px;
+      border-top: 8px solid #1d202a;
+      border-right: 8px solid #1d202a;
+      border-radius: 50%;
+      transform: rotate(12deg);
+      animation: tailMove 2.7s ease-in-out infinite alternate;
+    }
+    @keyframes tailMove { to { transform: rotate(-6deg); } }
     .lofi-room::after {
       content: "";
       position: absolute;
@@ -2268,7 +2526,35 @@
       to { opacity: 0; transform: translate(-50%, -50%) scale(42); }
     }
     @media (max-width: 620px) {
-      .lofi-room { background-position: center; }
+      .room-window {
+        left: 8%;
+        top: 8%;
+        width: 84%;
+        height: 42%;
+      }
+      .curtain-left { left: 2%; width: 13%; }
+      .curtain-right { left: 86%; width: 13%; }
+      .room-bed {
+        right: 4%;
+        bottom: 13%;
+        width: 78%;
+        height: 18%;
+      }
+      .desk {
+        left: 3%;
+        bottom: 10%;
+        width: 30%;
+        height: 22%;
+      }
+      .coffee { left: 12%; bottom: 31%; transform: scale(.82); }
+      .steam { bottom: 37%; }
+      .cat {
+        right: 18%;
+        bottom: 29%;
+        transform: scale(.82);
+      }
+      .side-table,
+      .lamp { display: none; }
       .lofi-caption { display: none; }
       .intro-phone {
         right: 50%;
@@ -2285,7 +2571,28 @@
   <a class="skip-link" href="#main">İçeriğe geç</a>
 
   <section class="lofi-intro" id="lofi-intro" aria-label="Umut'tan gelen mesaj">
-    <div class="lofi-room" aria-hidden="true"></div>
+    <div class="lofi-room" aria-hidden="true">
+      <div class="room-wall-line"></div>
+      <div class="room-window">
+        <span class="moon"></span>
+        <span class="star star-1"></span>
+        <span class="star star-2"></span>
+        <span class="star star-3"></span>
+        <span class="star star-4"></span>
+        <span class="city"></span>
+      </div>
+      <span class="curtain curtain-left"></span>
+      <span class="curtain curtain-right"></span>
+      <div class="desk"></div>
+      <span class="coffee"></span>
+      <span class="steam steam-1"></span>
+      <span class="steam steam-2"></span>
+      <span class="steam steam-3"></span>
+      <div class="room-bed"></div>
+      <div class="cat"><span class="cat-tail"></span></div>
+      <span class="side-table"></span>
+      <span class="lamp"></span>
+    </div>
     <p class="lofi-caption">gece biraz sessizdi. sonra telefonun ekranı yandı.</p>
     <div class="intro-phone" id="intro-phone">
       <div class="phone-screen">
