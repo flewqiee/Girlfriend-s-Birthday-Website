@@ -47,140 +47,6 @@
       pointer-events: none;
       z-index: 20;
       opacity: .24;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 140 140' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves=[...]%3E%3C/filter%3E%3C/svg%3E");
-      mix-blend-mode: multiply;
-    }
-
-    /* (the rest of original CSS is preserved unchanged) */
-  </style>
-
-  <!-- Handmade background override: subtle grain + vignette, performant -->
-  <style id="bg-handmade-override">
-    /* Disable the heavy fractal overlay from original styles */
-    body::before { display: none !important; }
-
-    /* Add a simple, handmade grain element inserted into the DOM */
-    .grain {
-      position: fixed;
-      inset: 0;
-      z-index: 12;
-      pointer-events: none;
-      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64"><rect width="64" height="64" fill="rgba(0,0,0,0.02)"/><g fill="rgba(0,0,0,0.02)">%3Ccircle cx="6" cy="10" r="1"/%3E%3Ccircle cx="22" cy="14" r="1"/%3E%3Ccircle cx="44" cy="6" r="1"/%3E%3Ccircle cx="50" cy="28" r="1"/%3E%3Ccircle cx="12" cy="40" r="1"/%3E%3Ccircle cx="36" cy="36" r="1"/%3E%3Ccircle cx="58" cy="46" r="1"/%3E%3C/g></svg>');
-      opacity: 0.18;
-      mix-blend-mode: multiply;
-      transform: translateZ(0);
-      background-size: 64px 64px;
-      will-change: opacity;
-    }
-
-    /* Warm vignette to frame the page like handmade paper */
-    .vignette {
-      position: fixed;
-      inset: 0;
-      z-index: 10;
-      pointer-events: none;
-      background: radial-gradient(ellipse at 50% 60%, rgba(255,250,240,0) 35%, rgba(61,42,31,0.06) 75%);
-      mix-blend-mode: multiply;
-    }
-
-    /* A soft paper texture (very subtle) using CSS filter on a tiny SVG */
-    .paper-texture {
-      position: fixed;
-      inset: 0;
-      z-index: 11;
-      pointer-events: none;
-      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="6" height="6" viewBox="0 0 6 6"><rect width="6" height="6" fill="%23fff8f0"/><path d="M0 0h1v1H0zM3 4h1v1H3z" fill="rgba(0,0,0,0.02)"/></svg>');
-      background-repeat: repeat;
-      opacity: 0.16;
-      mix-blend-mode: overlay;
-      background-size: 6px 6px;
-    }
-
-    /* Reduce intensity and animations for small screens and reduced-motion preferences */
-    @media (max-width: 640px) {
-      .grain, .paper-texture { opacity: 0.09; }
-      .vignette { opacity: 0.6; }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      .grain { opacity: 0.12; }
-    }
-
-    /* Optional: handmade irregular ink blots — static, non-repeating, lightweight */
-    .ink-blot {
-      position: fixed;
-      width: 260px; height: 160px;
-      left: 8vw; top: 6vh;
-      z-index: 9;
-      pointer-events: none;
-      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 160"><g fill="%2377484b" opacity="0.04"><ellipse cx="40" cy="30" rx="38" ry="22"/><ellipse cx="120" cy="50" rx="60" ry="34"/><ellipse cx="200" cy="20" rx="36" ry="20"/></g></svg>');
-      background-size: contain;
-      background-repeat: no-repeat;
-      transform: rotate(-6deg);
-      opacity: 0.95;
-    }
-
-    /* Ensure main content stacks above our background layers */
-    main, footer, .topbar, .opening { position: relative; z-index: 20; }
-  </style>
-</head>
-<body>
-  <!-- grain and texture layers: placed early so everything overlays properly -->
-  <div class="vignette" aria-hidden="true"></div>
-  <div class="paper-texture" aria-hidden="true"></div>
-  <div class="grain" aria-hidden="true"></div>
-  <div class="ink-blot" aria-hidden="true"></div>
-
-  <!-- original page content follows -->
-
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#eee5d5">
-  <title>Doğum Günün Kutlu Olsun</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Gochi+Hand&family=Italiana&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --oat: #eee5d5;
-      --paper: #fffaf0;
-      --paper-deep: #f7eddd;
-      --ink: #3d352f;
-      --muted: #786d64;
-      --rose: #a76667;
-      --rose-dark: #77484b;
-      --sage: #71806a;
-      --gold: #b9975b;
-      --line: rgba(74, 58, 48, .18);
-      --shadow: 0 22px 70px rgba(68, 49, 37, .14);
-      --hand: "Gochi Hand", cursive;
-      --serif: "Italiana", serif;
-      --sans: "DM Sans", sans-serif;
-    }
-
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      margin: 0;
-      min-width: 320px;
-      color: var(--ink);
-      background:
-        radial-gradient(circle at 8% 12%, rgba(167, 102, 103, .14), transparent 27rem),
-        radial-gradient(circle at 92% 45%, rgba(113, 128, 106, .13), transparent 24rem),
-        var(--oat);
-      font-family: var(--sans);
-      overflow-x: hidden;
-    }
-
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 20;
-      opacity: .24;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 140 140' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.16'/%3E%3C/svg%3E");
       mix-blend-mode: multiply;
     }
@@ -2722,13 +2588,85 @@
       content: "";
       position: absolute;
       inset: 0;
-      opacity: .34;
+      opacity: .42;
       pointer-events: none;
       background:
-        radial-gradient(ellipse at center, transparent 0 45%, rgba(4,7,16,.42) 100%),
-        linear-gradient(90deg, rgba(22,29,50,.22), transparent 16% 82%, rgba(19,15,28,.2)),
+        radial-gradient(ellipse at center, transparent 0 48%, rgba(4,7,16,.52) 100%),
+        linear-gradient(90deg, rgba(22,29,50,.28), transparent 18% 80%, rgba(19,15,28,.26)),
         url("data:image/svg+xml,%3Csvg viewBox='0 0 140 140' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.18'/%3E%3C/svg%3E");
       mix-blend-mode: soft-light;
+    }
+    .paint-wash,
+    .window-bloom,
+    .lamp-bloom,
+    .bed-warmth,
+    .foreground-shadow,
+    .hand-lines,
+    .dust-motes {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+    .paint-wash {
+      z-index: 1;
+      opacity: .86;
+      background:
+        radial-gradient(circle at 44% 42%, rgba(255,130,126,.12), transparent 18rem),
+        radial-gradient(circle at 76% 66%, rgba(255,198,122,.12), transparent 15rem),
+        linear-gradient(120deg, rgba(42,51,82,.22), transparent 32% 68%, rgba(80,50,66,.18));
+      mix-blend-mode: color-dodge;
+    }
+    .window-bloom {
+      z-index: 2;
+      opacity: .72;
+      background:
+        radial-gradient(ellipse at 43% 26%, rgba(130,174,220,.2), transparent 23rem),
+        linear-gradient(180deg, rgba(80,127,190,.13), transparent 48%);
+      mix-blend-mode: screen;
+    }
+    .lamp-bloom {
+      z-index: 2;
+      background:
+        radial-gradient(circle at 91% 54%, rgba(255,204,126,.44), transparent 8rem),
+        radial-gradient(circle at 88% 61%, rgba(255,171,111,.2), transparent 16rem);
+      mix-blend-mode: screen;
+    }
+    .bed-warmth {
+      z-index: 2;
+      opacity: .68;
+      background:
+        radial-gradient(ellipse at 53% 63%, rgba(255,165,118,.22), transparent 17rem),
+        radial-gradient(ellipse at 63% 70%, rgba(255,227,178,.12), transparent 14rem);
+      mix-blend-mode: soft-light;
+    }
+    .foreground-shadow {
+      z-index: 3;
+      background:
+        linear-gradient(180deg, transparent 0 66%, rgba(4,7,15,.18) 100%),
+        radial-gradient(ellipse at 50% 106%, rgba(2,4,10,.54), transparent 48%);
+    }
+    .hand-lines {
+      z-index: 4;
+      opacity: .24;
+      background:
+        linear-gradient(93deg, transparent 0 16%, rgba(255,248,232,.1) 16.2%, transparent 16.5%),
+        linear-gradient(88deg, transparent 0 82%, rgba(255,248,232,.08) 82.2%, transparent 82.5%),
+        repeating-linear-gradient(174deg, transparent 0 38px, rgba(255,248,232,.035) 39px 40px);
+      mix-blend-mode: overlay;
+    }
+    .dust-motes {
+      z-index: 5;
+      opacity: .42;
+      background:
+        radial-gradient(circle at 21% 31%, rgba(255,248,232,.55) 0 1px, transparent 2px),
+        radial-gradient(circle at 54% 24%, rgba(255,248,232,.38) 0 1px, transparent 2px),
+        radial-gradient(circle at 73% 51%, rgba(255,248,232,.45) 0 1px, transparent 2px),
+        radial-gradient(circle at 36% 63%, rgba(255,248,232,.28) 0 1px, transparent 2px),
+        radial-gradient(circle at 87% 37%, rgba(255,248,232,.36) 0 1px, transparent 2px);
+      animation: dustFloat 8s ease-in-out infinite alternate;
+    }
+    @keyframes dustFloat {
+      to { transform: translateY(-12px); opacity: .24; }
     }
     .room-wall-line,
     .curtain,
@@ -2755,7 +2693,7 @@
       right: 12%;
       top: 6%;
       width: 42px;
-      opacity: .82;
+      opacity: .72;
       mix-blend-mode: screen;
     }
     .moon::after { background: #38577e; }
@@ -2765,19 +2703,21 @@
     .star-3 { left: 74%; top: 31%; }
     .star-4 { left: 56%; top: 10%; }
     .coffee {
-      left: 9.6%;
-      bottom: 35%;
+      left: 10.2%;
+      bottom: 34.2%;
       width: 42px;
       height: 30px;
-      opacity: .82;
+      z-index: 6;
+      opacity: .76;
       transform: rotate(-2deg);
       background: linear-gradient(180deg, #bd8f69, #8d5d4d);
-      filter: drop-shadow(0 7px 8px rgba(5,8,18,.22)) saturate(.88);
-      mix-blend-mode: screen;
+      filter: drop-shadow(0 7px 8px rgba(5,8,18,.22)) saturate(.82) blur(.05px);
+      mix-blend-mode: soft-light;
     }
     .steam {
-      left: 10.8%;
-      bottom: 41%;
+      left: 11.2%;
+      bottom: 40.5%;
+      z-index: 7;
       border-left-color: rgba(255,238,210,.42);
       mix-blend-mode: screen;
     }
@@ -2788,6 +2728,7 @@
       bottom: 32%;
       width: 104px;
       height: 50px;
+      z-index: 6;
       opacity: .78;
       transform: rotate(-4deg);
       background: linear-gradient(180deg, #393c45, #181a22);
@@ -2838,6 +2779,10 @@
 
   <section class="lofi-intro" id="lofi-intro" aria-label="Umut'tan gelen mesaj">
     <div class="lofi-room" aria-hidden="true">
+      <span class="paint-wash"></span>
+      <span class="window-bloom"></span>
+      <span class="lamp-bloom"></span>
+      <span class="bed-warmth"></span>
       <div class="room-wall-line"></div>
       <div class="room-window">
         <span class="moon"></span>
@@ -2858,6 +2803,9 @@
       <div class="cat"><span class="cat-tail"></span></div>
       <span class="side-table"></span>
       <span class="lamp"></span>
+      <span class="foreground-shadow"></span>
+      <span class="hand-lines"></span>
+      <span class="dust-motes"></span>
     </div>
     <p class="lofi-caption">gece biraz sessizdi. sonra telefonun ekranı yandı.</p>
     <div class="intro-phone" id="intro-phone">
@@ -3372,21 +3320,26 @@
         introPhone.classList.add("is-visible");
         playIntroPing();
       }, 1250);
-      const steps = [
-        () => messages[0].classList.add("is-visible"),
-        () => messages[1].classList.add("is-visible"),
-        () => introTyping.classList.add("is-visible"),
-        () => {
+      let delay = 2200;
+      messages.forEach((message, index) => {
+        const typingDuration = [520, 680, 1250, 900, 820][index] || 760;
+        setTimeout(() => introTyping.classList.add("is-visible"), delay);
+        delay += typingDuration;
+        setTimeout(() => {
           introTyping.classList.remove("is-visible");
-          messages[2].classList.add("is-visible");
-        },
-        () => messages[3].classList.add("is-visible"),
-        () => messages[4].classList.add("is-visible"),
-        () => introFile.classList.add("is-visible")
-      ];
-      [2100, 2850, 3550, 4550, 5450, 6300, 7300].forEach((delay, index) => {
-        setTimeout(steps[index], delay);
+          message.classList.add("is-visible");
+          if (index === 0) playIntroPing();
+        }, delay);
+        delay += index === 2 ? 760 : 520;
       });
+      setTimeout(() => {
+        introTyping.classList.add("is-visible");
+      }, delay + 120);
+      setTimeout(() => {
+        introTyping.classList.remove("is-visible");
+        introFile.classList.add("is-visible");
+        playIntroPing();
+      }, delay + 1180);
     }
 
     function enterEnvelopeWorld() {
