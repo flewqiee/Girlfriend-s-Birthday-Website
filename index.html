@@ -7,6 +7,11 @@
   <title>Doğum Günün Kutlu Olsun</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="image" href="assets/window-view.png">
+  <link rel="preload" as="image" href="assets/coffeecup.png">
+  <link rel="preload" as="image" href="assets/greycat.png">
+  <link rel="preload" as="image" href="assets/tablelamp.png">
+  <link rel="preload" as="audio" href="assets/raining.mp3">
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Gochi+Hand&family=Italiana&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -3577,6 +3582,130 @@
       .room-window::before { width: 8px; }
       .room-window::after { height: 7px; }
     }
+
+    /* Rainy night and material pass: sharper lower window, wood desktop, exterior rain only. */
+    .room-window {
+      top: 8.2%;
+      width: min(590px, 46vw);
+      height: min(480px, 53vh);
+      border-radius: 3px;
+      background:
+        linear-gradient(180deg, rgba(10,13,25,.02), rgba(10,13,25,.13) 63%, rgba(5,5,11,.28)),
+        url("assets/window-view.png") center center / cover no-repeat;
+      box-shadow:
+        0 26px 62px rgba(3,5,13,.4),
+        0 0 0 10px #111019,
+        0 0 0 18px #4b302e,
+        0 0 0 21px rgba(255,248,232,.08),
+        inset 0 0 0 2px rgba(255,248,232,.12),
+        inset 0 0 80px rgba(2,4,10,.34);
+    }
+    .room-window::before,
+    .room-window::after {
+      z-index: 8;
+      display: block;
+    }
+    .room-window::before {
+      width: 13px;
+      background:
+        linear-gradient(90deg, #080a12 0%, #2a1b20 26%, #604038 50%, #2a1b20 74%, #080a12 100%);
+      box-shadow:
+        -1px 0 0 rgba(255,248,232,.13),
+        1px 0 0 rgba(255,248,232,.08),
+        -20px 0 30px rgba(3,5,13,.14),
+        20px 0 30px rgba(3,5,13,.14);
+    }
+    .room-window::after {
+      top: 58%;
+      height: 12px;
+      background:
+        linear-gradient(180deg, #6c453b 0%, #2b1d23 42%, #090b13 100%);
+      box-shadow:
+        0 -1px 0 rgba(255,248,232,.1),
+        0 18px 30px rgba(3,5,13,.28);
+    }
+    .room-window-glass {
+      z-index: 6;
+      background:
+        repeating-linear-gradient(102deg, transparent 0 19px, rgba(144,181,219,.18) 20px 21px, transparent 22px 86px),
+        linear-gradient(178deg, transparent 0 13%, rgba(230,242,255,.24) 13.2% 13.7%, transparent 16%),
+        linear-gradient(183deg, transparent 0 29%, rgba(230,242,255,.18) 29.3% 29.9%, transparent 33%),
+        linear-gradient(176deg, transparent 0 47%, rgba(230,242,255,.16) 47.2% 47.8%, transparent 51%),
+        radial-gradient(ellipse at 12% 18%, rgba(235,246,255,.32) 0 1px, transparent 2px),
+        radial-gradient(ellipse at 28% 36%, rgba(235,246,255,.26) 0 1px, transparent 2px),
+        radial-gradient(ellipse at 57% 21%, rgba(235,246,255,.28) 0 1px, transparent 2px),
+        radial-gradient(ellipse at 76% 44%, rgba(235,246,255,.22) 0 1px, transparent 2px),
+        radial-gradient(ellipse at 43% 72%, rgba(235,246,255,.22) 0 1px, transparent 2px),
+        linear-gradient(112deg, transparent 0 18%, rgba(255,248,232,.08) 19% 20%, transparent 24% 66%, rgba(255,248,232,.05) 68% 69%, transparent 73%);
+      background-size:
+        180px 100%,
+        100% 100%,
+        100% 100%,
+        100% 100%,
+        76px 104px,
+        108px 132px,
+        94px 120px,
+        120px 148px,
+        102px 138px,
+        100% 100%;
+      opacity: .8;
+      animation: rainGlassShift 7s linear infinite;
+    }
+    .window-rain {
+      position: absolute;
+      inset: 0;
+      z-index: 4;
+      pointer-events: none;
+      background:
+        repeating-linear-gradient(174deg, transparent 0 20px, rgba(173,203,232,.2) 21px 22px, transparent 23px 88px),
+        repeating-linear-gradient(186deg, transparent 0 34px, rgba(238,246,255,.16) 35px 36px, transparent 37px 120px);
+      background-size: 160px 210px, 220px 260px;
+      filter: blur(.35px);
+      opacity: .46;
+      animation: outsideRain 1.3s linear infinite;
+    }
+    @keyframes outsideRain {
+      to { background-position: -26px 210px, 34px 260px; }
+    }
+    @keyframes rainGlassShift {
+      to { background-position: 0 0, 0 0, 0 0, 0 0, 9px 24px, -12px 28px, 15px 18px, -9px 26px, 8px 20px, 0 0; }
+    }
+    .tabletop {
+      height: 30%;
+      bottom: -6%;
+      background:
+        linear-gradient(180deg, rgba(255,219,164,.14), rgba(59,31,24,.06) 28%, rgba(14,10,12,.24) 100%),
+        url("assets/wood-texture.jpg") center / cover,
+        url("assets/dark-wood.jpg") center / cover,
+        repeating-linear-gradient(94deg, rgba(255,232,190,.08) 0 2px, transparent 2px 92px),
+        linear-gradient(180deg, #6c3f31 0%, #4b2b25 46%, #22171b 100%);
+      box-shadow:
+        0 -16px 45px rgba(4,6,14,.22),
+        inset 0 20px 34px rgba(255,211,158,.08),
+        inset 0 -34px 50px rgba(6,4,8,.26);
+    }
+    .tabletop::after {
+      background:
+        linear-gradient(90deg, rgba(44,23,18,.22) 0 1px, transparent 1px 18%),
+        radial-gradient(ellipse at 35% 12%, rgba(255,226,175,.13), transparent 22rem),
+        linear-gradient(180deg, rgba(255,248,232,.08), transparent 18%);
+      opacity: .82;
+    }
+    @media (max-width: 620px) {
+      .room-window {
+        width: 68vw;
+        height: 39vh;
+        top: 6.2%;
+        box-shadow:
+          0 18px 38px rgba(3,5,13,.34),
+          0 0 0 7px #111019,
+          0 0 0 12px #4b302e,
+          inset 0 0 0 1px rgba(255,248,232,.1);
+      }
+      .room-window::before { width: 8px; }
+      .room-window::after { height: 8px; }
+      .tabletop { height: 33%; }
+    }
 </style>
 </head>
 <body>
@@ -3606,21 +3735,22 @@
         <span class="star star-5"></span>
         <span class="star star-6"></span>
         <span class="city"></span>
+        <span class="window-rain"></span>
         <span class="room-window-glass"></span>
       </div>
       <span class="curtain curtain-left"></span>
       <span class="curtain curtain-right"></span>
       <span class="tabletop"></span>
       <div class="desk"></div>
-      <img class="prop-img coffee-asset" src="assets/coffeecup.png" alt="" onerror="this.hidden=true">
+      <img class="prop-img coffee-asset" src="assets/coffeecup.png" alt="" decoding="async" fetchpriority="high" onerror="this.hidden=true">
       <span class="steam steam-1"></span>
       <span class="steam steam-2"></span>
       <span class="steam steam-3"></span>
       <div class="room-bed"></div>
-      <img class="prop-img cat-asset" src="assets/greycat.png" alt="" onerror="this.hidden=true">
+      <img class="prop-img cat-asset" src="assets/greycat.png" alt="" decoding="async" fetchpriority="high" onerror="this.hidden=true">
       <span class="side-table"></span>
       <span class="lamp-light"></span>
-      <img class="prop-img tablelamp-asset" src="assets/tablelamp.png" alt="" onerror="this.hidden=true">
+      <img class="prop-img tablelamp-asset" src="assets/tablelamp.png" alt="" decoding="async" fetchpriority="high" onerror="this.hidden=true">
       <span class="lamp"></span>
       <span class="foreground-shadow"></span>
       <span class="hand-lines"></span>
@@ -3903,6 +4033,7 @@
           <button class="text-button" id="music-restart" type="button">baştan sar</button>
         </div>
         <audio id="local-audio" preload="auto" loop></audio>
+        <audio id="rain-audio" src="assets/raining.mp3" preload="auto" loop></audio>
       </section>
     </main>
 
@@ -4087,13 +4218,20 @@
     const introTyping = document.getElementById("intro-typing");
     const introFile = document.getElementById("intro-file");
     const localAudio = document.getElementById("local-audio");
+    const rainAudio = document.getElementById("rain-audio");
     const musicStatus = document.getElementById("music-status");
     const audioSources = [
       "assets/mykindofwoman.mp3",
       "../assets/mykindofwoman.mp3",
       "/Girlfriend-s-Birthday-Website/assets/mykindofwoman.mp3"
     ];
+    const rainSources = [
+      "assets/raining.mp3",
+      "../assets/raining.mp3",
+      "/Girlfriend-s-Birthday-Website/assets/raining.mp3"
+    ];
     let audioSourceIndex = 0;
+    let rainSourceIndex = 0;
     let musicPlaying = false;
 
     function updateMusicButton() {
@@ -4132,8 +4270,36 @@
     localAudio.addEventListener("pause", syncMusicState);
     localAudio.addEventListener("ended", syncMusicState);
 
+    function playRainAmbience() {
+      if (!rainAudio || lofiIntro.classList.contains("is-leaving")) return;
+      rainAudio.volume = 0.18;
+      const source = rainSources[rainSourceIndex];
+      if (rainAudio.dataset.currentSource !== source) {
+        rainAudio.src = source;
+        rainAudio.dataset.currentSource = source;
+        rainAudio.load();
+      }
+      rainAudio.play().catch(() => {
+        rainSourceIndex = (rainSourceIndex + 1) % rainSources.length;
+        document.addEventListener("pointerdown", playRainAmbience, { once: true });
+      });
+    }
+    function fadeRainAmbience() {
+      if (!rainAudio || rainAudio.paused) return;
+      const fade = setInterval(() => {
+        rainAudio.volume = Math.max(0, rainAudio.volume - .035);
+        if (rainAudio.volume <= .01) {
+          clearInterval(fade);
+          rainAudio.pause();
+          rainAudio.currentTime = 0;
+          rainAudio.volume = .18;
+        }
+      }, 80);
+    }
+
     function startLofiIntro() {
       const messages = Array.from(document.querySelectorAll("[data-intro-msg]"));
+      playRainAmbience();
       setTimeout(() => {
         introPhone.classList.add("is-visible");
         playIntroPing();
@@ -4170,6 +4336,7 @@
       burst.className = "intro-burst";
       document.body.appendChild(burst);
       lofiIntro.classList.add("is-leaving");
+      fadeRainAmbience();
       setTimeout(() => {
         opening.classList.add("is-story-ready");
         lofiIntro.classList.add("is-gone");
