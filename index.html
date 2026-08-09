@@ -3160,7 +3160,7 @@
     .lofi-room::before {
       background:
         linear-gradient(180deg, rgba(12,15,29,.18), rgba(12,15,29,.08) 44%, rgba(20,12,14,.18) 100%),
-        url("assets/wallpaper.png") 0 0 / 210px 210px repeat,
+        url("assets/wallpaper.jpg") 0 0 / 210px 210px repeat,
         linear-gradient(180deg, #171c31 0%, #202238 58%, #2e202b 100%);
       opacity: .96;
     }
@@ -3346,6 +3346,149 @@
         opacity: .88;
       }
     }
+
+    /* Latest intro layout: phone right, lamp left, open window view, scattered wall frames. */
+    .lofi-room::before {
+      background:
+        linear-gradient(180deg, rgba(12,15,29,.16), rgba(12,15,29,.06) 46%, rgba(18,11,15,.18) 100%),
+        url("assets/wallpaper.jpg") 0 0 / 190px 190px repeat,
+        linear-gradient(180deg, #171c31 0%, #202238 58%, #2e202b 100%);
+    }
+    .lofi-caption { display: none; }
+    .wall-gallery {
+      inset: 0;
+      display: block;
+      transform: none;
+      filter: none;
+      pointer-events: none;
+    }
+    .wall-frame {
+      position: absolute;
+      z-index: 4;
+      width: clamp(62px, 7vw, 96px);
+      padding: 6px;
+      filter: drop-shadow(0 13px 14px rgba(3,5,13,.26));
+    }
+    .wall-frame:nth-child(1) {
+      left: clamp(28px, 5vw, 78px);
+      top: clamp(58px, 9vh, 112px);
+      transform: rotate(-4deg);
+    }
+    .wall-frame:nth-child(2) {
+      right: clamp(38px, 9vw, 150px);
+      top: clamp(56px, 9vh, 118px);
+      width: clamp(66px, 7.5vw, 104px);
+      transform: rotate(3deg);
+    }
+    .wall-frame:nth-child(3) {
+      left: clamp(92px, 11vw, 168px);
+      top: clamp(205px, 28vh, 276px);
+      width: clamp(58px, 6.2vw, 86px);
+      transform: rotate(5deg);
+    }
+    .room-window {
+      left: 50%;
+      top: 6.6%;
+      width: min(780px, 62vw);
+      height: min(392px, 41vh);
+      background:
+        radial-gradient(circle at 50% 42%, rgba(255,176,52,.16), transparent 15rem),
+        linear-gradient(180deg, rgba(7,10,23,.02), rgba(7,10,23,.12) 58%, rgba(11,7,15,.25)),
+        url("assets/window-view.png") center 47% / cover no-repeat;
+      box-shadow:
+        0 24px 56px rgba(3,5,13,.34),
+        0 0 0 11px rgba(22,17,24,.94),
+        0 0 0 17px rgba(92,62,59,.34),
+        inset 0 0 0 2px rgba(255,248,232,.1),
+        inset 0 0 52px rgba(255,190,92,.09);
+    }
+    .tabletop {
+      height: 27%;
+      bottom: -5%;
+    }
+    .tablelamp-asset {
+      left: clamp(-28px, 2vw, 18px);
+      right: auto;
+      bottom: clamp(-18px, .4vh, 4px);
+      width: min(245px, 23vw);
+      z-index: 17;
+      transform: scaleX(-1) rotate(-8deg);
+    }
+    .lamp-light {
+      left: clamp(4px, 3vw, 50px);
+      right: auto;
+      bottom: clamp(58px, 9.5vh, 96px);
+      z-index: 16;
+      width: min(430px, 43vw);
+      height: min(300px, 34vh);
+      background:
+        conic-gradient(from 292deg at 21% 35%, transparent 0 16deg, rgba(255,222,151,.33) 35deg, rgba(255,176,82,.12) 62deg, transparent 88deg 360deg),
+        radial-gradient(ellipse at 20% 35%, rgba(255,230,166,.44), rgba(255,184,92,.18) 28%, transparent 58%);
+      filter: blur(12px);
+      opacity: .76;
+    }
+    .coffee-asset {
+      left: clamp(145px, 15vw, 232px);
+      bottom: clamp(12px, 3.4vh, 34px);
+      width: min(142px, 16vw);
+      z-index: 14;
+      transform: rotate(2deg);
+    }
+    .steam {
+      left: clamp(192px, 19vw, 286px);
+      bottom: clamp(100px, 13.5vh, 138px);
+      z-index: 15;
+    }
+    .steam-2 { left: clamp(206px, 20.2vw, 304px); }
+    .steam-3 { left: clamp(220px, 21.4vw, 322px); }
+    .cat-asset {
+      left: 50%;
+      bottom: clamp(6px, 2.2vh, 28px);
+      width: min(330px, 31vw);
+      z-index: 14;
+      transform: translateX(-50%) rotate(-2deg);
+    }
+    .intro-phone {
+      right: clamp(18px, 4vw, 72px);
+      bottom: clamp(48px, 8vh, 84px);
+      width: min(300px, 31vw);
+      z-index: 18;
+    }
+    @media (max-width: 620px) {
+      .lofi-room::before { background-size: 145px 145px; }
+      .wall-frame { width: 48px; padding: 4px; }
+      .wall-frame:nth-child(1) { left: 10px; top: 58px; }
+      .wall-frame:nth-child(2) { right: 12px; top: 72px; width: 52px; }
+      .wall-frame:nth-child(3) { left: 38px; top: 196px; width: 44px; }
+      .room-window {
+        width: 82vw;
+        height: 30vh;
+        top: 6%;
+      }
+      .tabletop { height: 31%; }
+      .tablelamp-asset {
+        left: -48px;
+        bottom: 48px;
+        width: 136px;
+      }
+      .lamp-light {
+        left: -32px;
+        bottom: 90px;
+        width: 210px;
+        height: 176px;
+        opacity: .38;
+      }
+      .coffee-asset { left: 72px; bottom: 32px; width: 96px; }
+      .steam { left: 112px; bottom: 118px; height: 50px; }
+      .steam-2 { left: 124px; }
+      .steam-3 { left: 136px; }
+      .cat-asset { left: 52%; bottom: 24px; width: 172px; }
+      .intro-phone {
+        right: 10px;
+        bottom: 26px;
+        width: min(58vw, 230px);
+      }
+    }
 </style>
 </head>
 <body>
@@ -3395,7 +3538,6 @@
       <span class="hand-lines"></span>
       <span class="dust-motes"></span>
     </div>
-    <p class="lofi-caption">gece biraz sessizdi. sonra telefonun ekranı yandı.</p>
     <div class="intro-phone" id="intro-phone">
       <div class="phone-screen">
         <div class="phone-header">
