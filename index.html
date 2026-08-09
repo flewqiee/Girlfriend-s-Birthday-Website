@@ -4229,6 +4229,64 @@
       0% { transform: translate3d(0, 0, 0) rotate(var(--tilt)); }
       100% { transform: translate3d(var(--drift), var(--fall, 420px), 0) rotate(var(--tilt)); }
     }
+
+    /* ================================================================
+       MOBILE INTRO: kart yerine tam ekran telefon deneyimi.
+       Yatak odası sahnesini gizleyip sadece mesajlaşma ekranını
+       gösteriyoruz - sanki kullanıcı kendi telefonuna bakıyormuş gibi.
+       Bu blok bilerek stylesheet'in en sonunda: dosyada .intro-phone
+       ve .phone-screen için önceden birden fazla "pass" var, cascade'de
+       en son tanım kazanıyor, o yüzden bunu en sona koyuyoruz.
+       ================================================================ */
+    @media (max-width: 620px) {
+      .lofi-room { display: none; }
+
+      .lofi-intro {
+        background: #14151f;
+      }
+
+      .intro-phone {
+        position: fixed;
+        inset: 0;
+        z-index: 10;
+        width: 100%;
+        height: 100vh;
+        height: 100dvh;
+        margin: 0;
+        border: 0;
+        border-radius: 0;
+        box-shadow: none;
+        background: transparent;
+        opacity: 0;
+        transform: scale(1.03);
+        transition: opacity .55s ease, transform .55s cubic-bezier(.16,.85,.25,1);
+      }
+      .intro-phone.is-visible {
+        opacity: 1;
+        transform: scale(1);
+      }
+      .intro-phone::before { display: none; }
+
+      .phone-screen {
+        width: 100%;
+        height: 100%;
+        min-height: 0;
+        max-height: none;
+        border-radius: 0;
+        padding: max(28px, env(safe-area-inset-top, 0px)) 20px max(22px, env(safe-area-inset-bottom, 0px));
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+      .phone-header { flex: 0 0 auto; }
+      .phone-chat {
+        flex: 1 1 auto;
+        align-content: start;
+        gap: 8px;
+        overflow: hidden;
+      }
+      .msg { font-size: .96rem; padding: 9px 11px; }
+    }
 </style>
 </head>
 <body>
@@ -4810,9 +4868,37 @@
     let lastHoverSoundAt = 0;
     let lastHoverButton = null;
 
+    // Preload sırasında indirilen ses baytlarını burada blob URL olarak
+    // saklıyoruz. Önceden sadece "cache'e düşsün" diye fetch ediliyordu
+    // ama <audio>/new Audio() ilk çalındığında yine de ağdan (bazen range
+    // request yüzünden cache'i atlayarak) indirmeye çalışıyordu - "sesler
+    // bazen geç geliyor" sorununun asıl sebebi buydu. Artık gerçek blob'u
+    // elimizde tutup doğrudan onu çalıyoruz: ağ gecikmesi sıfıra iniyor.
+    const preloadedAudioURLs = {};
+    const uiAudioPool = {};
+
     function playUiSound(name, volume = .65) {
       const sources = uiSounds[name];
       if (!sources) return null;
+
+      // Blob URL hazırsa (preload tamamlandıysa) anında çalınabilir bir
+      // <audio> elementini havuzdan kullan/klonla - hiç ağ beklemesi yok.
+      if (preloadedAudioURLs[name]) {
+        let base = uiAudioPool[name];
+        if (!base) {
+          base = new Audio(preloadedAudioURLs[name]);
+          base.preload = "auto";
+          uiAudioPool[name] = base;
+        }
+        const playable = base.paused || base.ended ? base : base.cloneNode(true);
+        playable.volume = volume;
+        playable.currentTime = 0;
+        playable.play().catch(() => {});
+        return playable;
+      }
+
+      // Preload henüz bitmediyse (ör. çok erken bir tetikleme) eski
+      // ağ-tabanlı yedek yola düş.
       const sound = new Audio(sources[0]);
       sound.preload = "auto";
       sound.volume = volume;
@@ -4912,6 +4998,19 @@
     }
     async function playLocalSong() {
       localAudio.volume = 0.82;
+      // Blob URL hazırsa doğrudan onu kullan - ilk çalmada ağ beklemesi olmasın.
+      if (preloadedAudioURLs.localSong && localAudio.dataset.currentSource !== preloadedAudioURLs.localSong) {
+        localAudio.src = preloadedAudioURLs.localSong;
+        localAudio.dataset.currentSource = preloadedAudioURLs.localSong;
+        localAudio.load();
+      }
+      try {
+        await localAudio.play();
+        syncMusicState();
+        return;
+      } catch (error) {
+        // Blob URL başarısız olursa (ör. henüz hazır değil) eski çok-yollu yedeğe düş.
+      }
       for (let attempt = 0; attempt < audioSources.length; attempt += 1) {
         const source = audioSources[audioSourceIndex];
         if (localAudio.dataset.currentSource !== source) {
@@ -4938,7 +5037,7 @@
     function playRainAmbience() {
       if (!rainAudio || lofiIntro.classList.contains("is-leaving")) return;
       rainAudio.volume = 0.18;
-      const source = rainSources[rainSourceIndex];
+      const source = preloadedAudioURLs.rain || rainSources[rainSourceIndex];
       if (rainAudio.dataset.currentSource !== source) {
         rainAudio.src = source;
         rainAudio.dataset.currentSource = source;
@@ -4946,6 +5045,7 @@
       }
       rainAudio.play().catch(() => {
         rainSourceIndex = (rainSourceIndex + 1) % rainSources.length;
+        rainAudio.dataset.currentSource = "";
         document.addEventListener("pointerdown", playRainAmbience, { once: true });
       });
     }
@@ -4972,7 +5072,7 @@
     function playFinalSong() {
       if (!finalSongAudio) return;
       finalSongAudio.volume = 0.75;
-      const source = finalSongSources[finalSongSourceIndex];
+      const source = preloadedAudioURLs.finalSong || finalSongSources[finalSongSourceIndex];
       if (finalSongAudio.dataset.currentSource !== source) {
         finalSongAudio.src = source;
         finalSongAudio.dataset.currentSource = source;
@@ -4980,6 +5080,7 @@
       }
       finalSongAudio.play().catch(() => {
         finalSongSourceIndex = (finalSongSourceIndex + 1) % finalSongSources.length;
+        finalSongAudio.dataset.currentSource = "";
       });
     }
     if (finalSongAudio) {
@@ -5716,19 +5817,22 @@
 
       // Ses dosyaları: sayfanın geri kalanında zaten kullanılan aynı
       // yedek yol dizileri, tek bir yol 404 verirse sessizce atlanmasın diye.
-      const audioGroups = [
-        audioSources,
-        rainSources,
-        finalSongSources,
-        uiSounds.notification,
-        uiSounds.correct,
-        uiSounds.swoosh,
-        uiSounds.hover,
-        uiSounds.vault,
-        ["assets/candleblow.mp3", "../assets/candleblow.mp3", "/Girlfriend-s-Birthday-Website/assets/candleblow.mp3"]
+      // Her grubu bir anahtarla eşleştiriyoruz ki indirilen bayt'ları
+      // preloadedAudioURLs[anahtar] içine gerçek, anında çalınabilir bir
+      // blob URL olarak koyabilelim (aşağıya bakın).
+      const audioGroupEntries = [
+        ["localSong", audioSources],
+        ["rain", rainSources],
+        ["finalSong", finalSongSources],
+        ["notification", uiSounds.notification],
+        ["correct", uiSounds.correct],
+        ["swoosh", uiSounds.swoosh],
+        ["hover", uiSounds.hover],
+        ["vault", uiSounds.vault],
+        ["candleblow", ["assets/candleblow.mp3", "../assets/candleblow.mp3", "/Girlfriend-s-Birthday-Website/assets/candleblow.mp3"]]
       ];
 
-      const total = imagePaths.length + audioGroups.length;
+      const total = imagePaths.length + audioGroupEntries.length;
       let loaded = 0;
       const percentEl = document.getElementById("loader-percent");
       const barEl = document.getElementById("loader-bar-fill");
@@ -5756,12 +5860,15 @@
         image.src = path;
       });
 
-      // Ses dosyaları için <audio> elementinin "canplaythrough" olayına
-      // güvenmek yerine gerçek baytları fetch ile indirip tarayıcı önbelleğine
-      // koyuyoruz — bu, sunucunun/format algılamanın events'i hiç
-      // tetiklemediği durumlarda (loading ekranı bitse bile ses tam
-      // yüklenmemiş gibi görünen asıl sorun) çok daha güvenilir çalışıyor.
-      const loadAudioGroup = (paths) => new Promise((resolve) => {
+      // Ses dosyalarının gerçek baytlarını fetch ile indirip blob olarak
+      // tutuyoruz, sonra bu blob'dan bir Object URL üretip
+      // preloadedAudioURLs'e yazıyoruz. Önceden blob sadece HTTP cache'e
+      // düşsün diye indirilip atılıyordu; ama <audio> elementleri
+      // çalarken genelde Range request kullanır ve bu, tarayıcı cache'iyle
+      // her zaman güvenilir eşleşmez - "sesler bazen geç geliyor"
+      // sorununun asıl kaynağı buydu. Elimizde gerçek blob URL varken
+      // artık hiç ağa çıkmadan anında çalabiliyoruz.
+      const loadAudioGroup = ([key, paths]) => new Promise((resolve) => {
         let settled = false;
         let timeoutId;
         const finish = () => {
@@ -5778,7 +5885,10 @@
               if (!response.ok) throw new Error("bad status");
               return response.blob();
             })
-            .then(finish)
+            .then((blob) => {
+              preloadedAudioURLs[key] = URL.createObjectURL(blob);
+              finish();
+            })
             .catch(() => tryPath(index + 1));
         };
         // Bir ses grubu (tüm yol denemeleri dahil) hiç sonuçlanmazsa
@@ -5790,10 +5900,17 @@
       try {
         await Promise.all([
           ...imagePaths.map(loadImage),
-          ...audioGroups.map(loadAudioGroup)
+          ...audioGroupEntries.map(loadAudioGroup)
         ]);
       } catch (error) {
         console.error("Asset preload error:", error);
+      }
+
+      // candleblow sesi sayfa en başta oluşturuluyordu; blob hazırsa
+      // ona geçirelim ki üfleme anında da ağ beklemesi olmasın.
+      if (preloadedAudioURLs.candleblow && blowSound) {
+        blowSound.src = preloadedAudioURLs.candleblow;
+        blowSound.load();
       }
 
       hideLoadingScreen();
