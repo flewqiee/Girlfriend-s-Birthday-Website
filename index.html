@@ -12,6 +12,11 @@
   <link rel="preload" as="image" href="assets/greycat.png">
   <link rel="preload" as="image" href="assets/tablelamp.png">
   <link rel="preload" as="audio" href="assets/raining.mp3">
+  <link rel="preload" as="audio" href="assets/notification.mp3">
+  <link rel="preload" as="audio" href="assets/correct.mp3">
+  <link rel="preload" as="audio" href="assets/swoosh.mp3">
+  <link rel="preload" as="audio" href="assets/hover.mp3">
+  <link rel="preload" as="audio" href="assets/vault.mp3">
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Gochi+Hand&family=Italiana&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -3825,6 +3830,134 @@
       .window-rain { animation-duration: .88s; }
       .tablelamp-asset { transform: none; }
     }
+
+    /* Clean rain and notification cue pass. */
+    .notification-wave {
+      position: absolute;
+      right: clamp(48px, 9vw, 132px);
+      bottom: clamp(104px, 19vh, 168px);
+      z-index: 19;
+      width: 18px;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      pointer-events: none;
+      opacity: 0;
+      background: rgba(255,248,232,.86);
+      box-shadow: 0 0 20px rgba(255,216,157,.72);
+    }
+    .notification-wave.is-active {
+      animation: notifyWave 1.15s ease-out both;
+    }
+    .notification-wave::before,
+    .notification-wave::after {
+      content: "";
+      position: absolute;
+      inset: -10px;
+      border: 1px solid rgba(255,248,232,.62);
+      border-radius: 50%;
+      animation: notifyRing 1.15s ease-out both;
+    }
+    .notification-wave::after {
+      inset: -22px;
+      animation-delay: .12s;
+    }
+    @keyframes notifyWave {
+      0% { opacity: 0; transform: scale(.6); }
+      12% { opacity: .95; }
+      100% { opacity: 0; transform: scale(1.25); }
+    }
+    @keyframes notifyRing {
+      0% { opacity: 0; transform: scale(.25); }
+      16% { opacity: .85; }
+      100% { opacity: 0; transform: scale(2.8); }
+    }
+    .room-window-glass {
+      background:
+        radial-gradient(ellipse at 12% 18%, rgba(235,246,255,.3) 0 1px, transparent 2px),
+        radial-gradient(ellipse at 28% 36%, rgba(235,246,255,.24) 0 1px, transparent 2px),
+        radial-gradient(ellipse at 57% 21%, rgba(235,246,255,.26) 0 1px, transparent 2px),
+        radial-gradient(ellipse at 76% 44%, rgba(235,246,255,.2) 0 1px, transparent 2px),
+        radial-gradient(ellipse at 43% 72%, rgba(235,246,255,.2) 0 1px, transparent 2px);
+      background-size: 76px 104px, 108px 132px, 94px 120px, 120px 148px, 102px 138px;
+      opacity: .56;
+      animation: none;
+    }
+    .window-rain {
+      background:
+        linear-gradient(168deg, transparent 0 38%, rgba(235,247,255,.34) 39% 54%, transparent 55%) 7px -170px / 86px 520px repeat,
+        linear-gradient(171deg, transparent 0 42%, rgba(154,195,226,.24) 43% 55%, transparent 56%) 48px -310px / 124px 640px repeat,
+        linear-gradient(166deg, transparent 0 46%, rgba(238,248,255,.26) 47% 56%, transparent 57%) 29px -460px / 166px 760px repeat;
+      filter: blur(.14px);
+      opacity: .5;
+      animation: rainDriftA 2.7s linear infinite;
+      mask-image: none;
+    }
+    .window-rain::before {
+      inset: -120% 0;
+      background:
+        linear-gradient(169deg, transparent 0 43%, rgba(242,250,255,.4) 44% 55%, transparent 56%) 18px 0 / 112px 700px repeat,
+        linear-gradient(172deg, transparent 0 46%, rgba(178,211,236,.28) 47% 56%, transparent 57%) 73px 240px / 154px 860px repeat;
+      opacity: .58;
+      animation: rainDriftB 3.45s linear infinite;
+    }
+    .window-rain::after {
+      inset: -140% 0;
+      background:
+        linear-gradient(167deg, transparent 0 46%, rgba(236,248,255,.24) 47% 54%, transparent 55%) 31px 120px / 198px 980px repeat,
+        radial-gradient(ellipse at 50% 18%, rgba(240,250,255,.42) 0 1px, transparent 2px) 24px 24px / 84px 128px repeat;
+      opacity: .38;
+      animation: rainDriftC 4.35s linear infinite;
+    }
+    @keyframes rainDriftA {
+      to { background-position: 37px 350px, 18px 330px, 59px 300px; }
+    }
+    @keyframes rainDriftB {
+      to { transform: translateY(700px); }
+    }
+    @keyframes rainDriftC {
+      to { transform: translateY(980px); }
+    }
+    .tabletop {
+      background:
+        linear-gradient(180deg, rgba(255,219,164,.14), rgba(59,31,24,.06) 28%, rgba(14,10,12,.24) 100%),
+        url("assets/woodentexture.jpg") center / cover,
+        repeating-linear-gradient(94deg, rgba(255,232,190,.08) 0 2px, transparent 2px 92px),
+        linear-gradient(180deg, #6c3f31 0%, #4b2b25 46%, #22171b 100%);
+    }
+    @media (max-width: 620px) {
+      .notification-wave {
+        right: 22px;
+        bottom: 142px;
+      }
+      .window-rain { animation-duration: 2.1s; }
+    }
+    .window-rain {
+      background: none;
+      animation: none;
+      filter: none;
+      opacity: .72;
+    }
+    .window-rain::before,
+    .window-rain::after {
+      display: none;
+    }
+    .rain-drop {
+      position: absolute;
+      left: var(--x);
+      top: -18%;
+      width: 1px;
+      height: var(--h);
+      border-radius: 999px;
+      background: linear-gradient(180deg, rgba(245,251,255,0), rgba(229,244,255,.52), rgba(167,204,231,.12));
+      opacity: var(--o);
+      transform: rotate(var(--tilt));
+      animation: rainDropFall var(--d) linear infinite;
+      animation-delay: var(--delay);
+      will-change: transform;
+    }
+    @keyframes rainDropFall {
+      to { transform: translate3d(var(--drift), 145%, 0) rotate(var(--tilt)); }
+    }
 </style>
 </head>
 <body>
@@ -3874,6 +4007,7 @@
       <span class="foreground-shadow"></span>
       <span class="hand-lines"></span>
       <span class="dust-motes"></span>
+      <span class="notification-wave" id="notification-wave" aria-hidden="true"></span>
     </div>
     <div class="intro-phone" id="intro-phone">
       <div class="phone-screen">
@@ -4336,6 +4470,8 @@
     const introPhone = document.getElementById("intro-phone");
     const introTyping = document.getElementById("intro-typing");
     const introFile = document.getElementById("intro-file");
+    const notificationWave = document.getElementById("notification-wave");
+    const windowRain = document.querySelector(".window-rain");
     const localAudio = document.getElementById("local-audio");
     const rainAudio = document.getElementById("rain-audio");
     const musicStatus = document.getElementById("music-status");
@@ -4349,9 +4485,60 @@
       "../assets/raining.mp3",
       "/Girlfriend-s-Birthday-Website/assets/raining.mp3"
     ];
+    const uiSounds = {
+      notification: ["assets/notification.mp3", "../assets/notification.mp3", "/Girlfriend-s-Birthday-Website/assets/notification.mp3"],
+      correct: ["assets/correct.mp3", "../assets/correct.mp3", "/Girlfriend-s-Birthday-Website/assets/correct.mp3"],
+      swoosh: ["assets/swoosh.mp3", "../assets/swoosh.mp3", "/Girlfriend-s-Birthday-Website/assets/swoosh.mp3"],
+      hover: ["assets/hover.mp3", "../assets/hover.mp3", "/Girlfriend-s-Birthday-Website/assets/hover.mp3"],
+      vault: ["assets/vault.mp3", "../assets/vault.mp3", "/Girlfriend-s-Birthday-Website/assets/vault.mp3"]
+    };
     let audioSourceIndex = 0;
     let rainSourceIndex = 0;
     let musicPlaying = false;
+    let lastHoverSoundAt = 0;
+    let lastHoverButton = null;
+
+    function playUiSound(name, volume = .65) {
+      const sources = uiSounds[name];
+      if (!sources) return;
+      const sound = new Audio(sources[0]);
+      sound.preload = "auto";
+      sound.volume = volume;
+      sound.play().catch(() => {
+        if (sources.length < 2) return;
+        sound.src = sources[1];
+        sound.play().catch(() => {
+          if (sources.length < 3) return;
+          sound.src = sources[2];
+          sound.play().catch(() => {});
+        });
+      });
+    }
+
+    function triggerNotificationCue() {
+      notificationWave?.classList.remove("is-active");
+      if (notificationWave) void notificationWave.offsetWidth;
+      notificationWave?.classList.add("is-active");
+      playUiSound("notification", .72);
+    }
+
+    function seedWindowRain() {
+      if (!windowRain || windowRain.dataset.seeded) return;
+      windowRain.dataset.seeded = "true";
+      const dropCount = window.matchMedia("(max-width: 620px)").matches ? 38 : 68;
+      for (let index = 0; index < dropCount; index += 1) {
+        const drop = document.createElement("i");
+        drop.className = "rain-drop";
+        drop.style.setProperty("--x", `${Math.random() * 100}%`);
+        drop.style.setProperty("--h", `${16 + Math.random() * 34}px`);
+        drop.style.setProperty("--o", `${.18 + Math.random() * .42}`);
+        drop.style.setProperty("--tilt", `${5 + Math.random() * 9}deg`);
+        drop.style.setProperty("--drift", `${8 + Math.random() * 24}px`);
+        drop.style.setProperty("--d", `${.72 + Math.random() * 1.35}s`);
+        drop.style.setProperty("--delay", `${-Math.random() * 4.6}s`);
+        windowRain.appendChild(drop);
+      }
+    }
 
     function updateMusicButton() {
       const button = document.getElementById("music-toggle");
@@ -4418,10 +4605,12 @@
 
     function startLofiIntro() {
       const messages = Array.from(document.querySelectorAll("[data-intro-msg]"));
+      seedWindowRain();
       playRainAmbience();
+      setTimeout(triggerNotificationCue, 820);
       setTimeout(() => {
         introPhone.classList.add("is-visible");
-        playIntroPing();
+        playUiSound("notification", .55);
       }, 1250);
       let delay = 2200;
       messages.forEach((message, index) => {
@@ -4434,7 +4623,7 @@
         setTimeout(() => {
           introTyping.classList.remove("is-visible");
           message.classList.add("is-visible");
-          if (index === 0) playIntroPing();
+          playUiSound("notification", .5);
         }, delay);
         delay += index === 2 ? 760 : 520;
       });
@@ -4445,7 +4634,7 @@
       setTimeout(() => {
         introTyping.classList.remove("is-visible");
         introFile.classList.add("is-visible");
-        playIntroPing();
+        playUiSound("notification", .58);
       }, delay + 1180);
     }
 
@@ -4483,6 +4672,20 @@
       }
     }
     introFile.addEventListener("click", enterEnvelopeWorld);
+    document.addEventListener("pointerover", event => {
+      const button = event.target.closest("button, .primary-button, .text-button, .activity-button, .quiz-option");
+      if (!button || button.disabled) return;
+      if (button === lastHoverButton) return;
+      const now = performance.now();
+      if (now - lastHoverSoundAt < 90) return;
+      lastHoverButton = button;
+      lastHoverSoundAt = now;
+      playUiSound("hover", .24);
+    });
+    document.addEventListener("pointerout", event => {
+      const button = event.target.closest("button, .primary-button, .text-button, .activity-button, .quiz-option");
+      if (button && button === lastHoverButton && !button.contains(event.relatedTarget)) lastHoverButton = null;
+    });
     startLofiIntro();
 
     envelope.addEventListener("click", () => {
@@ -4576,6 +4779,7 @@
         return;
       }
       button.classList.add("is-correct");
+      playUiSound("correct", .68);
       document.querySelectorAll(".quiz-option").forEach(option => option.disabled = true);
       updateQuizJourney(quizIndex + 1, true);
       if (quizIndex === quizQuestions.length - 1) {
@@ -4642,6 +4846,7 @@
       if (distance !== 1) return;
       [puzzle[position], puzzle[blank]] = [puzzle[blank], puzzle[position]];
       moves += 1;
+      playUiSound("swoosh", .46);
       renderPuzzle();
       if (puzzle.every((tile, index) => tile === index)) {
         document.getElementById("puzzle-status").textContent = "tamamlandı";
@@ -4661,6 +4866,7 @@
         input.select();
         return;
       }
+      playUiSound("vault", .7);
       document.getElementById("vault-lock").hidden = true;
       document.getElementById("vault-letter").hidden = false;
       document.getElementById("vault-error").textContent = "";
