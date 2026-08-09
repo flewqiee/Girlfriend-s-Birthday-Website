@@ -693,21 +693,19 @@
     }
     .trail-ribbon {
       position: relative;
-      left: 50%;
       width: 100vw;
-      margin: 0 0 66px;
+      margin: 0 calc(50% - 50vw) 66px;
       padding: 18px 0;
-      transform: translateX(-50%);
       overflow: hidden;
     }
     .trail-ribbon::before {
       content: "";
       position: absolute;
-      inset: 50% 0 auto;
+      inset: 50% -2px auto -2px;
       height: 30px;
       background:
-        linear-gradient(135deg, transparent 0 34%, rgba(167,102,103,.48) 35% 64%, transparent 65%) 0 0 / 64px 30px,
-        linear-gradient(225deg, transparent 0 34%, rgba(185,151,91,.52) 35% 64%, transparent 65%) 32px 0 / 64px 30px;
+        linear-gradient(135deg, transparent 0 34%, rgba(167,102,103,.48) 35% 64%, transparent 65%) 0 0 / 64px 30px repeat-x,
+        linear-gradient(225deg, transparent 0 34%, rgba(185,151,91,.52) 35% 64%, transparent 65%) 32px 0 / 64px 30px repeat-x;
       opacity: .48;
       transform: translateY(-50%);
     }
@@ -1870,6 +1868,7 @@
     }
 
     .final-message-step {
+      position: relative;
       display: grid;
       justify-items: center;
       gap: 32px;
@@ -1883,6 +1882,54 @@
       backdrop-filter: blur(8px);
       box-shadow: 0 0 60px rgba(167,102,103,.12), inset 0 0 0 1px rgba(255,248,232,.06);
       animation: finalMessageEnter 1.1s cubic-bezier(.2,.8,.2,1) both;
+    }
+    .final-message-step::before {
+      content: "";
+      position: absolute;
+      inset: -12%;
+      z-index: 1;
+      pointer-events: none;
+      background:
+        radial-gradient(circle, rgba(255,214,150,.85) 0 1.6px, transparent 2.4px) 10% 88% / 130px 130px,
+        radial-gradient(circle, rgba(255,214,150,.65) 0 1.3px, transparent 2.2px) 46% 22% / 160px 160px,
+        radial-gradient(circle, rgba(255,214,150,.75) 0 1.5px, transparent 2.3px) 80% 70% / 145px 145px,
+        radial-gradient(circle, rgba(255,214,150,.55) 0 1.2px, transparent 2px) 64% 92% / 175px 175px,
+        radial-gradient(circle, rgba(255,214,150,.6) 0 1.3px, transparent 2.2px) 24% 55% / 190px 190px;
+      opacity: .55;
+      animation: finalEmbers 10s linear infinite;
+    }
+    @keyframes finalEmbers {
+      to { background-position: 10% 48%, 46% -18%, 80% 30%, 64% 52%, 24% 15%; }
+    }
+    .final-flourish {
+      position: relative;
+      z-index: 4;
+      width: 84px;
+      height: 14px;
+      opacity: 0;
+      transition: opacity .6s ease .1s;
+    }
+    .final-message-step.is-done .final-flourish { opacity: .8; }
+    .final-flourish::before,
+    .final-flourish::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      width: 30px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,248,232,.55));
+    }
+    .final-flourish::before { left: 0; }
+    .final-flourish::after { right: 0; background: linear-gradient(90deg, rgba(255,248,232,.55), transparent); }
+    .final-flourish span {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 7px;
+      height: 7px;
+      transform: translate(-50%, -50%) rotate(45deg);
+      background: rgba(255,214,150,.85);
+      box-shadow: 0 0 10px rgba(255,214,150,.7);
     }
     @keyframes finalMessageEnter {
       from { opacity: 0; transform: translateY(24px) scale(.96); filter: blur(9px); }
@@ -4502,6 +4549,7 @@
 
       <div class="final-message-step" id="final-message-step" hidden>
         <p class="final-type" id="final-type"></p>
+        <div class="final-flourish" aria-hidden="true"><span></span></div>
         <button class="primary-button final-restart" id="final-restart" type="button">Sayfayı yenile?</button>
       </div>
     </div>
