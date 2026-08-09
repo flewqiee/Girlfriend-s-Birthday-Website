@@ -168,9 +168,9 @@
     .opening::after {
       content: "";
       position: absolute;
-      display: none;
+      display: block;
       pointer-events: none;
-      opacity: 0;
+      opacity: 1;
       filter: drop-shadow(0 14px 18px rgba(61, 42, 31, .12));
       background-repeat: no-repeat;
       background-size: contain;
@@ -193,7 +193,7 @@
     }
     .opening.is-story-ready:not(.is-open) { opacity: 1; visibility: visible; }
     .opening.is-open { opacity: 0; visibility: hidden; }
-    .opening-copy { display: none; }
+    .opening-copy { display: block; text-align: center; margin: 0 0 26px; }
     .opening-eyebrow {
       margin: 0 0 5px;
       color: var(--rose-dark);
@@ -5179,7 +5179,9 @@
     /* startLofiIntro() - Hiçbir şey başlatma, sadece hazırla */
 
     envelope.addEventListener("click", () => {
+      if (envelope.classList.contains("is-opening")) return;
       envelope.classList.add("is-opening");
+      envelope.disabled = true;
       playLocalSong();
       setTimeout(() => {
         opening.classList.add("is-open");
@@ -5225,6 +5227,9 @@
         dot.classList.toggle("is-current", index === currentPageStage);
         dot.disabled = index > currentPageStage;
       });
+      // Aşama değişince dolum tavanı da güncellensin ki çizgi
+      // henüz ulaşılmamış noktaları erken "yakmasın".
+      updateScrollProgress();
     }
     pageProgressDots[0]?.classList.add("is-current");
     pageProgressDots.forEach((dot, index) => {
@@ -5236,9 +5241,19 @@
     // (aşamalara göre zıplayan sabit yüzdeler yerine ne kadar
     // aşağı indiğine göre sürekli dolan bir çizgi).
     let scrollProgressFrame = null;
+    // Nokta N'in çizgi üzerindeki konumu (flex space-between ile eşit
+    // aralıklı), 0 ile 1 arası.
+    function stagePositionFraction(stageIndex) {
+      return pageProgressDots.length > 1 ? stageIndex / (pageProgressDots.length - 1) : 0;
+    }
     function updateScrollProgress() {
       const scrollable = document.documentElement.scrollHeight - window.innerHeight;
-      const fraction = scrollable > 0 ? Math.min(1, Math.max(0, window.scrollY / scrollable)) : 0;
+      const rawFraction = scrollable > 0 ? Math.min(1, Math.max(0, window.scrollY / scrollable)) : 0;
+      // Çizgi, ham scroll oranıyla dolsa da hiçbir zaman henüz açılmamış
+      // (currentPageStage'in ötesindeki) bir noktayı geçmesin - yoksa 3.
+      // aşamaya gelindiğinde 4. ve 5. noktalar da "yanmış" gibi görünüyordu.
+      const cap = stagePositionFraction(currentPageStage);
+      const fraction = Math.min(rawFraction, cap);
       pageProgressFill.style.height = `${fraction * 100}%`;
     }
     window.addEventListener("scroll", () => {
@@ -5654,18 +5669,33 @@
       await new Promise(resolve => setTimeout(resolve, 1000));
 
       blowSound.currentTime = 0;
+      let blowStarted = false;
       try {
         await blowSound.play();
+        blowStarted = true;
       } catch (error) {
         // Tarayıcı ses oynatmayı engellerse akış yine devam eder.
       }
 
-      // Sahne kararmadan önce üfleme sesinin bitmesini bekle.
-      await new Promise(resolve => {
-        if (blowSound.paused || blowSound.ended) { resolve(); return; }
-        blowSound.addEventListener("ended", resolve, { once: true });
-        setTimeout(resolve, (blowSound.duration ? blowSound.duration * 1000 : 1400) + 300);
-      });
+      // Sahne kararmadan önce üfleme sesinin bitmesini bekle. Ses hiç
+      // başlamadıysa (ör. tarayıcı engellediyse) bile en az bir minimum
+      // süre bekleyerek ekranın sesle "aynı anda" kararmasını önlüyoruz.
+      const MIN_DARKEN_WAIT = 1200;
+      if (blowStarted) {
+        await new Promise(resolve => {
+          let done = false;
+          const finish = () => {
+            if (done) return;
+            done = true;
+            resolve();
+          };
+          blowSound.addEventListener("ended", finish, { once: true });
+          const measuredMs = Number.isFinite(blowSound.duration) ? blowSound.duration * 1000 + 300 : 0;
+          setTimeout(finish, Math.max(MIN_DARKEN_WAIT, measuredMs));
+        });
+      } else {
+        await new Promise(resolve => setTimeout(resolve, MIN_DARKEN_WAIT));
+      }
 
       // Mum üflenince sahne şak diye kararsın.
       finalOverlay.classList.add("is-dark");
