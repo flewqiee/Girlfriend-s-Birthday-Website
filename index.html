@@ -3656,16 +3656,48 @@
       inset: 0;
       z-index: 4;
       pointer-events: none;
+      overflow: hidden;
       background:
-        repeating-linear-gradient(174deg, transparent 0 20px, rgba(173,203,232,.2) 21px 22px, transparent 23px 88px),
-        repeating-linear-gradient(186deg, transparent 0 34px, rgba(238,246,255,.16) 35px 36px, transparent 37px 120px);
-      background-size: 160px 210px, 220px 260px;
-      filter: blur(.35px);
-      opacity: .46;
-      animation: outsideRain 1.3s linear infinite;
+        repeating-linear-gradient(92deg, transparent 0 26px, rgba(180,211,238,.2) 27px 28px, transparent 29px 74px),
+        repeating-linear-gradient(88deg, transparent 0 46px, rgba(237,247,255,.16) 47px 48px, transparent 49px 116px);
+      background-size: 130px 180px, 190px 230px;
+      filter: blur(.25px);
+      opacity: .5;
+      mask-image:
+        repeating-linear-gradient(180deg, transparent 0 10px, #000 11px 38px, transparent 39px 82px),
+        linear-gradient(#000, #000);
+      animation: outsideRain .72s linear infinite;
+    }
+    .window-rain::before,
+    .window-rain::after {
+      content: "";
+      position: absolute;
+      inset: -18% 0;
+      pointer-events: none;
+      background-repeat: repeat;
+    }
+    .window-rain::before {
+      background:
+        linear-gradient(182deg, transparent 0 18%, rgba(236,247,255,.28) 19% 34%, transparent 36%) 12px 0 / 74px 118px,
+        linear-gradient(178deg, transparent 0 24%, rgba(166,202,232,.22) 25% 38%, transparent 40%) 42px 18px / 92px 140px;
+      opacity: .72;
+      animation: rainNear .55s linear infinite;
+    }
+    .window-rain::after {
+      background:
+        radial-gradient(ellipse at 50% 20%, rgba(239,249,255,.42) 0 1px, transparent 2px) 18px 12px / 78px 96px,
+        radial-gradient(ellipse at 50% 30%, rgba(186,218,242,.3) 0 1px, transparent 2px) 48px 30px / 112px 136px;
+      opacity: .5;
+      animation: rainDrops .9s linear infinite;
     }
     @keyframes outsideRain {
-      to { background-position: -26px 210px, 34px 260px; }
+      to { background-position: -8px 180px, 10px 230px; }
+    }
+    @keyframes rainNear {
+      to { transform: translateY(118px); }
+    }
+    @keyframes rainDrops {
+      to { transform: translateY(96px); }
     }
     @keyframes rainGlassShift {
       to { background-position: 0 0, 0 0, 0 0, 0 0, 9px 24px, -12px 28px, 15px 18px, -9px 26px, 8px 20px, 0 0; }
@@ -3705,6 +3737,14 @@
       .room-window::before { width: 8px; }
       .room-window::after { height: 8px; }
       .tabletop { height: 33%; }
+    }
+    .tablelamp-asset {
+      transform: scaleX(-1);
+      bottom: clamp(-10px, .7vh, 6px);
+    }
+    @media (max-width: 620px) {
+      .tablelamp-asset { transform: scaleX(-1); }
+      .window-rain { animation-duration: .62s; opacity: .45; }
     }
 </style>
 </head>
