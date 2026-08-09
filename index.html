@@ -3746,6 +3746,85 @@
       .tablelamp-asset { transform: scaleX(-1); }
       .window-rain { animation-duration: .62s; opacity: .45; }
     }
+
+    /* Final rain/frame pass: sharp frame, no horizontal rain artifacts, staggered vertical drops. */
+    .room-window {
+      border-radius: 0;
+      outline: 0;
+      box-shadow:
+        0 26px 62px rgba(3,5,13,.4),
+        0 0 0 10px #100f17,
+        0 0 0 18px #4a2f2d,
+        0 0 0 20px rgba(255,248,232,.08),
+        inset 0 0 0 2px rgba(255,248,232,.12),
+        inset 0 0 78px rgba(2,4,10,.34);
+    }
+    .room-window::before,
+    .room-window::after {
+      border-radius: 0;
+    }
+    .room-window-glass {
+      animation: none;
+      background:
+        radial-gradient(ellipse at 12% 18%, rgba(235,246,255,.3) 0 1px, transparent 2px),
+        radial-gradient(ellipse at 28% 36%, rgba(235,246,255,.24) 0 1px, transparent 2px),
+        radial-gradient(ellipse at 57% 21%, rgba(235,246,255,.26) 0 1px, transparent 2px),
+        radial-gradient(ellipse at 76% 44%, rgba(235,246,255,.2) 0 1px, transparent 2px),
+        radial-gradient(ellipse at 43% 72%, rgba(235,246,255,.2) 0 1px, transparent 2px),
+        linear-gradient(112deg, transparent 0 18%, rgba(255,248,232,.07) 19% 20%, transparent 24% 70%, rgba(255,248,232,.04) 71% 72%, transparent 76%);
+      background-size:
+        76px 104px,
+        108px 132px,
+        94px 120px,
+        120px 148px,
+        102px 138px,
+        100% 100%;
+      opacity: .64;
+    }
+    .window-rain {
+      background:
+        linear-gradient(180deg, rgba(232,246,255,.32) 0 20px, transparent 24px) 8px -80px / 74px 230px repeat,
+        linear-gradient(180deg, rgba(156,196,226,.22) 0 16px, transparent 20px) 42px -140px / 96px 270px repeat,
+        linear-gradient(180deg, rgba(238,248,255,.22) 0 12px, transparent 16px) 24px -40px / 128px 310px repeat;
+      mask-image: none;
+      filter: blur(.18px);
+      opacity: .5;
+      animation: rainFallFar 1.05s linear infinite;
+    }
+    .window-rain::before {
+      inset: -55% 0;
+      background:
+        linear-gradient(180deg, rgba(240,250,255,.38) 0 28px, transparent 34px) 18px 0 / 88px 340px repeat,
+        linear-gradient(180deg, rgba(173,209,235,.28) 0 22px, transparent 28px) 66px 110px / 116px 390px repeat;
+      opacity: .62;
+      animation: rainFallNear 1.38s linear infinite;
+    }
+    .window-rain::after {
+      inset: -48% 0;
+      background:
+        radial-gradient(ellipse at 50% 18%, rgba(240,250,255,.42) 0 1px, transparent 2px) 24px 24px / 84px 128px repeat,
+        linear-gradient(180deg, rgba(226,242,255,.24) 0 18px, transparent 24px) 54px 76px / 144px 360px repeat;
+      opacity: .46;
+      animation: rainFallSoft 1.7s linear infinite;
+    }
+    @keyframes rainFallFar {
+      to { background-position: 8px 150px, 42px 130px, 24px 270px; }
+    }
+    @keyframes rainFallNear {
+      to { transform: translateY(340px); }
+    }
+    @keyframes rainFallSoft {
+      to { transform: translateY(256px); }
+    }
+    .tablelamp-asset {
+      transform: none;
+      bottom: clamp(-8px, .8vh, 8px);
+    }
+    @media (max-width: 620px) {
+      .room-window { border-radius: 0; }
+      .window-rain { animation-duration: .88s; }
+      .tablelamp-asset { transform: none; }
+    }
 </style>
 </head>
 <body>
