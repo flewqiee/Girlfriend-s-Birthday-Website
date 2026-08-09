@@ -5054,24 +5054,6 @@
     });
     /* startLofiIntro() - Hiçbir şey başlatma, sadece hazırla */
 
-    /* ---- İlerleme hafızası: sayfa yenilense bile kaldığı yeri unutma ---- */
-    const PROGRESS_STORAGE_KEY = "umutunHediyesiIlerleme";
-    function loadStoredProgress() {
-      try {
-        return JSON.parse(localStorage.getItem(PROGRESS_STORAGE_KEY)) || {};
-      } catch (error) {
-        return {};
-      }
-    }
-    function saveStoredProgress(patch) {
-      try {
-        const current = loadStoredProgress();
-        localStorage.setItem(PROGRESS_STORAGE_KEY, JSON.stringify({ ...current, ...patch }));
-      } catch (error) {
-        // localStorage kapalıysa (gizli sekme vb.) sessizce devam et.
-      }
-    }
-
     envelope.addEventListener("click", () => {
       envelope.classList.add("is-opening");
       playLocalSong();
@@ -5082,7 +5064,6 @@
         document.getElementById("main").focus({ preventScroll: true });
         pageProgress.classList.add("is-visible");
         setPageStage(1);
-        saveStoredProgress({ opened: true });
       }, 850);
     });
 
@@ -5115,14 +5096,11 @@
     function setPageStage(stageIndex) {
       if (stageIndex <= currentPageStage) return;
       currentPageStage = stageIndex;
-      const totalStages = pageProgressDots.length - 1;
-      pageProgressFill.style.height = `${(currentPageStage / totalStages) * 100}%`;
       pageProgressDots.forEach((dot, index) => {
         dot.classList.toggle("is-complete", index < currentPageStage);
         dot.classList.toggle("is-current", index === currentPageStage);
         dot.disabled = index > currentPageStage;
       });
-      saveStoredProgress({ stage: currentPageStage });
     }
     pageProgressDots[0]?.classList.add("is-current");
     pageProgressDots.forEach((dot, index) => {
@@ -5130,37 +5108,25 @@
       dot.addEventListener("click", () => pageStageTargets[dot.dataset.stageJump]?.());
     });
 
-    // Daha önce zarfı açmışsa: intro/zarf törenini tekrar oynatmadan
-    // doğrudan kaldığı sahneye dön. true dönerse normal intro atlanır.
-    function restoreProgressIfAny() {
-      const progress = loadStoredProgress();
-      if (!progress.opened) return false;
-
-      lofiIntro.classList.add("is-gone");
-      opening.classList.add("is-story-ready", "is-open");
-      siteShell.classList.add("is-ready");
-      siteShell.setAttribute("aria-hidden", "false");
-      pageProgress.classList.add("is-visible");
-      document.getElementById("main")?.focus({ preventScroll: true });
-
-      if (progress.letterUnlocked) {
-        const vaultLock = document.getElementById("vault-lock");
-        const vaultLetter = document.getElementById("vault-letter");
-        if (vaultLock) vaultLock.hidden = true;
-        if (vaultLetter) vaultLetter.hidden = false;
-        const dropCap = document.getElementById("letter-dropcap");
-        if (dropCap) dropCap.classList.add("is-revealed");
-        const readAgainRibbon = document.getElementById("read-again-ribbon");
-        if (readAgainRibbon) {
-          readAgainRibbon.hidden = false;
-          requestAnimationFrame(() => readAgainRibbon.classList.add("is-visible"));
-        }
-      }
-
-      setPageStage(Math.max(1, progress.stage || 1));
-      setTimeout(() => pageStageTargets[currentPageStage]?.(), 400);
-      return true;
+    // Soldaki çizgi artık gerçek scroll ilerlemesini takip ediyor
+    // (aşamalara göre zıplayan sabit yüzdeler yerine ne kadar
+    // aşağı indiğine göre sürekli dolan bir çizgi).
+    let scrollProgressFrame = null;
+    function updateScrollProgress() {
+      const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+      const fraction = scrollable > 0 ? Math.min(1, Math.max(0, window.scrollY / scrollable)) : 0;
+      pageProgressFill.style.height = `${fraction * 100}%`;
     }
+    window.addEventListener("scroll", () => {
+      if (scrollProgressFrame) return;
+      scrollProgressFrame = requestAnimationFrame(() => {
+        updateScrollProgress();
+        scrollProgressFrame = null;
+      });
+    }, { passive: true });
+    window.addEventListener("resize", updateScrollProgress);
+    updateScrollProgress();
+
     const pageStageObserver = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if (!entry.isIntersecting) return;
@@ -5357,14 +5323,12 @@
         requestAnimationFrame(() => requestAnimationFrame(() => dropCap.classList.add("is-revealed")));
       }
 
-      // Mektup bir kez açıldı: "tekrar oku" kurdelesini göster ve
-      // sayfa yenilense bile bu bilgiyi hatırla.
+      // Mektup bu oturumda açıldı: "tekrar oku" kurdelesini göster.
       const readAgainRibbon = document.getElementById("read-again-ribbon");
       if (readAgainRibbon) {
         readAgainRibbon.hidden = false;
         requestAnimationFrame(() => readAgainRibbon.classList.add("is-visible"));
       }
-      saveStoredProgress({ letterUnlocked: true });
     });
 
     let noteIndex = -1;
@@ -5556,13 +5520,15 @@
     blowCandleButton.addEventListener("click", async () => {
       blowCandleButton.disabled = true;
 
-      // Dilek şarkısını üfleme sesinin altında kısıp tamamen durdur
-      // (katmanlamak yerine).
+      // Önce dilek şarkısını nazikçe kısıp tamamen durdur.
       if (finalSongAudio && !finalSongAudio.paused) {
-        fadeAudioVolume(finalSongAudio, 0, 900).then(() => finalSongAudio.pause());
+        await fadeAudioVolume(finalSongAudio, 0, 900);
+        finalSongAudio.pause();
       }
 
-      // Tek seferlik mum üfleme sesi.
+      // Şarkı bittikten sonra bir saniye sessizlik, sonra üfleme sesi.
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
       blowSound.currentTime = 0;
       try {
         await blowSound.play();
@@ -5809,11 +5775,9 @@
 
       hideLoadingScreen();
 
-      // Loading screen kapanınca: daha önce zarf açılmışsa doğrudan kaldığı
-      // yere dön, yoksa lofi intro sahnesini (yağmur + mesajlar) başlat.
+      // Loading screen kapanınca lofi intro sahnesini (yağmur + mesajlar) başlat.
       setTimeout(() => {
-        const restored = typeof restoreProgressIfAny === "function" && restoreProgressIfAny();
-        if (!restored && typeof startLofiIntro === "function") startLofiIntro();
+        if (typeof startLofiIntro === "function") startLofiIntro();
       }, 350);
     }
 
