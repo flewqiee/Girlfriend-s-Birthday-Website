@@ -75,6 +75,29 @@
       color: #786d64;
       font: 0.95rem var(--sans);
       letter-spacing: 0.05em;
+      display: flex;
+      gap: 4px;
+      align-items: baseline;
+    }
+    .loader-percent {
+      min-width: 2.6em;
+      color: #a76667;
+      font-weight: 600;
+    }
+    .loader-bar {
+      width: 200px;
+      max-width: 52vw;
+      height: 4px;
+      border-radius: 999px;
+      overflow: hidden;
+      background: rgba(167, 102, 103, .16);
+    }
+    .loader-bar-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #a76667, #b9975b);
+      transition: width .25s ease;
     }
 
     * { box-sizing: border-box; }
@@ -3974,19 +3997,20 @@
     .rain-drop {
       position: absolute;
       left: var(--x);
-      top: -18%;
-      width: 1px;
+      top: -14%;
+      width: 1.6px;
       height: var(--h);
       border-radius: 999px;
-      background: linear-gradient(180deg, rgba(245,251,255,0), rgba(229,244,255,.52), rgba(167,204,231,.12));
+      background: linear-gradient(180deg, rgba(245,251,255,0), rgba(233,247,255,.92) 45%, rgba(167,204,231,.3));
+      box-shadow: 0 0 3px rgba(220,240,255,.35);
       opacity: var(--o);
-      transform: rotate(var(--tilt));
       animation: rainDropFall var(--d) linear infinite;
       animation-delay: var(--delay);
-      will-change: transform;
+      will-change: top, transform;
     }
     @keyframes rainDropFall {
-      to { transform: translate3d(var(--drift), 145%, 0) rotate(var(--tilt)); }
+      0% { top: -14%; transform: translateX(0) rotate(var(--tilt)); }
+      100% { top: 112%; transform: translateX(var(--drift)) rotate(var(--tilt)); }
     }
 </style>
 </head>
@@ -3994,7 +4018,8 @@
   <div class="loading-screen" id="loading-screen">
     <div class="loader">
       <div class="spinner"></div>
-      <p class="loader-text">Yükleniyor...</p>
+      <p class="loader-text">Yükleniyor... <span class="loader-percent" id="loader-percent">0%</span></p>
+      <div class="loader-bar"><div class="loader-bar-fill" id="loader-bar-fill"></div></div>
     </div>
   </div>
 
@@ -4564,16 +4589,16 @@
     function seedWindowRain() {
       if (!windowRain || windowRain.dataset.seeded) return;
       windowRain.dataset.seeded = "true";
-      const dropCount = window.matchMedia("(max-width: 620px)").matches ? 38 : 68;
+      const dropCount = window.matchMedia("(max-width: 620px)").matches ? 55 : 95;
       for (let index = 0; index < dropCount; index += 1) {
         const drop = document.createElement("i");
         drop.className = "rain-drop";
         drop.style.setProperty("--x", `${Math.random() * 100}%`);
-        drop.style.setProperty("--h", `${16 + Math.random() * 34}px`);
-        drop.style.setProperty("--o", `${.18 + Math.random() * .42}`);
+        drop.style.setProperty("--h", `${22 + Math.random() * 40}px`);
+        drop.style.setProperty("--o", `${.35 + Math.random() * .5}`);
         drop.style.setProperty("--tilt", `${5 + Math.random() * 9}deg`);
-        drop.style.setProperty("--drift", `${8 + Math.random() * 24}px`);
-        drop.style.setProperty("--d", `${.72 + Math.random() * 1.35}s`);
+        drop.style.setProperty("--drift", `${10 + Math.random() * 28}px`);
+        drop.style.setProperty("--d", `${.55 + Math.random() * 1.1}s`);
         drop.style.setProperty("--delay", `${-Math.random() * 4.6}s`);
         windowRain.appendChild(drop);
       }
@@ -5185,22 +5210,80 @@
         "assets/coffeecup.png",
         "assets/greycat.png",
         "assets/tablelamp.png",
+        "assets/birthdaycake.png",
+        "assets/blowcake.png",
+        "assets/bus.png",
+        "assets/decoration1.png",
+        "assets/decoration2.png",
+        "assets/decoration3.png",
+        "assets/decoration4.png",
+        "assets/decoration5.png",
+        "assets/decoration6.png",
+        "assets/decoration7.png",
+        "assets/existing-1.jpeg",
+        "assets/existing-2.jpeg",
+        "assets/existing-3.jpeg",
+        "assets/existing-4.jpeg",
+        "assets/flighttickerzarf.jpg",
+        "assets/flightticket.png",
+        "assets/flightticketzarf.jpg",
+        "assets/kiss.png",
+        "assets/kisszarf.jpeg",
+        "assets/kisszarf.jpg",
+        "assets/picnicbasket.png",
+        "assets/ribbon.png",
+        "assets/tablecloth.jpg",
+        "assets/timecapsule.png",
+        "assets/wallpaper.jpg",
+        "assets/wallpaper1.png",
+        "assets/wallpaper2.png",
+        "assets/wallpaper3.png",
+        "assets/wood-texture.jpg",
+        "assets/woodentexture.jpg",
+        "assets/dark-wood.jpg",
+        "assets/yaglama.png",
+        "assets/yaglamazarf.jpeg",
+        "assets/yaglamazarf.jpg",
         "assets/raining.mp3",
-        "assets/mykindofwoman.mp3"
+        "assets/mykindofwoman.mp3",
+        "assets/notification.mp3",
+        "assets/correct.mp3",
+        "assets/swoosh.mp3",
+        "assets/hover.mp3",
+        "assets/vault.mp3",
+        "assets/candleblow.mp3"
       ];
+
+      const total = assetPaths.length;
+      let loaded = 0;
+      const percentEl = document.getElementById("loader-percent");
+      const barEl = document.getElementById("loader-bar-fill");
+
+      const updateProgress = () => {
+        loaded += 1;
+        const pct = Math.min(100, Math.round((loaded / total) * 100));
+        if (percentEl) percentEl.textContent = `${pct}%`;
+        if (barEl) barEl.style.width = `${pct}%`;
+      };
 
       const loadAsset = (path) => {
         return new Promise((resolve) => {
           const isAudio = path.endsWith(".mp3");
           const element = isAudio ? new Audio() : new Image();
-          
-          element.onload = element.oncanplaythrough = () => {
+          let settled = false;
+
+          const finish = () => {
+            if (settled) return;
+            settled = true;
+            updateProgress();
             resolve();
           };
-          element.onerror = () => {
-            resolve();
-          };
-          
+
+          element.onload = element.oncanplaythrough = finish;
+          element.onerror = finish;
+          // Bir dosya hiç yanıt vermezse (örn. yanlış isim) tüm ekranı kilitlemesin.
+          setTimeout(finish, 6000);
+
           element.src = path;
           if (isAudio) element.preload = "auto";
         });
@@ -5212,11 +5295,14 @@
         console.error("Asset preload error:", error);
       }
 
-      /* Loading screen'i gizle ama startLofiIntro'yu ÇAĞIRMAYiN */
       hideLoadingScreen();
+
+      // Loading screen kapanınca lofi intro sahnesini (yağmur + mesajlar) başlat.
+      setTimeout(() => {
+        if (typeof startLofiIntro === "function") startLofiIntro();
+      }, 350);
     }
 
-    /* Preload başlat - ama startLofiIntro çağırma */
     if (document.readyState === "loading") {
       document.addEventListener("DOMContentLoaded", preloadAssets);
     } else {
