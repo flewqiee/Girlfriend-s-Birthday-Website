@@ -17,6 +17,7 @@
   <link rel="preload" as="audio" href="assets/swoosh.mp3">
   <link rel="preload" as="audio" href="assets/hover.mp3">
   <link rel="preload" as="audio" href="assets/vault.mp3">
+  <link rel="preload" as="audio" href="assets/finalsong.mp3">
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Gochi+Hand&family=Italiana&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -53,6 +54,10 @@
       opacity: 0;
       visibility: hidden;
       pointer-events: none;
+    }
+    body.is-loading {
+      overflow: hidden;
+      height: 100vh;
     }
     .loader {
       display: flex;
@@ -1785,6 +1790,19 @@
       from { background-position: 0 0, 0 0, 0 0, 0 0, -38% 0; }
       to { background-position: 0 -28px, 0 -22px, 0 -24px, 0 -18px, 42% 0; }
     }
+
+    .final-song-toggle {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      z-index: 4;
+      opacity: .8;
+      background: rgba(255,248,232,.14);
+      color: #fff8e8;
+      transition: opacity .2s ease, background .2s ease;
+    }
+    .final-song-toggle:hover, .final-song-toggle:focus-visible { opacity: 1; background: rgba(255,248,232,.24); }
+    .final-overlay.is-dark .final-song-toggle { opacity: 0; pointer-events: none; }
 
     .final-scene {
       position: relative;
@@ -4204,7 +4222,7 @@
   <div class="loading-screen" id="loading-screen">
     <div class="loader">
       <div class="spinner"></div>
-      <p class="loader-text">Yükleniyor... <span class="loader-percent" id="loader-percent">0%</span></p>
+      <p class="loader-text"><span id="loader-phrase">hazırlanıyor</span> yükleniyor... <span class="loader-percent" id="loader-percent">0%</span></p>
       <div class="loader-bar"><div class="loader-bar-fill" id="loader-bar-fill"></div></div>
     </div>
   </div>
@@ -4553,6 +4571,7 @@
         </div>
         <audio id="local-audio" preload="auto" loop></audio>
         <audio id="rain-audio" src="assets/raining.mp3" preload="auto" loop></audio>
+        <audio id="final-song-audio" preload="auto" loop></audio>
       </section>
     </main>
 
@@ -4687,6 +4706,9 @@
   </div>
 
   <div class="final-overlay" id="final-overlay" aria-hidden="true">
+    <button class="icon-button final-song-toggle" id="final-song-toggle" type="button" aria-label="Şarkıyı oynat veya durdur">
+      <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M6 4.5v11l9-5.5-9-5.5Z"/></svg>
+    </button>
     <div class="final-scene">
       <div class="final-wish-step" id="final-wish-step">
         <p class="final-kicker">son bir şey</p>
@@ -4743,11 +4765,17 @@
     const windowRain = document.querySelector(".window-rain");
     const localAudio = document.getElementById("local-audio");
     const rainAudio = document.getElementById("rain-audio");
+    const finalSongAudio = document.getElementById("final-song-audio");
     const musicStatus = document.getElementById("music-status");
     const audioSources = [
       "assets/mykindofwoman.mp3",
       "../assets/mykindofwoman.mp3",
       "/Girlfriend-s-Birthday-Website/assets/mykindofwoman.mp3"
+    ];
+    const finalSongSources = [
+      "assets/finalsong.mp3",
+      "../assets/finalsong.mp3",
+      "/Girlfriend-s-Birthday-Website/assets/finalsong.mp3"
     ];
     const rainSources = [
       "assets/raining.mp3",
@@ -4763,13 +4791,15 @@
     };
     let audioSourceIndex = 0;
     let rainSourceIndex = 0;
+    let finalSongSourceIndex = 0;
     let musicPlaying = false;
+    let finalSongPlaying = false;
     let lastHoverSoundAt = 0;
     let lastHoverButton = null;
 
     function playUiSound(name, volume = .65) {
       const sources = uiSounds[name];
-      if (!sources) return;
+      if (!sources) return null;
       const sound = new Audio(sources[0]);
       sound.preload = "auto";
       sound.volume = volume;
@@ -4781,6 +4811,43 @@
           sound.src = sources[2];
           sound.play().catch(() => {});
         });
+      });
+      return sound;
+    }
+
+    /* ---- Ses geçişleri: efekt seslerinin altındaki müziği katmanlamak
+       yerine nazikçe kısıp sonra geri getiriyoruz. ---- */
+    function fadeAudioVolume(audio, target, duration = 400) {
+      return new Promise(resolve => {
+        if (!audio) { resolve(); return; }
+        const start = performance.now();
+        const startVolume = audio.volume;
+        const clampedTarget = Math.min(1, Math.max(0, target));
+        function step(now) {
+          const t = Math.min(1, (now - start) / duration);
+          audio.volume = startVolume + (clampedTarget - startVolume) * t;
+          if (t < 1) {
+            requestAnimationFrame(step);
+          } else {
+            audio.volume = clampedTarget;
+            resolve();
+          }
+        }
+        requestAnimationFrame(step);
+      });
+    }
+
+    function duckAudioDuring(effectSound, { duckTo = 0.15, fadeMs = 180 } = {}) {
+      if (!effectSound) return;
+      const candidates = [localAudio, rainAudio, finalSongAudio].filter(a => a && !a.paused);
+      if (!candidates.length) return;
+      const originals = candidates.map(a => a.volume);
+      Promise.all(candidates.map((a, i) => fadeAudioVolume(a, Math.min(originals[i], duckTo), fadeMs))).then(() => {
+        const restore = () => candidates.forEach((a, i) => fadeAudioVolume(a, originals[i], fadeMs));
+        if (effectSound.paused || effectSound.ended) { restore(); return; }
+        effectSound.addEventListener("ended", restore, { once: true });
+        // 'ended' hiç tetiklenmezse (tarayıcı garipliği) yine de geri getir.
+        setTimeout(restore, (effectSound.duration ? effectSound.duration * 1000 : 1600) + 400);
       });
     }
 
@@ -4872,6 +4939,36 @@
       }, 80);
     }
 
+    function updateFinalSongButton() {
+      const button = document.getElementById("final-song-toggle");
+      if (!button) return;
+      button.innerHTML = finalSongPlaying
+        ? '<svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M5 4h3.5v12H5V4Zm6.5 0H15v12h-3.5V4Z"/></svg>'
+        : '<svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M6 4.5v11l9-5.5-9-5.5Z"/></svg>';
+    }
+    function playFinalSong() {
+      if (!finalSongAudio) return;
+      finalSongAudio.volume = 0.75;
+      const source = finalSongSources[finalSongSourceIndex];
+      if (finalSongAudio.dataset.currentSource !== source) {
+        finalSongAudio.src = source;
+        finalSongAudio.dataset.currentSource = source;
+        finalSongAudio.load();
+      }
+      finalSongAudio.play().catch(() => {
+        finalSongSourceIndex = (finalSongSourceIndex + 1) % finalSongSources.length;
+      });
+    }
+    if (finalSongAudio) {
+      finalSongAudio.addEventListener("play", () => { finalSongPlaying = true; updateFinalSongButton(); });
+      finalSongAudio.addEventListener("pause", () => { finalSongPlaying = false; updateFinalSongButton(); });
+      finalSongAudio.addEventListener("ended", () => { finalSongPlaying = false; updateFinalSongButton(); });
+    }
+    document.getElementById("final-song-toggle")?.addEventListener("click", () => {
+      if (finalSongPlaying) finalSongAudio.pause();
+      else playFinalSong();
+    });
+
     function startLofiIntro() {
       const messages = Array.from(document.querySelectorAll("[data-intro-msg]"));
       seedWindowRain();
@@ -4957,6 +5054,24 @@
     });
     /* startLofiIntro() - Hiçbir şey başlatma, sadece hazırla */
 
+    /* ---- İlerleme hafızası: sayfa yenilense bile kaldığı yeri unutma ---- */
+    const PROGRESS_STORAGE_KEY = "umutunHediyesiIlerleme";
+    function loadStoredProgress() {
+      try {
+        return JSON.parse(localStorage.getItem(PROGRESS_STORAGE_KEY)) || {};
+      } catch (error) {
+        return {};
+      }
+    }
+    function saveStoredProgress(patch) {
+      try {
+        const current = loadStoredProgress();
+        localStorage.setItem(PROGRESS_STORAGE_KEY, JSON.stringify({ ...current, ...patch }));
+      } catch (error) {
+        // localStorage kapalıysa (gizli sekme vb.) sessizce devam et.
+      }
+    }
+
     envelope.addEventListener("click", () => {
       envelope.classList.add("is-opening");
       playLocalSong();
@@ -4967,6 +5082,7 @@
         document.getElementById("main").focus({ preventScroll: true });
         pageProgress.classList.add("is-visible");
         setPageStage(1);
+        saveStoredProgress({ opened: true });
       }, 850);
     });
 
@@ -5006,12 +5122,45 @@
         dot.classList.toggle("is-current", index === currentPageStage);
         dot.disabled = index > currentPageStage;
       });
+      saveStoredProgress({ stage: currentPageStage });
     }
     pageProgressDots[0]?.classList.add("is-current");
     pageProgressDots.forEach((dot, index) => {
       dot.disabled = index > 0;
       dot.addEventListener("click", () => pageStageTargets[dot.dataset.stageJump]?.());
     });
+
+    // Daha önce zarfı açmışsa: intro/zarf törenini tekrar oynatmadan
+    // doğrudan kaldığı sahneye dön. true dönerse normal intro atlanır.
+    function restoreProgressIfAny() {
+      const progress = loadStoredProgress();
+      if (!progress.opened) return false;
+
+      lofiIntro.classList.add("is-gone");
+      opening.classList.add("is-story-ready", "is-open");
+      siteShell.classList.add("is-ready");
+      siteShell.setAttribute("aria-hidden", "false");
+      pageProgress.classList.add("is-visible");
+      document.getElementById("main")?.focus({ preventScroll: true });
+
+      if (progress.letterUnlocked) {
+        const vaultLock = document.getElementById("vault-lock");
+        const vaultLetter = document.getElementById("vault-letter");
+        if (vaultLock) vaultLock.hidden = true;
+        if (vaultLetter) vaultLetter.hidden = false;
+        const dropCap = document.getElementById("letter-dropcap");
+        if (dropCap) dropCap.classList.add("is-revealed");
+        const readAgainRibbon = document.getElementById("read-again-ribbon");
+        if (readAgainRibbon) {
+          readAgainRibbon.hidden = false;
+          requestAnimationFrame(() => readAgainRibbon.classList.add("is-visible"));
+        }
+      }
+
+      setPageStage(Math.max(1, progress.stage || 1));
+      setTimeout(() => pageStageTargets[currentPageStage]?.(), 400);
+      return true;
+    }
     const pageStageObserver = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if (!entry.isIntersecting) return;
@@ -5194,7 +5343,7 @@
         input.select();
         return;
       }
-      playUiSound("vault", .7);
+      duckAudioDuring(playUiSound("vault", .7));
       document.getElementById("vault-lock").hidden = true;
       document.getElementById("vault-letter").hidden = false;
       document.getElementById("vault-error").textContent = "";
@@ -5208,12 +5357,14 @@
         requestAnimationFrame(() => requestAnimationFrame(() => dropCap.classList.add("is-revealed")));
       }
 
-      // Bu oturumda mektup bir kez açıldı: "tekrar oku" kurdelesini göster.
+      // Mektup bir kez açıldı: "tekrar oku" kurdelesini göster ve
+      // sayfa yenilense bile bu bilgiyi hatırla.
       const readAgainRibbon = document.getElementById("read-again-ribbon");
       if (readAgainRibbon) {
         readAgainRibbon.hidden = false;
         requestAnimationFrame(() => readAgainRibbon.classList.add("is-visible"));
       }
+      saveStoredProgress({ letterUnlocked: true });
     });
 
     let noteIndex = -1;
@@ -5340,9 +5491,13 @@
     const finalText = "Macera buraya kadardı...\nUmarım beğenmişsindir sevgilim.\nSeni çok seviyorum.\nSevgilerle, Umut...";
 
     document.getElementById("final-cake-button").addEventListener("click", () => {
-      // Final açıldığı anda ana şarkıyı durdur.
+      // Final açıldığı anda ana şarkıyı durdur, dilek şarkısını baştan başlat.
       localAudio.pause();
       syncMusicState();
+      if (finalSongAudio) {
+        finalSongAudio.currentTime = 0;
+        playFinalSong();
+      }
 
       setPageStage(6);
       finalOverlay.classList.add("is-visible");
@@ -5401,6 +5556,12 @@
     blowCandleButton.addEventListener("click", async () => {
       blowCandleButton.disabled = true;
 
+      // Dilek şarkısını üfleme sesinin altında kısıp tamamen durdur
+      // (katmanlamak yerine).
+      if (finalSongAudio && !finalSongAudio.paused) {
+        fadeAudioVolume(finalSongAudio, 0, 900).then(() => finalSongAudio.pause());
+      }
+
       // Tek seferlik mum üfleme sesi.
       blowSound.currentTime = 0;
       try {
@@ -5408,6 +5569,13 @@
       } catch (error) {
         // Tarayıcı ses oynatmayı engellerse akış yine devam eder.
       }
+
+      // Sahne kararmadan önce üfleme sesinin bitmesini bekle.
+      await new Promise(resolve => {
+        if (blowSound.paused || blowSound.ended) { resolve(); return; }
+        blowSound.addEventListener("ended", resolve, { once: true });
+        setTimeout(resolve, (blowSound.duration ? blowSound.duration * 1000 : 1400) + 300);
+      });
 
       // Mum üflenince sahne şak diye kararsın.
       finalOverlay.classList.add("is-dark");
@@ -5485,14 +5653,37 @@
     }
 
     /* Loading Screen & Asset Preloading */
+    let loadingPhraseTimer = null;
+    function startLoadingPhraseCycle() {
+      const phraseEl = document.getElementById("loader-phrase");
+      if (!phraseEl) return;
+      const phrases = ["fotoğraflar", "müzik", "kasa", "anılar", "küçük sürprizler", "son dokunuşlar"];
+      let index = 0;
+      phraseEl.textContent = phrases[0];
+      loadingPhraseTimer = setInterval(() => {
+        index = (index + 1) % phrases.length;
+        phraseEl.textContent = phrases[index];
+      }, 900);
+    }
+    function stopLoadingPhraseCycle() {
+      if (loadingPhraseTimer) {
+        clearInterval(loadingPhraseTimer);
+        loadingPhraseTimer = null;
+      }
+    }
+
     function hideLoadingScreen() {
       const loadingScreen = document.getElementById("loading-screen");
       if (loadingScreen) {
         loadingScreen.classList.add("is-hidden");
       }
+      stopLoadingPhraseCycle();
+      document.body.classList.remove("is-loading");
     }
 
     async function preloadAssets() {
+      document.body.classList.add("is-loading");
+      startLoadingPhraseCycle();
       const imagePaths = [
         "assets/window-view.png",
         "assets/coffeecup.png",
@@ -5539,6 +5730,7 @@
       const audioGroups = [
         audioSources,
         rainSources,
+        finalSongSources,
         uiSounds.notification,
         uiSounds.correct,
         uiSounds.swoosh,
@@ -5617,9 +5809,11 @@
 
       hideLoadingScreen();
 
-      // Loading screen kapanınca lofi intro sahnesini (yağmur + mesajlar) başlat.
+      // Loading screen kapanınca: daha önce zarf açılmışsa doğrudan kaldığı
+      // yere dön, yoksa lofi intro sahnesini (yağmur + mesajlar) başlat.
       setTimeout(() => {
-        if (typeof startLofiIntro === "function") startLofiIntro();
+        const restored = typeof restoreProgressIfAny === "function" && restoreProgressIfAny();
+        if (!restored && typeof startLofiIntro === "function") startLofiIntro();
       }, 350);
     }
 
