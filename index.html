@@ -1458,13 +1458,122 @@
     }
     .letter-paper::before { content: ""; position: absolute; top: -13px; left: 40%; width: 100px; height: 27px; background: rgba(205,184,142,.55); transform: rotate(2deg); }
     .letter-paper p { margin: 0 0 18px; line-height: 2; }
-    .letter-paper p:first-of-type::first-letter {
+    .letter-paper .drop-cap {
+      display: inline-block;
       float: left;
       margin: 8px 10px 0 0;
       color: var(--rose-dark);
       font: 5rem/.65 var(--serif);
+      opacity: 0;
+      transform: scale(.68) translateY(10px);
+      transition: opacity .75s ease, transform .75s cubic-bezier(.2,.8,.2,1);
     }
+    .letter-paper .drop-cap.is-revealed { opacity: 1; transform: scale(1) translateY(0); }
     .letter-sign { margin-top: 32px; text-align: right; color: var(--rose-dark); font: 1.55rem var(--hand); }
+
+    /* ---- Sayfa ilerleme çizgisi (üstte ince nokta izi) ---- */
+    .page-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 60;
+      padding: 14px 6vw 0;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity .6s ease;
+    }
+    .page-progress.is-visible { opacity: 1; }
+    body.modal-open .page-progress { opacity: 0; }
+    .page-progress-track {
+      position: relative;
+      max-width: 760px;
+      margin: 0 auto;
+      height: 3px;
+      background: rgba(74,58,48,.14);
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .page-progress-fill {
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--gold), var(--rose));
+      border-radius: 999px;
+      transition: width .8s cubic-bezier(.2,.8,.2,1);
+    }
+    .page-progress-dot {
+      position: relative;
+      z-index: 1;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #fff8ef;
+      border: 1.5px solid rgba(74,58,48,.22);
+      transition: background .45s ease, border-color .45s ease, transform .45s cubic-bezier(.2,.8,.3,1.2), box-shadow .45s ease;
+    }
+    .page-progress-dot.is-complete { background: var(--rose-dark); border-color: var(--rose-dark); }
+    .page-progress-dot.is-current {
+      transform: scale(1.45);
+      border-color: var(--gold);
+      box-shadow: 0 0 0 4px rgba(185,151,91,.18);
+    }
+    @media (max-width: 620px) {
+      .page-progress { padding: 10px 5vw 0; }
+      .page-progress-dot { width: 6px; height: 6px; }
+    }
+
+    /* ---- Quiz: iki yanlıştan sonra nazik cesaretlendirme ---- */
+    .quiz-nudge {
+      display: block;
+      margin-top: 7px;
+      color: var(--sage);
+      font: .98rem var(--hand);
+      opacity: 0;
+    }
+    .feedback.is-nudge .quiz-nudge { animation: nudgeFade .6s ease forwards; }
+    @keyframes nudgeFade {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ---- Konfeti biçim/renk varyasyonları ---- */
+    .confetti--quiz { border-radius: 3px; }
+    .confetti--vault { width: 11px; height: 11px; border-radius: 50% 8% 50% 8%; }
+    .confetti--puzzle { border-radius: 2px; }
+    .confetti--finale { border-radius: 50%; box-shadow: 0 0 6px rgba(255,255,255,.5); }
+
+    /* ---- "Tekrar oku" kurdelesi ---- */
+    .read-again-ribbon {
+      position: fixed;
+      top: 96px;
+      right: 0;
+      z-index: 55;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px 10px 12px;
+      border: none;
+      border-radius: 10px 0 0 10px;
+      background: var(--rose-dark);
+      color: #fff8ef;
+      box-shadow: -6px 10px 24px rgba(61,42,31,.22);
+      cursor: pointer;
+      opacity: 0;
+      transform: translateX(calc(100% - 42px));
+      transition: transform .45s cubic-bezier(.2,.8,.2,1), opacity .5s ease;
+    }
+    .read-again-ribbon.is-visible { opacity: 1; }
+    .read-again-ribbon:hover, .read-again-ribbon:focus-visible { transform: translateX(0); }
+    .read-again-ribbon svg { width: 18px; height: 18px; flex-shrink: 0; }
+    .read-again-ribbon span { font: .95rem var(--hand); white-space: nowrap; }
+    @media (max-width: 620px) {
+      .read-again-ribbon { top: auto; bottom: 18px; }
+    }
 
     .capsule-question { text-align: center; }
     .capsule-layout {
@@ -4072,6 +4181,24 @@
 
   <a class="skip-link" href="#main">İçeriğe geç</a>
 
+  <div class="page-progress" id="page-progress" aria-hidden="true">
+    <div class="page-progress-track">
+      <div class="page-progress-fill" id="page-progress-fill"></div>
+      <span class="page-progress-dot" title="Başlangıç"></span>
+      <span class="page-progress-dot" title="Zarf"></span>
+      <span class="page-progress-dot" title="Macera haritası"></span>
+      <span class="page-progress-dot" title="Quiz"></span>
+      <span class="page-progress-dot" title="Gizli mektup"></span>
+      <span class="page-progress-dot" title="Aşk ölçer"></span>
+      <span class="page-progress-dot" title="Doğum günü pastası"></span>
+    </div>
+  </div>
+
+  <button class="read-again-ribbon" id="read-again-ribbon" type="button" data-open="vault-modal" hidden aria-label="Mektubu tekrar oku">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1Z"/></svg>
+    <span>mektubu tekrar oku</span>
+  </button>
+
   <section class="lofi-intro" id="lofi-intro" aria-label="Umut'tan gelen mesaj">
     <div class="lofi-room" aria-hidden="true">
       <span class="paint-wash"></span>
@@ -4457,7 +4584,7 @@
         <p class="modal-kicker">yalnızca senin için</p>
         <h2>İyi ki doğdun, aşkım.</h2>
         <article class="letter-paper">
-          <p>Bugünün diğer günlerden farklı hissettirmesini istedim, çünkü sen benim için sıradan biri değilsin — en sevdiğim insansın, en sevdiğin günde.</p>
+          <p><span class="drop-cap" id="letter-dropcap">B</span>ugünün diğer günlerden farklı hissettirmesini istedim, çünkü sen benim için sıradan biri değilsin — en sevdiğim insansın, en sevdiğin günde.</p>
           <p>Ne kadar sevildiğini bilmeni istiyorum; sadece bugün değil, her gün. Gülüşün, herkese gösterdiğin o özen, fark etmeden yaptığın küçük şeyler… Hepsini görüyorum ve seni her seferinde biraz daha çok seviyorum.</p>
           <p>O yüzden bugün sana. Güzel kalbine, hayallerine ve seni sen yapan her şeye bir yaş daha. Seni sevebilmek büyük bir şans.</p>
           <p>Bazen kelimeler yetersiz kalıyor. Yine de bilmeni istediğim tek bir şey var: Her halinle, her gün, hep sen.</p>
@@ -4808,6 +4935,8 @@
         siteShell.classList.add("is-ready");
         siteShell.setAttribute("aria-hidden", "false");
         document.getElementById("main").focus({ preventScroll: true });
+        pageProgress.classList.add("is-visible");
+        setPageStage(1);
       }, 850);
     });
 
@@ -4823,17 +4952,44 @@
       document.getElementById("activities").scrollIntoView({ behavior: "smooth" });
     });
 
+    /* ---- Sayfa ilerleme çizgisi: intro → zarf → macera haritası → quiz → gizli mektup → aşk ölçer → pasta ---- */
+    const pageProgress = document.getElementById("page-progress");
+    const pageProgressFill = document.getElementById("page-progress-fill");
+    const pageProgressDots = Array.from(document.querySelectorAll(".page-progress-dot"));
+    let currentPageStage = 0;
+    function setPageStage(stageIndex) {
+      if (stageIndex <= currentPageStage) return;
+      currentPageStage = stageIndex;
+      const totalStages = pageProgressDots.length - 1;
+      pageProgressFill.style.width = `${(currentPageStage / totalStages) * 100}%`;
+      pageProgressDots.forEach((dot, index) => {
+        dot.classList.toggle("is-complete", index < currentPageStage);
+        dot.classList.toggle("is-current", index === currentPageStage);
+      });
+    }
+    pageProgressDots[0]?.classList.add("is-current");
+    const pageStageObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        if (entry.target.classList.contains("birthday-trail")) setPageStage(2);
+        if (entry.target.classList.contains("love-meter")) setPageStage(5);
+      });
+    }, { threshold: 0.35 });
+    document.querySelectorAll(".birthday-trail, .love-meter").forEach(section => pageStageObserver.observe(section));
+
     let lastFocusedElement = null;
     function openModal(modal) {
       lastFocusedElement = document.activeElement;
       modal.classList.add("is-visible");
       document.body.style.overflow = "hidden";
+      document.body.classList.add("modal-open");
       const focusTarget = modal.querySelector("input, button");
       setTimeout(() => focusTarget?.focus(), 80);
     }
     function closeModal(modal) {
       modal.classList.remove("is-visible");
       document.body.style.overflow = "";
+      document.body.classList.remove("modal-open");
       lastFocusedElement?.focus();
     }
     document.querySelectorAll("[data-open]").forEach(button => {
@@ -4866,11 +5022,15 @@
       progressWrap.classList.add("is-driving");
       setTimeout(() => progressWrap.classList.remove("is-driving"), 850);
     }
+    let quizWrongStreak = 0;
     function renderQuiz() {
       const data = quizQuestions[quizIndex];
+      quizWrongStreak = 0;
       updateQuizJourney(quizIndex);
       document.getElementById("quiz-question").textContent = data.question;
-      document.getElementById("quiz-feedback").textContent = "";
+      const feedback = document.getElementById("quiz-feedback");
+      feedback.textContent = "";
+      feedback.classList.remove("is-nudge");
       const options = document.getElementById("quiz-options");
       options.innerHTML = "";
       data.options.forEach((option, index) => {
@@ -4884,18 +5044,29 @@
     }
     function checkQuizAnswer(button, index) {
       const data = quizQuestions[quizIndex];
+      const feedback = document.getElementById("quiz-feedback");
       if (index !== data.answer) {
+        quizWrongStreak += 1;
         button.classList.add("is-wrong");
-        document.getElementById("quiz-feedback").textContent = data.hint;
+        feedback.classList.remove("is-nudge");
+        if (quizWrongStreak >= 2) {
+          feedback.innerHTML = `${data.hint}<span class="quiz-nudge">Neredeyse oradasın, bir tahmin daha yeter ✨</span>`;
+          void feedback.offsetWidth;
+          feedback.classList.add("is-nudge");
+        } else {
+          feedback.textContent = data.hint;
+        }
         setTimeout(() => button.classList.remove("is-wrong"), 500);
         return;
       }
+      quizWrongStreak = 0;
       button.classList.add("is-correct");
       playUiSound("correct", .68);
       document.querySelectorAll(".quiz-option").forEach(option => option.disabled = true);
       updateQuizJourney(quizIndex + 1, true);
       if (quizIndex === quizQuestions.length - 1) {
-        document.getElementById("quiz-feedback").textContent = "Tebrikler, son durağa vardık.";
+        feedback.classList.remove("is-nudge");
+        feedback.textContent = "Tebrikler, son durağa vardık.";
       }
       setTimeout(() => {
         quizIndex += 1;
@@ -4903,7 +5074,8 @@
         else {
           document.getElementById("quiz-content").hidden = true;
           document.getElementById("quiz-success").hidden = false;
-          celebrate();
+          celebrate(34, false, "quiz");
+          setPageStage(3);
         }
       }, quizIndex === quizQuestions.length - 1 ? 1150 : 650);
     }
@@ -4962,7 +5134,7 @@
       renderPuzzle();
       if (puzzle.every((tile, index) => tile === index)) {
         document.getElementById("puzzle-status").textContent = "tamamlandı";
-        celebrate();
+        celebrate(34, false, "puzzle");
       }
     }
     document.getElementById("shuffle-puzzle").addEventListener("click", shufflePuzzle);
@@ -4982,7 +5154,22 @@
       document.getElementById("vault-lock").hidden = true;
       document.getElementById("vault-letter").hidden = false;
       document.getElementById("vault-error").textContent = "";
-      celebrate();
+      celebrate(34, false, "vault");
+      setPageStage(4);
+
+      // Kilit açılınca baş harfi nazikçe içeri süzül (anında belirmesin).
+      const dropCap = document.getElementById("letter-dropcap");
+      if (dropCap) {
+        dropCap.classList.remove("is-revealed");
+        requestAnimationFrame(() => requestAnimationFrame(() => dropCap.classList.add("is-revealed")));
+      }
+
+      // Bu oturumda mektup bir kez açıldı: "tekrar oku" kurdelesini göster.
+      const readAgainRibbon = document.getElementById("read-again-ribbon");
+      if (readAgainRibbon) {
+        readAgainRibbon.hidden = false;
+        requestAnimationFrame(() => readAgainRibbon.classList.add("is-visible"));
+      }
     });
 
     let noteIndex = -1;
@@ -5113,6 +5300,7 @@
       localAudio.pause();
       syncMusicState();
 
+      setPageStage(6);
       finalOverlay.classList.add("is-visible");
       finalOverlay.classList.remove("is-dark");
       finalOverlay.setAttribute("aria-hidden", "false");
@@ -5215,7 +5403,7 @@
     }
 
     function launchFinale() {
-      celebrate(76, true);
+      celebrate(76, true, "finale");
       for (let index = 0; index < 46; index += 1) {
         const spark = document.createElement("span");
         spark.className = "final-spark";
@@ -5229,11 +5417,19 @@
       }
     }
 
-    function celebrate(amount = 34, wide = false) {
-      const colors = ["#a76667", "#71806a", "#b9975b", "#e4caca", "#f2d179", "#c7d9e8"];
+    function celebrate(amount = 34, wide = false, variant = "default") {
+      const palettes = {
+        default: ["#a76667", "#71806a", "#b9975b", "#e4caca", "#f2d179", "#c7d9e8"],
+        quiz: ["#b9975b", "#f2d179", "#e8c98a", "#fff2cf"],
+        vault: ["#a76667", "#e4caca", "#c99a86", "#f7e6da"],
+        puzzle: ["#71806a", "#a9bfa0", "#d8e3cf", "#cdbd8f"],
+        finale: ["#a76667", "#71806a", "#b9975b", "#e4caca", "#f2d179", "#c7d9e8", "#fff8ef"]
+      };
+      const colors = palettes[variant] || palettes.default;
+      const shapeClass = `confetti confetti--${variant}`;
       for (let index = 0; index < amount; index += 1) {
         const piece = document.createElement("span");
-        piece.className = "confetti";
+        piece.className = shapeClass;
         piece.style.left = wide ? `${10 + Math.random() * 80}vw` : `${45 + Math.random() * 10}vw`;
         piece.style.top = wide ? `${18 + Math.random() * 18}vh` : `${42 + Math.random() * 10}vh`;
         piece.style.background = colors[index % colors.length];
