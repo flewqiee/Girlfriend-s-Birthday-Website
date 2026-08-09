@@ -1471,28 +1471,27 @@
     .letter-paper .drop-cap.is-revealed { opacity: 1; transform: scale(1) translateY(0); }
     .letter-sign { margin-top: 32px; text-align: right; color: var(--rose-dark); font: 1.55rem var(--hand); }
 
-    /* ---- Sayfa ilerleme çizgisi (üstte ince nokta izi) ---- */
+    /* ---- Sayfa ilerleme çizgisi (kenarda dikey nokta izi) ---- */
     .page-progress {
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
+      top: 50%;
+      left: 16px;
+      transform: translateY(-50%);
       z-index: 60;
-      padding: 14px 6vw 0;
-      pointer-events: none;
       opacity: 0;
       transition: opacity .6s ease;
     }
     .page-progress.is-visible { opacity: 1; }
-    body.modal-open .page-progress { opacity: 0; }
+    body.modal-open .page-progress { opacity: 0; pointer-events: none; }
     .page-progress-track {
       position: relative;
-      max-width: 760px;
+      width: 3px;
+      height: min(46vh, 260px);
       margin: 0 auto;
-      height: 3px;
       background: rgba(74,58,48,.14);
       border-radius: 999px;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: space-between;
     }
@@ -1500,31 +1499,60 @@
       position: absolute;
       left: 0;
       top: 0;
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(90deg, var(--gold), var(--rose));
+      width: 100%;
+      height: 0%;
+      background: linear-gradient(180deg, var(--gold), var(--rose));
       border-radius: 999px;
-      transition: width .8s cubic-bezier(.2,.8,.2,1);
+      transition: height .8s cubic-bezier(.2,.8,.2,1);
     }
     .page-progress-dot {
       position: relative;
       z-index: 1;
-      width: 7px;
-      height: 7px;
+      width: 8px;
+      height: 8px;
       border-radius: 50%;
       background: #fff8ef;
       border: 1.5px solid rgba(74,58,48,.22);
-      transition: background .45s ease, border-color .45s ease, transform .45s cubic-bezier(.2,.8,.3,1.2), box-shadow .45s ease;
+      cursor: pointer;
+      pointer-events: auto;
+      transition: background .45s ease, border-color .45s ease, transform .3s cubic-bezier(.2,.8,.3,1.2), box-shadow .45s ease;
     }
+    .page-progress-dot:hover { transform: scale(1.3); }
+    .page-progress-dot:disabled { cursor: default; opacity: .55; }
+    .page-progress-dot:disabled:hover { transform: none; }
+    .page-progress-dot:disabled .page-progress-label { opacity: 0 !important; }
     .page-progress-dot.is-complete { background: var(--rose-dark); border-color: var(--rose-dark); }
     .page-progress-dot.is-current {
-      transform: scale(1.45);
+      transform: scale(1.5);
       border-color: var(--gold);
       box-shadow: 0 0 0 4px rgba(185,151,91,.18);
     }
-    @media (max-width: 620px) {
-      .page-progress { padding: 10px 5vw 0; }
-      .page-progress-dot { width: 6px; height: 6px; }
+    .page-progress-dot.is-current:hover { transform: scale(1.65); }
+    .page-progress-label {
+      position: absolute;
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%) translateX(-4px);
+      padding: 5px 11px;
+      border-radius: 999px;
+      background: var(--ink);
+      color: var(--paper);
+      font: .82rem var(--hand);
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .25s ease, transform .25s ease;
+    }
+    .page-progress-dot:hover .page-progress-label,
+    .page-progress-dot:focus-visible .page-progress-label {
+      opacity: 1;
+      transform: translateY(-50%) translateX(0);
+    }
+    @media (max-width: 900px) {
+      .page-progress { left: 9px; }
+      .page-progress-track { height: min(38vh, 200px); }
+      .page-progress-dot { width: 7px; height: 7px; }
+      .page-progress-label { display: none; }
     }
 
     /* ---- Quiz: iki yanlıştan sonra nazik cesaretlendirme ---- */
@@ -4031,13 +4059,13 @@
       to { transform: translateY(256px); }
     }
     .tablelamp-asset {
-      transform: none;
+      transform: scaleX(-1);
       bottom: clamp(-8px, .8vh, 8px);
     }
     @media (max-width: 620px) {
       .room-window { border-radius: 0; }
       .window-rain { animation-duration: .88s; }
-      .tablelamp-asset { transform: none; }
+      .tablelamp-asset { transform: scaleX(-1); }
     }
 
     /* Clean rain and notification cue pass. */
@@ -4129,9 +4157,11 @@
     .tabletop {
       background:
         linear-gradient(180deg, rgba(255,219,164,.14), rgba(59,31,24,.06) 28%, rgba(14,10,12,.24) 100%),
-        url("assets/woodentexture.jpg") center / cover,
+        url("assets/woodentexture.jpg") 38% 60% / 340px 340px repeat,
+        url("assets/woodentexture.jpg") 0 0 / 340px 340px repeat,
         repeating-linear-gradient(94deg, rgba(255,232,190,.08) 0 2px, transparent 2px 92px),
         linear-gradient(180deg, #6c3f31 0%, #4b2b25 46%, #22171b 100%);
+      background-blend-mode: normal, overlay, normal, normal, normal;
     }
     @media (max-width: 620px) {
       .notification-wave {
@@ -4181,16 +4211,16 @@
 
   <a class="skip-link" href="#main">İçeriğe geç</a>
 
-  <div class="page-progress" id="page-progress" aria-hidden="true">
+  <div class="page-progress" id="page-progress" aria-label="Sayfa ilerlemesi">
     <div class="page-progress-track">
       <div class="page-progress-fill" id="page-progress-fill"></div>
-      <span class="page-progress-dot" title="Başlangıç"></span>
-      <span class="page-progress-dot" title="Zarf"></span>
-      <span class="page-progress-dot" title="Macera haritası"></span>
-      <span class="page-progress-dot" title="Quiz"></span>
-      <span class="page-progress-dot" title="Gizli mektup"></span>
-      <span class="page-progress-dot" title="Aşk ölçer"></span>
-      <span class="page-progress-dot" title="Doğum günü pastası"></span>
+      <button class="page-progress-dot" type="button" data-stage-jump="0"><span class="page-progress-label">Başlangıç</span></button>
+      <button class="page-progress-dot" type="button" data-stage-jump="1"><span class="page-progress-label">Zarf</span></button>
+      <button class="page-progress-dot" type="button" data-stage-jump="2"><span class="page-progress-label">Macera haritası</span></button>
+      <button class="page-progress-dot" type="button" data-stage-jump="3"><span class="page-progress-label">Quiz</span></button>
+      <button class="page-progress-dot" type="button" data-stage-jump="4"><span class="page-progress-label">Gizli mektup</span></button>
+      <button class="page-progress-dot" type="button" data-stage-jump="5"><span class="page-progress-label">Aşk ölçer</span></button>
+      <button class="page-progress-dot" type="button" data-stage-jump="6"><span class="page-progress-label">Doğum günü pastası</span></button>
     </div>
   </div>
 
@@ -4956,18 +4986,32 @@
     const pageProgress = document.getElementById("page-progress");
     const pageProgressFill = document.getElementById("page-progress-fill");
     const pageProgressDots = Array.from(document.querySelectorAll(".page-progress-dot"));
+    const pageStageTargets = {
+      0: () => window.scrollTo({ top: 0, behavior: "smooth" }),
+      1: () => window.scrollTo({ top: 0, behavior: "smooth" }),
+      2: () => document.querySelector(".birthday-trail")?.scrollIntoView({ behavior: "smooth", block: "start" }),
+      3: () => document.getElementById("activities")?.scrollIntoView({ behavior: "smooth", block: "start" }),
+      4: () => document.getElementById("activities")?.scrollIntoView({ behavior: "smooth", block: "start" }),
+      5: () => document.querySelector(".love-meter")?.scrollIntoView({ behavior: "smooth", block: "start" }),
+      6: () => document.querySelector(".wish-coupons")?.scrollIntoView({ behavior: "smooth", block: "start" })
+    };
     let currentPageStage = 0;
     function setPageStage(stageIndex) {
       if (stageIndex <= currentPageStage) return;
       currentPageStage = stageIndex;
       const totalStages = pageProgressDots.length - 1;
-      pageProgressFill.style.width = `${(currentPageStage / totalStages) * 100}%`;
+      pageProgressFill.style.height = `${(currentPageStage / totalStages) * 100}%`;
       pageProgressDots.forEach((dot, index) => {
         dot.classList.toggle("is-complete", index < currentPageStage);
         dot.classList.toggle("is-current", index === currentPageStage);
+        dot.disabled = index > currentPageStage;
       });
     }
     pageProgressDots[0]?.classList.add("is-current");
+    pageProgressDots.forEach((dot, index) => {
+      dot.disabled = index > 0;
+      dot.addEventListener("click", () => pageStageTargets[dot.dataset.stageJump]?.());
+    });
     const pageStageObserver = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if (!entry.isIntersecting) return;
@@ -5449,7 +5493,7 @@
     }
 
     async function preloadAssets() {
-      const assetPaths = [
+      const imagePaths = [
         "assets/window-view.png",
         "assets/coffeecup.png",
         "assets/greycat.png",
@@ -5487,18 +5531,23 @@
         "assets/dark-wood.jpg",
         "assets/yaglama.png",
         "assets/yaglamazarf.jpeg",
-        "assets/yaglamazarf.jpg",
-        "assets/raining.mp3",
-        "assets/mykindofwoman.mp3",
-        "assets/notification.mp3",
-        "assets/correct.mp3",
-        "assets/swoosh.mp3",
-        "assets/hover.mp3",
-        "assets/vault.mp3",
-        "assets/candleblow.mp3"
+        "assets/yaglamazarf.jpg"
       ];
 
-      const total = assetPaths.length;
+      // Ses dosyaları: sayfanın geri kalanında zaten kullanılan aynı
+      // yedek yol dizileri, tek bir yol 404 verirse sessizce atlanmasın diye.
+      const audioGroups = [
+        audioSources,
+        rainSources,
+        uiSounds.notification,
+        uiSounds.correct,
+        uiSounds.swoosh,
+        uiSounds.hover,
+        uiSounds.vault,
+        ["assets/candleblow.mp3", "../assets/candleblow.mp3", "/Girlfriend-s-Birthday-Website/assets/candleblow.mp3"]
+      ];
+
+      const total = imagePaths.length + audioGroups.length;
       let loaded = 0;
       const percentEl = document.getElementById("loader-percent");
       const barEl = document.getElementById("loader-bar-fill");
@@ -5510,31 +5559,58 @@
         if (barEl) barEl.style.width = `${pct}%`;
       };
 
-      const loadAsset = (path) => {
-        return new Promise((resolve) => {
-          const isAudio = path.endsWith(".mp3");
-          const element = isAudio ? new Audio() : new Image();
-          let settled = false;
+      const loadImage = (path) => new Promise((resolve) => {
+        const image = new Image();
+        let settled = false;
+        const finish = () => {
+          if (settled) return;
+          settled = true;
+          updateProgress();
+          resolve();
+        };
+        image.onload = finish;
+        image.onerror = finish;
+        // Bir görsel hiç yanıt vermezse tüm ekranı kilitlemesin.
+        setTimeout(finish, 8000);
+        image.src = path;
+      });
 
-          const finish = () => {
-            if (settled) return;
-            settled = true;
-            updateProgress();
-            resolve();
-          };
-
-          element.onload = element.oncanplaythrough = finish;
-          element.onerror = finish;
-          // Bir dosya hiç yanıt vermezse (örn. yanlış isim) tüm ekranı kilitlemesin.
-          setTimeout(finish, 6000);
-
-          element.src = path;
-          if (isAudio) element.preload = "auto";
-        });
-      };
+      // Ses dosyaları için <audio> elementinin "canplaythrough" olayına
+      // güvenmek yerine gerçek baytları fetch ile indirip tarayıcı önbelleğine
+      // koyuyoruz — bu, sunucunun/format algılamanın events'i hiç
+      // tetiklemediği durumlarda (loading ekranı bitse bile ses tam
+      // yüklenmemiş gibi görünen asıl sorun) çok daha güvenilir çalışıyor.
+      const loadAudioGroup = (paths) => new Promise((resolve) => {
+        let settled = false;
+        let timeoutId;
+        const finish = () => {
+          if (settled) return;
+          settled = true;
+          clearTimeout(timeoutId);
+          updateProgress();
+          resolve();
+        };
+        const tryPath = (index) => {
+          if (index >= paths.length) { finish(); return; }
+          fetch(paths[index], { cache: "force-cache" })
+            .then((response) => {
+              if (!response.ok) throw new Error("bad status");
+              return response.blob();
+            })
+            .then(finish)
+            .catch(() => tryPath(index + 1));
+        };
+        // Bir ses grubu (tüm yol denemeleri dahil) hiç sonuçlanmazsa
+        // tüm ekranı kilitlemesin.
+        timeoutId = setTimeout(finish, 12000);
+        tryPath(0);
+      });
 
       try {
-        await Promise.all(assetPaths.map(loadAsset));
+        await Promise.all([
+          ...imagePaths.map(loadImage),
+          ...audioGroups.map(loadAudioGroup)
+        ]);
       } catch (error) {
         console.error("Asset preload error:", error);
       }
