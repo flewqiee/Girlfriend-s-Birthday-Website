@@ -58,6 +58,7 @@
     body.is-loading {
       overflow: hidden;
       height: 100vh;
+      height: 100dvh;
     }
     .loader {
       display: flex;
@@ -4201,20 +4202,22 @@
     .rain-drop {
       position: absolute;
       left: var(--x);
-      top: -14%;
+      top: -40px;
       width: 1.6px;
       height: var(--h);
       border-radius: 999px;
       background: linear-gradient(180deg, rgba(245,251,255,0), rgba(233,247,255,.92) 45%, rgba(167,204,231,.3));
       box-shadow: 0 0 3px rgba(220,240,255,.35);
       opacity: var(--o);
+      contain: layout style;
+      transform: translate3d(0, 0, 0) rotate(var(--tilt));
       animation: rainDropFall var(--d) linear infinite;
       animation-delay: var(--delay);
-      will-change: top, transform;
+      will-change: transform;
     }
     @keyframes rainDropFall {
-      0% { top: -14%; transform: translateX(0) rotate(var(--tilt)); }
-      100% { top: 112%; transform: translateX(var(--drift)) rotate(var(--tilt)); }
+      0% { transform: translate3d(0, 0, 0) rotate(var(--tilt)); }
+      100% { transform: translate3d(var(--drift), var(--fall, 420px), 0) rotate(var(--tilt)); }
     }
 </style>
 </head>
@@ -4861,7 +4864,15 @@
     function seedWindowRain() {
       if (!windowRain || windowRain.dataset.seeded) return;
       windowRain.dataset.seeded = "true";
-      const dropCount = window.matchMedia("(max-width: 620px)").matches ? 55 : 95;
+      const isMobile = window.matchMedia("(max-width: 620px)").matches;
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      // Az sayıda damla bile göz için yeterli - eskiden 55/95 adet damla
+      // her karede "top" animasyonuyla layout'u yeniden hesaplatıyordu.
+      // Artık sadece transform (translate) animasyonu kullanıyoruz, bu da
+      // GPU'da composite katmanında çalışır ve FPS düşüşüne yol açmaz.
+      const dropCount = reduceMotion ? 0 : (isMobile ? 26 : 46);
+      const fallDistance = `${Math.max(windowRain.clientHeight, window.innerHeight) * 0.5 + 90}px`;
+      const fragment = document.createDocumentFragment();
       for (let index = 0; index < dropCount; index += 1) {
         const drop = document.createElement("i");
         drop.className = "rain-drop";
@@ -4870,10 +4881,12 @@
         drop.style.setProperty("--o", `${.35 + Math.random() * .5}`);
         drop.style.setProperty("--tilt", `${5 + Math.random() * 9}deg`);
         drop.style.setProperty("--drift", `${10 + Math.random() * 28}px`);
+        drop.style.setProperty("--fall", fallDistance);
         drop.style.setProperty("--d", `${.55 + Math.random() * 1.1}s`);
         drop.style.setProperty("--delay", `${-Math.random() * 4.6}s`);
-        windowRain.appendChild(drop);
+        fragment.appendChild(drop);
       }
+      windowRain.appendChild(fragment);
     }
 
     function updateMusicButton() {
