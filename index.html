@@ -2686,8 +2686,13 @@
     }
     .phone-screen {
       min-height: 520px;
+      min-height: min(520px, 58vh);
+      min-height: min(520px, 58dvh);
+      max-height: 70vh;
+      max-height: 70dvh;
       padding: 30px 14px 16px;
-      overflow: hidden;
+      overflow-y: auto;
+      overscroll-behavior: contain;
       border-radius: 24px;
       background:
         radial-gradient(circle at 50% 0, rgba(255,200,150,.18), transparent 38%),
@@ -2857,7 +2862,12 @@
         transform: translate(50%, 118%) rotate(4deg) scale(.92);
       }
       .intro-phone.is-visible { transform: translate(50%, 0) rotate(-1deg) scale(1); }
-      .phone-screen { min-height: 500px; }
+      .phone-screen {
+        min-height: min(440px, 52vh);
+        min-height: min(440px, 52dvh);
+        max-height: 62vh;
+        max-height: 62dvh;
+      }
     }
 
     /* Photo-based lofi room: keep the user's reference image as the room, add only hand-made details. */
