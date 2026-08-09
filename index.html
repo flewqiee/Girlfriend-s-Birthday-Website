@@ -5095,6 +5095,16 @@
 
     function startLofiIntro() {
       const messages = Array.from(document.querySelectorAll("[data-intro-msg]"));
+      const phoneScreen = document.querySelector(".phone-screen");
+      // Mesaj kutusu (phone-screen) overflow-y:auto olduğu için mesajlar
+      // birikip kutunun boyunu aşınca en yeni mesaj/typing göstergesi
+      // görünmez alanda kalıyordu - kutu kendiliğinden aşağı kaymıyordu.
+      // Her yeni mesaj/typing belirdiğinde kutuyu yumuşakça en alta
+      // kaydırarak gerçek bir sohbet uygulaması gibi davranmasını sağlıyoruz.
+      const scrollChatToBottom = () => {
+        if (!phoneScreen) return;
+        phoneScreen.scrollTo({ top: phoneScreen.scrollHeight, behavior: "smooth" });
+      };
       seedWindowRain();
       playRainAmbience();
       setTimeout(triggerNotificationCue, 820);
@@ -5108,11 +5118,13 @@
         setTimeout(() => {
           message.parentNode.insertBefore(introTyping, message);
           introTyping.classList.add("is-visible");
+          scrollChatToBottom();
         }, delay);
         delay += typingDuration;
         setTimeout(() => {
           introTyping.classList.remove("is-visible");
           message.classList.add("is-visible");
+          scrollChatToBottom();
           playUiSound("notification", .5);
         }, delay);
         delay += index === 2 ? 760 : 520;
@@ -5120,10 +5132,12 @@
       setTimeout(() => {
         introFile.parentNode.insertBefore(introTyping, introFile);
         introTyping.classList.add("is-visible");
+        scrollChatToBottom();
       }, delay + 120);
       setTimeout(() => {
         introTyping.classList.remove("is-visible");
         introFile.classList.add("is-visible");
+        scrollChatToBottom();
         playUiSound("notification", .58);
       }, delay + 1180);
     }
@@ -5218,6 +5232,21 @@
       5: () => document.querySelector(".love-meter")?.scrollIntoView({ behavior: "smooth", block: "start" }),
       6: () => document.querySelector(".wish-coupons")?.scrollIntoView({ behavior: "smooth", block: "start" })
     };
+    // Nokta N'in çizgi üzerindeki konumu (flex space-between ile eşit
+    // aralıklı), 0 ile 1 arası.
+    function stagePositionFraction(stageIndex) {
+      return pageProgressDots.length > 1 ? stageIndex / (pageProgressDots.length - 1) : 0;
+    }
+    // Çizgi artık gerçek scroll oranını DEĞİL, doğrudan hangi aşamaya
+    // (currentPageStage) ulaşıldığını takip ediyor. Önceki sürüm ham
+    // scroll yüzdesini kullanıyordu; sayfanın toplam uzunluğu aşamaların
+    // fiziksel konumlarıyla birebir örtüşmediği için 3. aşamaya
+    // gelindiğinde çizgi 4. ve 5. noktaların hizasını da geçip onları
+    // "yanmış" gösterebiliyordu. Artık dolgu sadece ulaşılan aşamanın
+    // tam konumuna kadar dolduruluyor, ne bir piksel fazla ne eksik.
+    function updatePageProgressFill() {
+      pageProgressFill.style.height = `${stagePositionFraction(currentPageStage) * 100}%`;
+    }
     let currentPageStage = 0;
     function setPageStage(stageIndex) {
       if (stageIndex <= currentPageStage) return;
@@ -5227,44 +5256,14 @@
         dot.classList.toggle("is-current", index === currentPageStage);
         dot.disabled = index > currentPageStage;
       });
-      // Aşama değişince dolum tavanı da güncellensin ki çizgi
-      // henüz ulaşılmamış noktaları erken "yakmasın".
-      updateScrollProgress();
+      updatePageProgressFill();
     }
     pageProgressDots[0]?.classList.add("is-current");
     pageProgressDots.forEach((dot, index) => {
       dot.disabled = index > 0;
       dot.addEventListener("click", () => pageStageTargets[dot.dataset.stageJump]?.());
     });
-
-    // Soldaki çizgi artık gerçek scroll ilerlemesini takip ediyor
-    // (aşamalara göre zıplayan sabit yüzdeler yerine ne kadar
-    // aşağı indiğine göre sürekli dolan bir çizgi).
-    let scrollProgressFrame = null;
-    // Nokta N'in çizgi üzerindeki konumu (flex space-between ile eşit
-    // aralıklı), 0 ile 1 arası.
-    function stagePositionFraction(stageIndex) {
-      return pageProgressDots.length > 1 ? stageIndex / (pageProgressDots.length - 1) : 0;
-    }
-    function updateScrollProgress() {
-      const scrollable = document.documentElement.scrollHeight - window.innerHeight;
-      const rawFraction = scrollable > 0 ? Math.min(1, Math.max(0, window.scrollY / scrollable)) : 0;
-      // Çizgi, ham scroll oranıyla dolsa da hiçbir zaman henüz açılmamış
-      // (currentPageStage'in ötesindeki) bir noktayı geçmesin - yoksa 3.
-      // aşamaya gelindiğinde 4. ve 5. noktalar da "yanmış" gibi görünüyordu.
-      const cap = stagePositionFraction(currentPageStage);
-      const fraction = Math.min(rawFraction, cap);
-      pageProgressFill.style.height = `${fraction * 100}%`;
-    }
-    window.addEventListener("scroll", () => {
-      if (scrollProgressFrame) return;
-      scrollProgressFrame = requestAnimationFrame(() => {
-        updateScrollProgress();
-        scrollProgressFrame = null;
-      });
-    }, { passive: true });
-    window.addEventListener("resize", updateScrollProgress);
-    updateScrollProgress();
+    updatePageProgressFill();
 
     const pageStageObserver = new IntersectionObserver(entries => {
       entries.forEach(entry => {
