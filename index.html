@@ -3037,6 +3037,118 @@
         width: min(90vw, 330px);
       }
     }
+
+    /* Final polish: use real assets for the intro view/props and calm the heavy effects down. */
+    main > section {
+      content-visibility: auto;
+      contain-intrinsic-size: 720px;
+    }
+    .lofi-intro.is-gone { display: none; }
+    .lofi-intro.is-leaving * { animation-play-state: paused; }
+    .love-background span {
+      animation-duration: 54s;
+      will-change: transform;
+    }
+    .room-window {
+      background:
+        radial-gradient(circle at 50% 42%, rgba(255,176,52,.2), transparent 16rem),
+        linear-gradient(180deg, rgba(7,10,23,.06), rgba(7,10,23,.18) 58%, rgba(11,7,15,.32)),
+        url("assets/window-view.png") center 48% / cover no-repeat;
+      box-shadow:
+        0 22px 58px rgba(2,5,13,.32),
+        inset 0 0 0 2px rgba(255,248,232,.1),
+        inset 0 0 46px rgba(255,195,98,.1);
+    }
+    .room-window .moon,
+    .room-window .star,
+    .room-window .cloud,
+    .room-window .city {
+      display: none;
+    }
+    .room-window::before {
+      box-shadow: -18px 0 34px rgba(255,185,72,.06), 18px 0 34px rgba(255,185,72,.06);
+    }
+    .room-window::after {
+      box-shadow: 0 -14px 28px rgba(255,177,84,.05);
+    }
+    .lamp { display: none; }
+    .lamp-light {
+      position: absolute;
+      right: clamp(0px, 3vw, 46px);
+      bottom: clamp(20px, 6vh, 62px);
+      z-index: 13;
+      width: min(440px, 52vw);
+      height: min(320px, 38vh);
+      pointer-events: none;
+      background:
+        radial-gradient(ellipse at 82% 30%, rgba(255,214,142,.42), rgba(255,174,88,.16) 38%, transparent 68%),
+        linear-gradient(125deg, transparent 0 26%, rgba(255,198,112,.16) 40%, transparent 72%);
+      filter: blur(1px);
+      mix-blend-mode: screen;
+      opacity: .78;
+    }
+    .tablelamp-asset {
+      right: clamp(-32px, 1.8vw, 26px);
+      bottom: clamp(2px, 2vh, 22px);
+      z-index: 14;
+      width: min(260px, 24vw);
+      transform: rotate(-7deg);
+      filter: drop-shadow(0 20px 22px rgba(4,6,14,.42)) saturate(.98);
+    }
+    .intro-phone {
+      box-shadow: 0 22px 48px rgba(5,8,18,.34);
+    }
+    .meter-card::before {
+      animation-duration: 20s;
+      opacity: .24;
+    }
+    .meter-card.is-charging .meter-heart-core,
+    .meter-card.is-overflow .meter-heart-core,
+    .meter-heart-core {
+      display: none;
+    }
+    .meter-card.is-charging .sunset-sun {
+      transform: translate(-50%, -46%) scale(1.1);
+      filter: drop-shadow(0 0 26px rgba(255,209,128,.62));
+    }
+    .meter-card.is-overflow .sunset-sun {
+      transform: translate(-50%, -58%) scale(1.18);
+    }
+    .sunset-sun {
+      background:
+        radial-gradient(circle at 35% 28%, rgba(255,255,255,.36), transparent 16%),
+        radial-gradient(circle, #fff0b8 0 20%, #ffd08a 42%, #df7776 68%, transparent 70%);
+    }
+    .sunset-horizon {
+      bottom: 0;
+      height: 38%;
+      background:
+        radial-gradient(ellipse at 50% 0, rgba(255,248,232,.22), transparent 42%),
+        linear-gradient(180deg, rgba(70,40,50,.12), rgba(21,17,24,.94));
+      clip-path: polygon(0 46%, 13% 42%, 28% 35%, 45% 48%, 62% 34%, 78% 43%, 100% 38%, 100% 100%, 0 100%);
+    }
+    .love-particle { display: none; }
+    @media (max-width: 620px) {
+      main > section { contain-intrinsic-size: 820px; }
+      .room-window {
+        background:
+          radial-gradient(circle at 50% 42%, rgba(255,176,52,.18), transparent 12rem),
+          linear-gradient(180deg, rgba(7,10,23,.04), rgba(7,10,23,.16) 58%, rgba(11,7,15,.3)),
+          url("assets/window-view.png") center center / cover no-repeat;
+      }
+      .lamp-light {
+        right: -40px;
+        bottom: 72px;
+        width: 240px;
+        height: 210px;
+        opacity: .48;
+      }
+      .tablelamp-asset {
+        right: -50px;
+        bottom: 54px;
+        width: 144px;
+      }
+    }
 </style>
 </head>
 <body>
@@ -3073,6 +3185,8 @@
       <div class="room-bed"></div>
       <img class="prop-img cat-asset" src="assets/greycat.png" alt="" onerror="this.hidden=true">
       <span class="side-table"></span>
+      <span class="lamp-light"></span>
+      <img class="prop-img tablelamp-asset" src="assets/tablelamp.png" alt="" onerror="this.hidden=true">
       <span class="lamp"></span>
       <span class="foreground-shadow"></span>
       <span class="hand-lines"></span>
@@ -3594,7 +3708,10 @@
       let delay = 2200;
       messages.forEach((message, index) => {
         const typingDuration = [520, 680, 1250, 900, 820][index] || 760;
-        setTimeout(() => introTyping.classList.add("is-visible"), delay);
+        setTimeout(() => {
+          message.parentNode.insertBefore(introTyping, message);
+          introTyping.classList.add("is-visible");
+        }, delay);
         delay += typingDuration;
         setTimeout(() => {
           introTyping.classList.remove("is-visible");
@@ -3604,6 +3721,7 @@
         delay += index === 2 ? 760 : 520;
       });
       setTimeout(() => {
+        introFile.parentNode.insertBefore(introTyping, introFile);
         introTyping.classList.add("is-visible");
       }, delay + 120);
       setTimeout(() => {
@@ -3621,6 +3739,7 @@
       lofiIntro.classList.add("is-leaving");
       setTimeout(() => {
         opening.classList.add("is-story-ready");
+        lofiIntro.classList.add("is-gone");
         burst.remove();
       }, 520);
     }
@@ -3886,7 +4005,6 @@
         loveStatus.textContent = "Cihaz pes etti. Çünkü bazı aşklar yüzdeye sığmaz, ufka taşar.";
         meterCard.classList.add("is-glitching");
         meterCard.classList.add("is-overflow");
-        releaseLoveParticles();
         setTimeout(() => {
           loveButton.disabled = false;
           loveButton.textContent = "Bir daha ölç";
@@ -3895,21 +4013,6 @@
 
       tick();
     });
-
-    function releaseLoveParticles() {
-      const rect = meterCard.getBoundingClientRect();
-      for (let index = 0; index < 30; index += 1) {
-        const particle = document.createElement("span");
-        particle.className = "love-particle";
-        particle.textContent = index % 3 === 0 ? "♥" : "seni seviyorum";
-        particle.style.left = `${rect.left + rect.width / 2 + (Math.random() - .5) * rect.width * .7}px`;
-        particle.style.top = `${rect.top + rect.height * .52 + (Math.random() - .5) * 80}px`;
-        particle.style.setProperty("--px", `${(Math.random() - .5) * 420}px`);
-        particle.style.setProperty("--py", `${-120 - Math.random() * 260}px`);
-        document.body.appendChild(particle);
-        setTimeout(() => particle.remove(), 2000);
-      }
-    }
 
     const capsuleMessages = {
       birthday: "Bugün senin günün.\n\nBenim için de öyle, çünkü dünyaya geldiğin gün benim hayatıma sonradan en güzel anlamlardan birini getirdi. Bugün sadece yaş aldığın bir gün değil; benim en sevdiğim insanın varlığını kutladığım gün.\n\nDilerim bu yıl kalbin daha hafif, gülüşün daha sık, hayallerin daha cesur olur. Ben de mümkün olan her yerde yanında olayım. İyi ki doğdun sevgilim.",
