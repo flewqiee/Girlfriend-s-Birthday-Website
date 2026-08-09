@@ -3732,46 +3732,43 @@
       pointer-events: none;
       overflow: hidden;
       background:
-        repeating-linear-gradient(88deg, transparent 0 24px, rgba(180,211,238,.24) 25px 26px, transparent 27px 68px),
-        repeating-linear-gradient(85deg, transparent 0 42px, rgba(237,247,255,.18) 43px 44px, transparent 45px 108px);
-      background-size: 120px 160px, 170px 210px;
-      filter: blur(.3px);
-      opacity: .6;
-      mask-image:
-        repeating-linear-gradient(180deg, transparent 0 8px, #000 9px 42px, transparent 43px 88px),
-        linear-gradient(#000, #000);
-      animation: outsideRain calc(1.2s * var(--timing)) linear infinite;
+        repeating-linear-gradient(82deg, transparent 0 20px, rgba(180,211,238,.28) 21px 22px, transparent 23px 58px),
+        repeating-linear-gradient(79deg, transparent 0 38px, rgba(237,247,255,.2) 39px 40px, transparent 41px 96px);
+      background-size: 110px 140px, 160px 190px;
+      background-position: 0 0, 0 0;
+      filter: blur(.4px);
+      opacity: .7;
+      animation: outsideRain calc(1.8s * var(--timing)) linear infinite;
     }
-    .window-rain::before,
+    .window-rain::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(184deg, transparent 0 10%, rgba(236,247,255,.35) 12% 28%, transparent 30%) 10px 0 / 60px 120px repeat,
+        linear-gradient(180deg, transparent 0 18%, rgba(166,202,232,.28) 20% 36%, transparent 38%) 40px 12px / 80px 140px repeat;
+      animation: rainFall calc(1.6s * var(--timing)) linear infinite;
+    }
     .window-rain::after {
       content: "";
       position: absolute;
-      inset: -16% 0;
+      inset: 0;
       pointer-events: none;
-      background-repeat: repeat;
-    }
-    .window-rain::before {
       background:
-        linear-gradient(183deg, transparent 0 16%, rgba(236,247,255,.32) 17% 36%, transparent 38%) 14px 0 / 68px 130px,
-        linear-gradient(179deg, transparent 0 22%, rgba(166,202,232,.26) 23% 40%, transparent 42%) 44px 16px / 86px 152px;
-      opacity: .75;
-      animation: rainNear calc(0.8s * var(--timing)) linear infinite;
-    }
-    .window-rain::after {
-      background:
-        radial-gradient(ellipse at 50% 22%, rgba(239,249,255,.46) 0 1.5px, transparent 2.5px) 16px 10px / 72px 108px,
-        radial-gradient(ellipse at 50% 28%, rgba(186,218,242,.34) 0 1px, transparent 2.5px) 46px 28px / 104px 148px;
-      opacity: .55;
-      animation: rainDrops calc(1.1s * var(--timing)) linear infinite;
+        radial-gradient(ellipse at 50% 20%, rgba(239,249,255,.48) 0 1px, transparent 2px) 14px 8px / 64px 96px repeat,
+        radial-gradient(ellipse at 50% 25%, rgba(186,218,242,.32) 0 1.5px, transparent 3px) 44px 24px / 96px 124px repeat;
+      opacity: .6;
+      animation: rainDrop calc(2s * var(--timing)) linear infinite;
     }
     @keyframes outsideRain {
-      to { background-position: -7px 160px, 9px 210px; }
+      to { background-position: -5px 140px, 8px 190px; }
     }
-    @keyframes rainNear {
-      to { transform: translateY(130px); }
+    @keyframes rainFall {
+      to { transform: translateY(120px); }
     }
-    @keyframes rainDrops {
-      to { transform: translateY(108px); }
+    @keyframes rainDrop {
+      to { transform: translateY(96px); }
     }
     @keyframes rainGlassShift {
       to { background-position: 0 0, 0 0, 0 0, 0 0, 8px 22px, -11px 26px, 14px 16px, -8px 24px, 7px 18px, 0 0; }
@@ -4684,23 +4681,27 @@
       const messages = Array.from(document.querySelectorAll("[data-intro-msg]"));
       seedWindowRain();
       playRainAmbience();
-      setTimeout(triggerNotificationCue, 820);
+      
+      // Loading screen bittikten sonra timing
+      setTimeout(triggerNotificationCue, 2000); // 2 saniye sonra notification wave
       setTimeout(() => {
-        introPhone.classList.add("is-visible");
-      }, 1250);
-      let delay = 2200;
+        introPhone.classList.add("is-visible"); // 3 saniye sonra telefon
+      }, 3000);
+      
+      let delay = 4500; // Telefon çıktıktan 1.5s sonra mesajlar başlasın
       messages.forEach((message, index) => {
         const typingDuration = [520, 680, 1250, 900, 820][index] || 760;
+        const scaledDuration = Math.round(typingDuration * TIMING_MULTIPLIER);
         setTimeout(() => {
           message.parentNode.insertBefore(introTyping, message);
           introTyping.classList.add("is-visible");
         }, delay);
-        delay += typingDuration;
+        delay += scaledDuration;
         setTimeout(() => {
           introTyping.classList.remove("is-visible");
           message.classList.add("is-visible");
         }, delay);
-        delay += index === 2 ? 760 : 520;
+        delay += Math.round((index === 2 ? 760 : 520) * TIMING_MULTIPLIER);
       });
       setTimeout(() => {
         introFile.parentNode.insertBefore(introTyping, introFile);
@@ -4709,7 +4710,7 @@
       setTimeout(() => {
         introTyping.classList.remove("is-visible");
         introFile.classList.add("is-visible");
-      }, delay + 1180);
+      }, delay + Math.round(1180 * TIMING_MULTIPLIER));
     }
 
     function enterEnvelopeWorld() {
