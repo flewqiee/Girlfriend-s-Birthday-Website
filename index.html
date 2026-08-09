@@ -34,6 +34,47 @@
       --hand: "Gochi Hand", cursive;
       --serif: "Italiana", serif;
       --sans: "DM Sans", sans-serif;
+      --timing: 1.4;
+    }
+
+    /* Loading Screen */
+    .loading-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(180deg, #eadfce 0%, #f8efe1 52%, #dfc5bc 100%);
+      opacity: 1;
+      visibility: visible;
+      transition: opacity 0.6s ease, visibility 0.6s ease;
+    }
+    .loading-screen.is-hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+    .loader {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+    }
+    .spinner {
+      width: 48px;
+      height: 48px;
+      border: 3px solid rgba(167, 102, 103, .2);
+      border-top-color: #a76667;
+      border-radius: 50%;
+      animation: spin 1.6s linear infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    .loader-text {
+      color: #786d64;
+      font: 0.95rem var(--sans);
+      letter-spacing: 0.05em;
     }
 
     * { box-sizing: border-box; }
@@ -3950,6 +3991,13 @@
 </style>
 </head>
 <body>
+  <div class="loading-screen" id="loading-screen">
+    <div class="loader">
+      <div class="spinner"></div>
+      <p class="loader-text">Yükleniyor...</p>
+    </div>
+  </div>
+
   <a class="skip-link" href="#main">İçeriğe geç</a>
 
   <section class="lofi-intro" id="lofi-intro" aria-label="Umut'tan gelen mesaj">
@@ -4452,6 +4500,8 @@
       "dünyaya daha yumuşak bakmamı sağlaman"
     ];
 
+    const TIMING_MULTIPLIER = 1.4; // CSS'deki --timing variable'ı eşleştir
+    
     const opening = document.getElementById("opening");
     const envelope = document.getElementById("open-envelope");
     const siteShell = document.getElementById("site-shell");
@@ -4675,7 +4725,7 @@
       const button = event.target.closest("button, .primary-button, .text-button, .activity-button, .quiz-option");
       if (button && button === lastHoverButton && !button.contains(event.relatedTarget)) lastHoverButton = null;
     });
-    startLofiIntro();
+    /* startLofiIntro() - Hiçbir şey başlatma, sadece hazırla */
 
     envelope.addEventListener("click", () => {
       envelope.classList.add("is-opening");
@@ -5119,6 +5169,58 @@
         document.body.appendChild(piece);
         setTimeout(() => piece.remove(), wide ? 2300 : 1800);
       }
+    }
+
+    /* Loading Screen & Asset Preloading */
+    function hideLoadingScreen() {
+      const loadingScreen = document.getElementById("loading-screen");
+      if (loadingScreen) {
+        loadingScreen.classList.add("is-hidden");
+      }
+    }
+
+    async function preloadAssets() {
+      const assetPaths = [
+        "assets/window-view.png",
+        "assets/coffeecup.png",
+        "assets/greycat.png",
+        "assets/tablelamp.png",
+        "assets/raining.mp3",
+        "assets/mykindofwoman.mp3"
+      ];
+
+      const loadAsset = (path) => {
+        return new Promise((resolve) => {
+          const isAudio = path.endsWith(".mp3");
+          const element = isAudio ? new Audio() : new Image();
+          
+          element.onload = element.oncanplaythrough = () => {
+            resolve();
+          };
+          element.onerror = () => {
+            resolve();
+          };
+          
+          element.src = path;
+          if (isAudio) element.preload = "auto";
+        });
+      };
+
+      try {
+        await Promise.all(assetPaths.map(loadAsset));
+      } catch (error) {
+        console.error("Asset preload error:", error);
+      }
+
+      /* Loading screen'i gizle ama startLofiIntro'yu ÇAĞIRMAYiN */
+      hideLoadingScreen();
+    }
+
+    /* Preload başlat - ama startLofiIntro çağırma */
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", preloadAssets);
+    } else {
+      preloadAssets();
     }
   </script>
 </body>
