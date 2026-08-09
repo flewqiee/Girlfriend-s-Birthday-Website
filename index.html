@@ -34,47 +34,6 @@
       --hand: "Gochi Hand", cursive;
       --serif: "Italiana", serif;
       --sans: "DM Sans", sans-serif;
-      --timing: 1.4;
-    }
-
-    /* Loading Screen */
-    .loading-screen {
-      position: fixed;
-      inset: 0;
-      z-index: 200;
-      display: grid;
-      place-items: center;
-      background: linear-gradient(180deg, #eadfce 0%, #f8efe1 52%, #dfc5bc 100%);
-      opacity: 1;
-      visibility: visible;
-      transition: opacity 0.6s ease, visibility 0.6s ease;
-    }
-    .loading-screen.is-hidden {
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-    }
-    .loader {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 24px;
-    }
-    .spinner {
-      width: 48px;
-      height: 48px;
-      border: 3px solid rgba(167, 102, 103, .2);
-      border-top-color: #a76667;
-      border-radius: 50%;
-      animation: spin 1.6s linear infinite;
-    }
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-    .loader-text {
-      color: #786d64;
-      font: 0.95rem var(--sans);
-      letter-spacing: 0.05em;
     }
 
     * { box-sizing: border-box; }
@@ -189,7 +148,7 @@
       cursor: pointer;
       perspective: 900px;
       filter: drop-shadow(0 36px 46px rgba(61,42,31,.2));
-      animation: envelopeHover calc(3.6s * var(--timing)) ease-in-out infinite;
+      animation: envelopeHover 3.6s ease-in-out infinite;
     }
     .envelope-button::before {
       content: "";
@@ -215,7 +174,7 @@
       background: conic-gradient(from 18deg, transparent, rgba(255,248,232,.38), transparent, rgba(167,102,103,.16), transparent);
       filter: blur(12px);
       opacity: .7;
-      animation: sealAura calc(7s * var(--timing)) linear infinite;
+      animation: sealAura 7s linear infinite;
     }
     @keyframes envelopeHover {
       0%, 100% { transform: translateY(0) rotate(-.4deg); }
@@ -1354,7 +1313,7 @@
       transition: left .82s steps(6, end);
     }
     .quiz-progress.is-driving .quiz-bus {
-      animation: busPutters calc(0.82s * var(--timing)) steps(7, end);
+      animation: busPutters .82s steps(7, end);
     }
     @keyframes busPutters {
       0% { transform: translateX(-50%) translateY(0) rotate(-3deg); }
@@ -1610,7 +1569,7 @@
         linear-gradient(120deg, transparent 0 44%, rgba(255,248,232,.1) 49%, transparent 54%);
       background-size: 180px 180px, 240px 240px, 210px 210px, 280px 280px, 160% 160%;
       opacity: .78;
-      animation: finalDust calc(8s * var(--timing)) linear infinite, finalSweep calc(7s * var(--timing)) ease-in-out infinite alternate;
+      animation: finalDust 8s linear infinite, finalSweep 7s ease-in-out infinite alternate;
     }
     .final-overlay::after {
       content: "";
@@ -1687,13 +1646,13 @@
         rgba(25,15,13,.74);
       box-shadow: 0 30px 80px rgba(0,0,0,.45), inset 0 0 0 1px rgba(255,248,232,.05);
       backdrop-filter: blur(12px);
-      animation: finalWishEnter calc(0.7s * var(--timing)) cubic-bezier(.2,.8,.2,1) both;
+      animation: finalWishEnter .7s cubic-bezier(.2,.8,.2,1) both;
     }
     .final-wish-step.is-transforming {
       overflow: visible;
     }
     .final-wish-step.is-transforming #final-wish-input {
-      animation: wishBoxToStar calc(0.78s * var(--timing)) cubic-bezier(.16,.85,.25,1) forwards;
+      animation: wishBoxToStar .78s cubic-bezier(.16,.85,.25,1) forwards;
     }
     .final-wish-step.is-transforming .final-kicker,
     .final-wish-step.is-transforming h2,
@@ -1770,7 +1729,7 @@
       display: grid;
       justify-items: center;
       gap: 14px;
-      animation: finalCakeStepEnter calc(0.8s * var(--timing)) cubic-bezier(.16,.85,.25,1) both;
+      animation: finalCakeStepEnter .8s cubic-bezier(.16,.85,.25,1) both;
     }
     .final-cake-step::before {
       content: "";
@@ -1859,7 +1818,7 @@
         rgba(50,30,25,.32);
       backdrop-filter: blur(8px);
       box-shadow: 0 0 60px rgba(167,102,103,.12), inset 0 0 0 1px rgba(255,248,232,.06);
-      animation: finalMessageEnter calc(1.1s * var(--timing)) cubic-bezier(.2,.8,.2,1) both;
+      animation: finalMessageEnter 1.1s cubic-bezier(.2,.8,.2,1) both;
     }
     @keyframes finalMessageEnter {
       from { opacity: 0; transform: translateY(24px) scale(.96); filter: blur(9px); }
@@ -1883,19 +1842,8 @@
       letter-spacing: .04em;
     }
     .final-message-step.is-done .final-type::after {
-      content: "💕";
-      display: inline-block;
-      margin-left: .35em;
-      font-size: 1.08em;
-      animation: finalHeartFloat .8s ease-in-out infinite alternate, finalHeartGlow .6s ease-in-out infinite;
-    }
-    @keyframes finalHeartFloat {
-      from { transform: translateY(0) scale(.88); opacity: .82; }
-      to { transform: translateY(-12px) scale(1.12); opacity: 1; }
-    }
-    @keyframes finalHeartGlow {
-      0%, 100% { filter: drop-shadow(0 0 0px rgba(167,102,103,.0)); }
-      50% { filter: drop-shadow(0 0 16px rgba(167,102,103,.8)); }
+      content: "";
+      display: none;
     }
     .final-restart {
       position: relative;
@@ -3138,19 +3086,16 @@
         inset 0 0 0 2px rgba(255,248,232,.1),
         inset 0 0 46px rgba(255,195,98,.1);
     }
+    .room-window::before,
+    .room-window::after {
+      box-shadow: none;
+    }
     .room-window .moon,
     .room-window .star,
     .room-window .cloud,
     .room-window .city {
       display: none;
     }
-    .room-window::before {
-      box-shadow: -18px 0 34px rgba(255,185,72,.06), 18px 0 34px rgba(255,185,72,.06);
-    }
-    .room-window::after {
-      box-shadow: 0 -14px 28px rgba(255,177,84,.05);
-    }
-    .lamp { display: none; }
     .lamp-light {
       position: absolute;
       right: clamp(0px, 3vw, 46px);
@@ -3728,50 +3673,28 @@
     .window-rain {
       position: absolute;
       inset: 0;
-      z-index: 4;
+      z-index: 12;
       pointer-events: none;
       overflow: hidden;
       background:
-        repeating-linear-gradient(82deg, transparent 0 20px, rgba(180,211,238,.28) 21px 22px, transparent 23px 58px),
-        repeating-linear-gradient(79deg, transparent 0 38px, rgba(237,247,255,.2) 39px 40px, transparent 41px 96px);
-      background-size: 110px 140px, 160px 190px;
-      background-position: 0 0, 0 0;
-      filter: blur(.4px);
-      opacity: .7;
-      animation: outsideRain calc(1.8s * var(--timing)) linear infinite;
-    }
-    .window-rain::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      background:
-        linear-gradient(184deg, transparent 0 10%, rgba(236,247,255,.35) 12% 28%, transparent 30%) 10px 0 / 60px 120px repeat,
-        linear-gradient(180deg, transparent 0 18%, rgba(166,202,232,.28) 20% 36%, transparent 38%) 40px 12px / 80px 140px repeat;
-      animation: rainFall calc(1.6s * var(--timing)) linear infinite;
-    }
-    .window-rain::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      background:
-        radial-gradient(ellipse at 50% 20%, rgba(239,249,255,.48) 0 1px, transparent 2px) 14px 8px / 64px 96px repeat,
-        radial-gradient(ellipse at 50% 25%, rgba(186,218,242,.32) 0 1.5px, transparent 3px) 44px 24px / 96px 124px repeat;
+        repeating-linear-gradient(78deg, transparent 0 18px, rgba(180,210,240,.15) 19px 21px, transparent 22px 52px),
+        repeating-linear-gradient(82deg, transparent 0 32px, rgba(210,230,255,.12) 33px 35px, transparent 36px 84px);
+      background-size: 100px 120px, 160px 180px;
+      background-position: 0 0, 30px 40px;
+      animation: rainFall 0.4s linear infinite;
       opacity: .6;
-      animation: rainDrop calc(2s * var(--timing)) linear infinite;
     }
-    @keyframes outsideRain {
-      to { background-position: -5px 140px, 8px 190px; }
+    .window-rain::before,
+    .window-rain::after {
+      display: none;
     }
     @keyframes rainFall {
-      to { transform: translateY(120px); }
-    }
-    @keyframes rainDrop {
-      to { transform: translateY(96px); }
+      to {
+        background-position: 0 120px, 30px 160px;
+      }
     }
     @keyframes rainGlassShift {
-      to { background-position: 0 0, 0 0, 0 0, 0 0, 8px 22px, -11px 26px, 14px 16px, -8px 24px, 7px 18px, 0 0; }
+      to { background-position: 0 0, 0 0, 0 0, 0 0, 9px 24px, -12px 28px, 15px 18px, -9px 26px, 8px 20px, 0 0; }
     }
     .tabletop {
       height: 30%;
@@ -4027,13 +3950,6 @@
 </style>
 </head>
 <body>
-  <div class="loading-screen" id="loading-screen">
-    <div class="loader">
-      <div class="spinner"></div>
-      <p class="loader-text">Yükleniyor...</p>
-    </div>
-  </div>
-
   <a class="skip-link" href="#main">İçeriğe geç</a>
 
   <section class="lofi-intro" id="lofi-intro" aria-label="Umut'tan gelen mesaj">
@@ -4539,7 +4455,6 @@
     const opening = document.getElementById("opening");
     const envelope = document.getElementById("open-envelope");
     const siteShell = document.getElementById("site-shell");
-    const TIMING_MULTIPLIER = 1.4; // CSS'deki --timing variable'ı eşleştir
     const lofiIntro = document.getElementById("lofi-intro");
     const introPhone = document.getElementById("intro-phone");
     const introTyping = document.getElementById("intro-typing");
@@ -4681,27 +4596,25 @@
       const messages = Array.from(document.querySelectorAll("[data-intro-msg]"));
       seedWindowRain();
       playRainAmbience();
-      
-      // Loading screen bittikten sonra timing
-      setTimeout(triggerNotificationCue, 2000); // 2 saniye sonra notification wave
+      setTimeout(triggerNotificationCue, 820);
       setTimeout(() => {
-        introPhone.classList.add("is-visible"); // 3 saniye sonra telefon
-      }, 3000);
-      
-      let delay = 4500; // Telefon çıktıktan 1.5s sonra mesajlar başlasın
+        introPhone.classList.add("is-visible");
+        playUiSound("notification", .55);
+      }, 1250);
+      let delay = 2200;
       messages.forEach((message, index) => {
         const typingDuration = [520, 680, 1250, 900, 820][index] || 760;
-        const scaledDuration = Math.round(typingDuration * TIMING_MULTIPLIER);
         setTimeout(() => {
           message.parentNode.insertBefore(introTyping, message);
           introTyping.classList.add("is-visible");
         }, delay);
-        delay += scaledDuration;
+        delay += typingDuration;
         setTimeout(() => {
           introTyping.classList.remove("is-visible");
           message.classList.add("is-visible");
+          playUiSound("notification", .5);
         }, delay);
-        delay += Math.round((index === 2 ? 760 : 520) * TIMING_MULTIPLIER);
+        delay += index === 2 ? 760 : 520;
       });
       setTimeout(() => {
         introFile.parentNode.insertBefore(introTyping, introFile);
@@ -4710,7 +4623,8 @@
       setTimeout(() => {
         introTyping.classList.remove("is-visible");
         introFile.classList.add("is-visible");
-      }, delay + Math.round(1180 * TIMING_MULTIPLIER));
+        playUiSound("notification", .58);
+      }, delay + 1180);
     }
 
     function enterEnvelopeWorld() {
@@ -5162,7 +5076,7 @@
           clearInterval(timer);
           finalMessageStep.classList.add("is-done");
         }
-      }, 58 * TIMING_MULTIPLIER);
+      }, 58);
     }
 
     document.getElementById("final-restart").addEventListener("click", () => window.location.reload());
@@ -5205,64 +5119,6 @@
         document.body.appendChild(piece);
         setTimeout(() => piece.remove(), wide ? 2300 : 1800);
       }
-    }
-
-    /* Loading Screen */
-    function hideLoadingScreen() {
-      const loadingScreen = document.getElementById("loading-screen");
-      if (loadingScreen) {
-        loadingScreen.classList.add("is-hidden");
-      }
-    }
-
-    /* Preload critical assets */
-    async function preloadAssets() {
-      const assetPaths = [
-        "assets/window-view.png",
-        "assets/coffeecup.png",
-        "assets/greycat.png",
-        "assets/tablelamp.png",
-        "assets/raining.mp3",
-        "assets/mykindofwoman.mp3"
-      ];
-
-      let loadedCount = 0;
-      const totalAssets = assetPaths.length;
-
-      const loadAsset = (path) => {
-        return new Promise((resolve) => {
-          const isAudio = path.endsWith(".mp3");
-          const element = isAudio ? new Audio() : new Image();
-          
-          element.onload = element.oncanplaythrough = () => {
-            loadedCount++;
-            resolve();
-          };
-          element.onerror = () => {
-            loadedCount++;
-            resolve();
-          };
-          
-          element.src = path;
-          if (isAudio) element.preload = "auto";
-        });
-      };
-
-      try {
-        await Promise.all(assetPaths.map(loadAsset));
-      } catch (error) {
-        console.error("Asset preload error:", error);
-      }
-
-      /* Hide loading screen when done */
-      hideLoadingScreen();
-    }
-
-    /* Start loading */
-    if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", preloadAssets);
-    } else {
-      preloadAssets();
     }
   </script>
 </body>
