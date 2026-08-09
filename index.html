@@ -2825,8 +2825,10 @@
       border: 10px solid rgba(31,25,32,.86);
       border-radius: 18px 12px 20px 14px;
       background:
+        radial-gradient(circle at 76% 18%, rgba(255,238,190,.16), transparent 5rem),
+        radial-gradient(ellipse at 34% 73%, rgba(243,112,120,.32), transparent 18rem),
         linear-gradient(180deg, rgba(31,53,87,.16), rgba(7,10,20,.24)),
-        linear-gradient(180deg, #203a62 0%, #4b4165 45%, #c36b76 70%, #142033 100%);
+        linear-gradient(180deg, #162d52 0%, #2f436c 36%, #84516d 60%, #de7b79 78%, #142033 100%);
       box-shadow:
         0 28px 80px rgba(2,5,13,.36),
         inset 0 0 0 2px rgba(255,248,232,.08),
@@ -2844,15 +2846,55 @@
     }
     .room-window::before { top: 0; bottom: 0; left: 50%; width: 8px; transform: translateX(-50%); }
     .room-window::after { left: 0; right: 0; top: 58%; height: 7px; }
+    .cloud {
+      position: absolute;
+      z-index: 1;
+      height: 18px;
+      border-radius: 999px;
+      background:
+        radial-gradient(circle at 18% 60%, rgba(37,54,86,.7) 0 12px, transparent 13px),
+        radial-gradient(circle at 48% 42%, rgba(45,62,96,.62) 0 16px, transparent 17px),
+        radial-gradient(circle at 78% 58%, rgba(29,46,78,.66) 0 13px, transparent 14px),
+        linear-gradient(90deg, transparent 0 4%, rgba(29,45,75,.58) 6% 94%, transparent 96%);
+      filter: blur(.2px);
+      opacity: .62;
+    }
+    .cloud-1 { left: 10%; top: 21%; width: 150px; transform: rotate(-4deg); }
+    .cloud-2 { right: 13%; top: 34%; width: 205px; opacity: .5; transform: rotate(3deg); }
+    .cloud-3 { left: 44%; top: 15%; width: 118px; opacity: .42; transform: rotate(2deg); }
     .city {
       display: block;
       z-index: 1;
-      height: 32%;
+      height: 42%;
       background:
-        linear-gradient(90deg, transparent 0 4%, #111a30 4% 11%, transparent 11% 15%, #18243c 15% 23%, transparent 23% 28%, #10182b 28% 36%, transparent 36% 42%, #1b2945 42% 53%, transparent 53% 60%, #121b31 60% 68%, transparent 68% 74%, #192640 74% 88%, transparent 88%),
-        linear-gradient(180deg, transparent, rgba(8,12,22,.9));
+        linear-gradient(90deg, transparent 0 3%, #10182b 3% 9%, transparent 9% 12%, #1a2641 12% 19%, transparent 19% 23%, #0c1427 23% 31%, transparent 31% 35%, #1f2e4b 35% 44%, transparent 44% 48%, #121b31 48% 56%, transparent 56% 60%, #1c2a45 60% 73%, transparent 73% 77%, #111a2f 77% 84%, transparent 84% 88%, #22314d 88% 96%, transparent 96%),
+        linear-gradient(180deg, rgba(28,38,65,.2), rgba(5,8,17,.94));
+      box-shadow: inset 0 18px 24px rgba(255,149,126,.08);
     }
-    .city::after { display: block; }
+    .city::before {
+      content: "";
+      position: absolute;
+      left: -2%;
+      right: -2%;
+      bottom: 0;
+      height: 70%;
+      background:
+        linear-gradient(90deg, transparent 0 5%, #16213a 5% 13%, transparent 13% 17%, #0f182d 17% 25%, transparent 25% 29%, #253553 29% 34%, transparent 34% 40%, #111b32 40% 49%, transparent 49% 54%, #1a2844 54% 63%, transparent 63% 68%, #0f182c 68% 79%, transparent 79% 83%, #253754 83% 91%, transparent 91%);
+      opacity: .92;
+    }
+    .city::after {
+      content: "";
+      position: absolute;
+      inset: 9% 3% 13%;
+      display: block;
+      background-image:
+        radial-gradient(circle, rgba(255,230,158,.82) 0 1.4px, transparent 1.7px),
+        radial-gradient(circle, rgba(132,184,255,.62) 0 1.2px, transparent 1.6px);
+      background-size: 34px 24px, 47px 31px;
+      background-position: 4px 3px, 18px 12px;
+      mask-image: linear-gradient(90deg, transparent 0 2%, #000 8% 92%, transparent 98%);
+      opacity: .78;
+    }
     .moon {
       right: 15%;
       top: 11%;
@@ -2862,6 +2904,8 @@
     }
     .moon::after { background: #263f65; }
     .star { z-index: 2; }
+    .star-5 { left: 72%; top: 27%; animation-delay: .35s; }
+    .star-6 { left: 19%; top: 33%; animation-delay: 1.65s; }
     .tabletop {
       position: absolute;
       left: -5%;
@@ -2886,6 +2930,10 @@
         linear-gradient(90deg, rgba(53,30,25,.24) 0 1px, transparent 1px 22%),
         radial-gradient(ellipse at 20% 18%, rgba(255,221,167,.12), transparent 24rem);
       opacity: .7;
+    }
+    .coffee,
+    .cat {
+      display: none;
     }
     .coffee {
       left: clamp(44px, 12vw, 150px);
@@ -2926,9 +2974,9 @@
       filter: drop-shadow(0 18px 22px rgba(4,6,14,.36)) saturate(.95);
     }
     .coffee-asset {
-      left: clamp(28px, 9vw, 118px);
-      bottom: clamp(28px, 7vh, 58px);
-      width: min(150px, 22vw);
+      left: clamp(30px, 8vw, 110px);
+      bottom: clamp(24px, 6vh, 54px);
+      width: min(158px, 21vw);
       transform: rotate(-3deg);
     }
     .cat {
@@ -2943,14 +2991,15 @@
       filter: drop-shadow(0 18px 20px rgba(4,6,14,.36));
     }
     .cat-asset {
-      right: clamp(24px, 7vw, 92px);
-      bottom: clamp(28px, 6vh, 58px);
-      width: min(210px, 28vw);
-      transform: rotate(2deg);
+      left: clamp(174px, 24vw, 330px);
+      bottom: clamp(22px, 5.4vh, 54px);
+      width: min(236px, 29vw);
+      z-index: 12;
+      transform: rotate(-2deg);
     }
     .steam {
-      left: clamp(82px, 14vw, 186px);
-      bottom: clamp(128px, 20vh, 178px);
+      left: clamp(82px, 12.6vw, 174px);
+      bottom: clamp(120px, 18vh, 166px);
       z-index: 10;
       height: 70px;
       border-left-color: rgba(255,238,210,.48);
@@ -2977,13 +3026,11 @@
         height: 36vh;
       }
       .tabletop { height: 44%; }
-      .coffee { left: 32px; bottom: 68px; transform: scale(.78) rotate(-3deg); }
       .coffee-asset { left: 18px; bottom: 42px; width: 118px; }
       .steam { left: 72px; bottom: 144px; }
       .steam-2 { left: 86px; }
       .steam-3 { left: 100px; }
-      .cat { right: 24px; bottom: 72px; transform: scale(.72) rotate(2deg); }
-      .cat-asset { right: 10px; bottom: 42px; width: 150px; }
+      .cat-asset { left: 8px; bottom: 118px; width: 128px; transform: rotate(-5deg); }
       .intro-phone {
         right: 50%;
         bottom: 34px;
@@ -3004,23 +3051,26 @@
       <div class="room-wall-line"></div>
       <div class="room-window">
         <span class="moon"></span>
+        <span class="cloud cloud-1"></span>
+        <span class="cloud cloud-2"></span>
+        <span class="cloud cloud-3"></span>
         <span class="star star-1"></span>
         <span class="star star-2"></span>
         <span class="star star-3"></span>
         <span class="star star-4"></span>
+        <span class="star star-5"></span>
+        <span class="star star-6"></span>
         <span class="city"></span>
       </div>
       <span class="curtain curtain-left"></span>
       <span class="curtain curtain-right"></span>
       <span class="tabletop"></span>
       <div class="desk"></div>
-      <span class="coffee"></span>
       <img class="prop-img coffee-asset" src="assets/coffeecup.png" alt="" onerror="this.hidden=true">
       <span class="steam steam-1"></span>
       <span class="steam steam-2"></span>
       <span class="steam steam-3"></span>
       <div class="room-bed"></div>
-      <div class="cat"><span class="cat-tail"></span></div>
       <img class="prop-img cat-asset" src="assets/greycat.png" alt="" onerror="this.hidden=true">
       <span class="side-table"></span>
       <span class="lamp"></span>
