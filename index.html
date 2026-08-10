@@ -193,17 +193,22 @@
     }
     .opening.is-story-ready:not(.is-open) { opacity: 1; visibility: visible; }
     .opening.is-open { opacity: 0; visibility: hidden; }
-    .opening-copy { display: block; text-align: center; margin: 0 0 26px; }
+    .opening-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
     .opening-eyebrow {
-      margin: 0 0 5px;
+      margin: 0 0 10px;
       color: var(--rose-dark);
-      font: 1.2rem var(--hand);
+      font: 1.25rem var(--hand);
       transform: rotate(-2deg);
     }
     .opening-title {
       max-width: 500px;
-      margin: 0;
-      font: clamp(2.5rem, 8vw, 5rem)/.95 var(--serif);
+      margin: 0 0 40px;
+      font: clamp(2.3rem, 7.4vw, 4.4rem)/1.05 var(--serif);
       font-weight: 400;
     }
     .envelope-button {
@@ -2693,6 +2698,8 @@
       padding: 30px 14px 16px;
       overflow-y: auto;
       overscroll-behavior: contain;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
       border-radius: 24px;
       background:
         radial-gradient(circle at 50% 0, rgba(255,200,150,.18), transparent 38%),
@@ -2706,6 +2713,7 @@
       color: rgba(248,239,225,.82);
       font-size: .85rem;
     }
+    .phone-screen::-webkit-scrollbar { display: none; }
     .phone-avatar {
       display: grid;
       width: 30px;
@@ -4387,19 +4395,17 @@
   </section>
 
   <section class="opening" id="opening" aria-label="Açılış mektubu">
-    <div>
-      <div class="opening-copy">
-        <p class="opening-eyebrow">küçük bir şey hazırladım</p>
-        <h1 class="opening-title">Bu sayfa sana ait.</h1>
-      </div>
+    <div class="opening-inner">
+      <p class="opening-eyebrow">Umut'tan sana</p>
+      <h1 class="opening-title">Doğum günün<br>kutlu olsun.</h1>
       <button class="envelope-button" id="open-envelope" type="button" aria-label="Mektubu aç ve ana sayfaya geç">
         <span class="envelope-back"></span>
-        <span class="envelope-letter">senin için, sevgiyle</span>
+        <span class="envelope-letter">sana, sevgiyle</span>
         <span class="envelope-front"></span>
         <span class="envelope-flap"></span>
         <span class="wax-seal">U</span>
       </button>
-      <p class="opening-hint">açmak için dokun</p>
+      <p class="opening-hint">açmak için mühüre dokun</p>
     </div>
   </section>
 
@@ -5281,13 +5287,13 @@
       document.body.style.overflow = "hidden";
       document.body.classList.add("modal-open");
       const focusTarget = modal.querySelector("input, button");
-      setTimeout(() => focusTarget?.focus(), 80);
+      setTimeout(() => focusTarget?.focus({ preventScroll: true }), 80);
     }
     function closeModal(modal) {
       modal.classList.remove("is-visible");
       document.body.style.overflow = "";
       document.body.classList.remove("modal-open");
-      lastFocusedElement?.focus();
+      lastFocusedElement?.focus({ preventScroll: true });
     }
     document.querySelectorAll("[data-open]").forEach(button => {
       button.addEventListener("click", () => openModal(document.getElementById(button.dataset.open)));
